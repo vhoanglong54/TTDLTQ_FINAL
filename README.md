@@ -15,6 +15,8 @@ Repo hiện ở **giai đoạn khởi tạo**: tài liệu yêu cầu, hợp đ�
 7. [Báo cáo, video và vấn đáp](docs/07-report-and-defense.md)
 8. [Quy tắc nhánh, review và bàn giao](CONTRIBUTING.md)
 
+Kế hoạch thực hiện theo vai trò TV1: [workflow, giai đoạn và prompt chung](TV1/plan.md); tiến độ thực tế ghi tại [báo cáo TV1](TV1/report.md). Hai tài liệu này được khởi tạo trong phạm vi T01 và không thay thế Issue/PR hay bằng chứng nghiệm thu.
+
 Nguồn yêu cầu gốc: [TTDLTQ_script.docx](docs/source/TTDLTQ_script.docx). Khi tài liệu trong repo diễn giải một ví dụ không phù hợp với OULAD, [sổ quyết định](docs/08-decisions-and-open-questions.md) ghi rõ lý do và việc cần xác nhận bằng dữ liệu thực.
 
 ## Bố cục dự kiến
