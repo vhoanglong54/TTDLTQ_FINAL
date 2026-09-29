@@ -8,7 +8,7 @@ assignees: []
 
 **Task ID:** TXX
 
-**Owner / reviewer:** TV? / TV?
+**Owner:** TV?
 
 **Phụ thuộc:** T??
 **Rubric liên quan:**
@@ -26,4 +26,4 @@ assignees: []
 - [ ] Số liệu, khóa và mẫu số đã đối chiếu nếu liên quan dữ liệu.
 - [ ] Chart/model/dashboard được kiểm tra theo rubric nếu liên quan.
 - [ ] Data dictionary/Insight Log/decision log đã cập nhật nếu định nghĩa thay đổi.
-- [ ] Leader đã kiểm tra bằng chứng và quyết định nghiệm thu; review chéo chỉ thực hiện khi leader yêu cầu.
+- [ ] Leader đã kiểm tra bằng chứng và quyết định nghiệm thu.

@@ -1,7 +1,7 @@
 # 09 — Data dictionary và quan hệ 7 bảng OULAD
 
 **Task:** T02 / [Issue #2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2)
-**Trạng thái:** Hiện vật hoàn thành, chờ TV2/TV3 review và PR. Đây là hợp đồng từ CSV raw, không khẳng định dữ liệu đã sạch.
+**Trạng thái:** Đã kiểm tra bằng script trên bộ OULAD chính thức và đã merge qua PR #13; leader nghiệm thu T02. Đây là hợp đồng từ CSV raw, không khẳng định dữ liệu đã sạch.
 
 Nguồn, license, checksum và số dòng T01: [data README](../data/README.md). Bảy CSV ở `data/raw/` (không commit). Lệnh tái tạo kiểm tra trực tiếp raw bằng Python 3.14/thư viện chuẩn:
 
@@ -148,5 +148,5 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 | T01 xác nhận file/nguồn, T02 khớp raw | Đạt về input | T01/#1 closed; kiểm kê tại `data/README.md`. |
 | 7 bảng, 43 cột, hạt/khóa/join/nghĩa/missing | Đạt về hiện vật | Tài liệu này; `?` được đánh dấu, không kết luận sạch. |
 | Không nhầm hạt/nhân dòng | Đạt về thiết kế | Sơ đồ và yêu cầu aggregate; T07 phải xác minh sau join. |
-| TV2/TV3 review | Chưa kiểm | Cần review ý nghĩa và BI/model. |
-| PR merge, bình luận nghiệm thu Issue | Chưa đạt | Chưa tạo PR; không đóng Issue. |
+| Kiểm tra tự động trên OULAD chính thức | Đạt | 7 bảng/43 cột; candidate keys PASS; 9 kiểm tra quan hệ/khóa đều 0 lỗi. |
+| PR merge và leader nghiệm thu | Đạt | PR #13 đã merge; leader xác nhận đầu ra đủ cho T05/T07/T13 sử dụng. |

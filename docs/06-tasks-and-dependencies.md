@@ -17,11 +17,11 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
 | 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
 
-Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; leader kiểm tra bằng chứng, quyết định merge, bình luận biên bản bàn giao trong Issue rồi đóng. Review chéo chỉ thực hiện khi leader yêu cầu.
+Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; leader kiểm tra bằng chứng, merge và đóng Issue. Không gắn reviewer, không mention thành viên để nhắc duyệt và không lặp lại biên bản ở cả PR lẫn Issue.
 
 ## Nhóm nền tảng
 
-| ID | Owner / reviewer | Task và hiện vật nghiệm thu | Phụ thuộc |
+| ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
 | T01 | TV1 / TV2, TV3 | Tải OULAD từ nguồn chính thức; ghi link, license, ngày tải, checksum, số dòng từng bảng, xác nhận ≥5.000 dòng và ≥3 bảng trong `data/README.md`/Data Quality Report | — |
 | T02 | TV1 / TV2 | Data dictionary cho 7 bảng: cột, kiểu, khóa, hạt, missing, ý nghĩa; sơ đồ quan hệ và danh sách biến dùng | T01 |
@@ -30,7 +30,7 @@ Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi b�
 
 ## Nhóm dữ liệu sạch
 
-| ID | Owner / reviewer | Task và hiện vật nghiệm thu | Phụ thuộc |
+| ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
 | T05 | TV1 / TV2 | `01_data_audit.ipynb`: shape, type, missing, duplicates, unique keys, outliers, invalid/categories; báo cáo chất lượng | T01–T02 |
 | T06 | TV1 / TV2 | `02_cleaning.ipynb` + script: quy tắc missing/outlier/normalize/datatype; bảng sạch tái tạo được | T05 |
@@ -42,17 +42,17 @@ Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi b�
 
 ## Nhóm phân tích sâu
 
-| ID | Owner / reviewer | Task và hiện vật nghiệm thu | Phụ thuộc |
+| ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
 | T10 | TV2 / TV1 | `03_eda.ipynb`: phân bố, temporal VLE, assessment, IMD/region, tương tác; kiểm nhóm nhỏ và khoảng thời gian | T07–T08 |
 | T11 | TV2 / TV3 | Insight Log 5–7 insight chính, mỗi insight có bằng chứng, mẫu số và giới hạn; risk profile và storyline | T10 |
 | T12 | TV3 / TV2 | Dashboard v0 bốn trang với visual chính, kiểm tra cross-filter/prototype drill-down | T09–T11 |
 
-**Cổng insight:** T10–T11 qua review; khi định nghĩa insight thay đổi, cập nhật dashboard/báo cáo tương ứng.
+**Cổng insight:** T10–T11 có đủ bằng chứng và được leader nghiệm thu; khi định nghĩa insight thay đổi, cập nhật dashboard/báo cáo tương ứng.
 
 ## Nhóm dự báo và dashboard
 
-| ID | Owner / reviewer | Task và hiện vật nghiệm thu | Phụ thuộc |
+| ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
 | T13 | TV3 / TV1, TV2 | Chốt mốc dự báo, train/test split, encoding; Logistic Regression; metric, leakage check, risk probability; xuất `actual_status`/`predicted_status` theo khóa lượt học | T07, T11 |
 | T14 | TV3 / TV2, TV1 | Hoàn thiện 4 trang, ≥8 loại chart, map, multi-level filters, drill-down, tooltip, cross-filter và trang Prediction | T12–T13 |
@@ -61,7 +61,7 @@ Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi b�
 
 ## Nhóm báo cáo và bảo vệ
 
-| ID | Owner / reviewer | Task và hiện vật nghiệm thu | Phụ thuộc |
+| ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
 | T17 | TV1 / TV2 | Viết Dataset, Data Dictionary, Preprocessing, phần data pipeline và bảng chất lượng | T07 |
 | T18 | TV2 / TV1 | Viết Introduction, Related Work, EDA, Insight/storytelling; trích dẫn IEEE | T11 |

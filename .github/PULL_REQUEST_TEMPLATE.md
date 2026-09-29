@@ -4,8 +4,6 @@ ID: TXX
 
 Owner: TV?
 
-Reviewer: TV?
-
 ## Thay đổi và lý do
 
 
@@ -19,4 +17,4 @@ Reviewer: TV?
 - [ ] Khớp tiêu chí nghiệm thu trong `docs/06-tasks-and-dependencies.md` và rubric liên quan.
 - [ ] Tài liệu, data dictionary hoặc decision log liên quan đã cập nhật.
 - [ ] Không commit dữ liệu thô/output lớn; không có feature sau mốc dự báo.
-- [ ] Leader đã kiểm tra bằng chứng và quyết định merge; review chéo chỉ thực hiện khi cần.
+- [ ] Leader đã kiểm tra bằng chứng và quyết định merge.
