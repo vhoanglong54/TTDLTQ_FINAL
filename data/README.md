@@ -41,5 +41,5 @@ Tổng số dòng của 7 CSV là **10.900.970**, nên đáp ứng điều kiệ
 ### Giới hạn và bàn giao
 
 - File `OULAD.names` đi kèm ghi 32.953 lượt học/đăng ký, còn `studentInfo.csv` và `studentRegistration.csv` cục bộ đều có 32.593 dòng. Chênh lệch tài liệu này được theo dõi ở [decision log](../docs/08-decisions-and-open-questions.md); không thay đổi dữ liệu ở T01.
-- Bằng chứng hiện có xác nhận file cục bộ và phù hợp dữ liệu/rubric. Cần TV2 review kết quả và TV3 leader duyệt lựa chọn dataset trước khi đóng Issue #1.
+- Bằng chứng hiện có xác nhận file cục bộ và phù hợp dữ liệu/rubric. TV3 leader đã tải lại archive UCI chính thức, xác nhận 7 checksum trùng khớp và nghiệm thu T01. T02/data dictionary vẫn phải hoàn thành trước khi đánh dấu trọn mục Dataset trong rubric.
 - T02 có thể dùng bảng kiểm kê này, nhưng phải lập `docs/09-data-dictionary.md` theo schema thực tế; chưa suy luận uniqueness hay độ sạch trước T05.

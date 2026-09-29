@@ -1,6 +1,23 @@
 # 06 — Task board và quan hệ phụ thuộc
 
-Trạng thái tất cả task: **Todo** khi khởi tạo. TV1/TV2/TV3 là vai trò, không phải tên người. Mỗi task tạo một issue theo mẫu `.github/ISSUE_TEMPLATE/task.md`, gắn ID trong tiêu đề/nhánh/PR. Cột phụ thuộc cho biết điều kiện để nghiệm thu; phần việc chuẩn bị có thể chạy song song. Nhóm tự quản lý lịch và deadline. Đóng task theo [Definition of Done](../CONTRIBUTING.md).
+TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp, cùng owner và cùng đầu ra được gom vào một Issue để nhóm dễ quản lý. Cột phụ thuộc cho biết điều kiện để nghiệm thu; phần chuẩn bị có thể làm song song. Nhóm tự quản lý lịch và deadline. Đóng Issue theo [Definition of Done](../CONTRIBUTING.md).
+
+## Bảng giao việc thực tế
+
+| Thứ tự | Issue | Owner | Nhánh commit | Chỉ bắt đầu/chốt khi |
+|---:|---|---|---|---|
+| 1 | [#1 — T01: nguồn OULAD](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) | Khang | `data/T01-oulad-source` | Bắt đầu ngay |
+| 2 | [#2 — T02: data dictionary](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) | Khang | `data/T02-data-dictionary` | Chốt sau #1 |
+| 2 | [#3 — T03: RQ/hypothesis](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/3) | Nadi | `analysis/T03-research-questions` | Soạn ngay, chốt sau #1; dùng #2 |
+| 2 | [#4 — T04: wireframe](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/4) | Leader | `bi-model/T04-dashboard-wireframe` | Phác ngay, chốt sau #1; dùng #2–#3 |
+| 3 | [#5 — T05–T07: data pipeline](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5) | Khang | `data/T05-T07-data-pipeline` | #1–#2 đã nghiệm thu |
+| 4 | [#6 — T08, T10–T11: EDA/insight](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/6) | Nadi | `analysis/T08-T11-eda-insights` | #3 và #5 đã nghiệm thu |
+| 4 | [#7 — T09, T12: dashboard v0](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/7) | Leader | `bi-model/T09-T12-dashboard-prototype` | Bắt đầu sau #4–#5; chốt sau #6 |
+| 5 | [#8 — T13: Logistic Regression](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/8) | Leader | `bi-model/T13-logistic-regression` | #5–#6 đã nghiệm thu |
+| 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
+| 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
+
+Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; leader kiểm tra bằng chứng, quyết định merge, bình luận biên bản bàn giao trong Issue rồi đóng. Review chéo chỉ thực hiện khi leader yêu cầu.
 
 ## Nhóm nền tảng
 
@@ -21,7 +38,7 @@ Trạng thái tất cả task: **Todo** khi khởi tạo. TV1/TV2/TV3 là vai tr
 | T08 | TV2 / TV1 | EDA cơ bản và 3–5 biểu đồ tĩnh đầu tiên; điều chỉnh định nghĩa nhóm/giả thuyết theo phân bố thực | T06–T07 |
 | T09 | TV3 / TV1 | Khung Power BI dùng bảng mẫu sạch, định nghĩa KPI và thử geocoding map; chuẩn bị split/model feature list | T07 |
 
-**Cổng dữ liệu:** T01, T02, T05–T07 được review và bảng cho EDA/BI/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
+**Cổng dữ liệu:** T01, T02, T05–T07 được leader nghiệm thu và bảng cho EDA/BI/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
 
 ## Nhóm phân tích sâu
 
@@ -49,9 +66,9 @@ Trạng thái tất cả task: **Todo** khi khởi tạo. TV1/TV2/TV3 là vai tr
 | T17 | TV1 / TV2 | Viết Dataset, Data Dictionary, Preprocessing, phần data pipeline và bảng chất lượng | T07 |
 | T18 | TV2 / TV1 | Viết Introduction, Related Work, EDA, Insight/storytelling; trích dẫn IEEE | T11 |
 | T19 | TV3 / TV2 | Viết Dashboard, Regression, Prediction, cách cài đặt/sử dụng | T13–T14 |
-| T20 | Cả 3 / review chéo | Ghép báo cáo ≥40 trang: sơ đồ hệ thống, logic chart, code/pseudocode, kết luận, tài liệu tham khảo, link video | T17–T19 |
+| T20 | Cả 3 / leader nghiệm thu | Ghép báo cáo ≥40 trang: sơ đồ hệ thống, logic chart, code/pseudocode, kết luận, tài liệu tham khảo, link video | T17–T19 |
 | T21 | TV3 / TV1, TV2 | QA dashboard cuối; ảnh minh chứng 8 chart/map/tương tác, chạy demo thực tế | T14–T16 |
-| T22 | Cả 3 / review chéo | Slide, kịch bản Data Analyst, video backup tóm tắt và link, diễn tập vấn đáp cả 3 vai trò | T20–T21 |
+| T22 | Cả 3 / leader nghiệm thu | Slide, kịch bản Data Analyst, video backup tóm tắt và link, diễn tập vấn đáp cả 3 vai trò | T20–T21 |
 
 **Cổng dashboard:** T21 qua QA và các thay đổi tiếp theo ghi rõ tác động lên demo/báo cáo. **Cổng bàn giao:** T20–T22 đã có đường dẫn hiện vật, tất cả mục rubric đã được đối chiếu.
 
