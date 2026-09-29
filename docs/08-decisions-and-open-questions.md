@@ -15,6 +15,7 @@ Tài liệu này tách **quyết định đã chốt trong DOCX** khỏi **giả
 | D09 | Cần xác nhận | Cách split train/test theo `id_student` hoặc presentation và độ cân bằng nhãn; quyết định dựa trên audit và mục tiêu tổng quát hóa. | T13 |
 | D10 | Chốt theo yêu cầu nhóm | Lịch gợi ý trong DOCX không áp dụng cho repo; nhóm quản lý theo task, phụ thuộc và cổng kiểm tra chất lượng, tự quyết deadline. | T01–T22 |
 | D11 | Cần xác nhận | T01 kiểm kê 7 CSV tại `data/raw/` ngày 29/09/2026: 10.900.970 dòng tổng, header/khóa cần thiết đạt và checksum ghi tại `data/README.md`. `OULAD.names` cho thấy bản UCI; UCI công bố CC BY 4.0. Ngày tải archive/version chính xác chưa được lưu riêng. `OULAD.names` ghi 32.953 lượt học/đăng ký, trong khi hai CSV cục bộ đều có 32.593 dòng; dùng số liệu file thực và giữ chênh lệch này để T02/T05 xác minh, TV3 leader duyệt trước khi đóng Issue. | T01 / [Issue #1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) |
+| D12 | Cần xác nhận | T02 quan sát raw dùng `?`, không phải ô trống: `imd_band` 1.118; `date_registration` 45; `date_unregistration` 22.521; `assessments.date` 11; `studentAssessment.score` 173; `vle.week_from`/`week_to` mỗi cột 5.243. Giữ nguyên raw; T05 xác nhận ngữ nghĩa/cơ chế missing, T06 mới quyết định xử lý. | T02, T05, T06 |
 
 ## Mẫu ghi quyết định mới
 
