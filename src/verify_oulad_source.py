@@ -1,7 +1,7 @@
 """Verify the local OULAD source files for task T01.
 
 Example:
-    python src/verify_oulad_source.py data/raw/uci-open-university-learning-analytics-dataset
+    python src/verify_oulad_source.py data/raw
 
 The script streams every CSV, so it can count the large studentVle.csv file
 without loading it into memory. It does not modify source data.

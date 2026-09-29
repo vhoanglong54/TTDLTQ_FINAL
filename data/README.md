@@ -6,7 +6,7 @@
 
 **Task/Issue:** [T01 / #1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1)<br>
 **Ngày extract và kiểm kê cục bộ:** 29/09/2026<br>
-**Vị trí raw cục bộ:** `data/raw/uci-open-university-learning-analytics-dataset/`<br>
+**Vị trí raw cục bộ:** `data/raw/`<br>
 **Nguồn phân phối được đối chiếu:** [UCI Machine Learning Repository, dataset 349](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset), DOI [10.24432/C5KK69](https://doi.org/10.24432/C5KK69). UCI nêu nguồn gốc là Open University Learning Analytics Dataset; tài liệu nguồn là [Open University](https://research.stem.open.ac.uk/ouanalyse/dataset/).<br>
 **Giấy phép:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), theo trang UCI.
 **Ngày tải archive:** chưa có bằng chứng độc lập trong thư mục cục bộ; ngày 29/09/2026 là ngày extract/kiểm kê. Cần xác nhận lại với người đã tải nếu Issue yêu cầu ngày tải chính xác.
@@ -16,7 +16,7 @@
 Kiểm kê được tạo bằng lệnh sau, chạy trực tiếp trên file cục bộ và không thay đổi raw:
 
 ```powershell
-python src/verify_oulad_source.py data/raw/uci-open-university-learning-analytics-dataset
+python src/verify_oulad_source.py data/raw
 ```
 
 | File | Số dòng dữ liệu | Số cột | SHA-256 | Header khóa/biến T01 |

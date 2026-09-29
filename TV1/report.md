@@ -20,11 +20,11 @@
 
 | Mục | Nội dung thực tế |
 |---|---|
-| Nội dung đã làm | Kiểm kê trực tiếp 7 CSV tại `data/raw/uci-open-university-learning-analytics-dataset/`; đối chiếu với UCI dataset 349 và tài liệu `OULAD.names`; cập nhật `data/README.md`, D11 và kế hoạch T01. |
+| Nội dung đã làm | Kiểm kê trực tiếp 7 CSV tại `data/raw/`; đối chiếu với UCI dataset 349 và tài liệu `OULAD.names`; cập nhật `data/README.md`, D11 và kế hoạch T01. |
 | Công nghệ/tính năng và phiên bản | Python 3.14, thư viện chuẩn `csv`, `hashlib`, `pathlib`; script tái tạo `src/verify_oulad_source.py` đọc theo luồng, không sửa CSV. |
 | Input | 7 CSV cục bộ và `OULAD.names`; [UCI OULAD](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset). Ngày extract/kiểm kê: 29/09/2026; ngày tải archive chính xác chưa có bằng chứng cục bộ. |
 | Output/kết quả | [Bảng kiểm kê T01](../data/README.md): 7 CSV, 10.900.970 dòng tổng, checksum SHA-256, số cột và header; `studentInfo` có 32.593 lượt học, 4 lớp `final_result`, 13 `region` khác null. |
-| Test và bằng chứng | Chạy `python src/verify_oulad_source.py data/raw/uci-open-university-learning-analytics-dataset`: exit code 0; 7/7 file tồn tại và header bắt buộc PASS; quy tắc ≥5.000 dòng PASS. Chưa chạy uniqueness/cardinality/unmatched vì thuộc T02/T05/T07. |
+| Test và bằng chứng | Chạy `python src/verify_oulad_source.py data/raw`: exit code 0; 7/7 file tồn tại và header bắt buộc PASS; quy tắc ≥5.000 dòng PASS. Chưa chạy uniqueness/cardinality/unmatched vì thuộc T02/T05/T07. |
 | Đánh giá so với tiêu chí nghiệm thu | **Chưa nghiệm thu:** nguồn UCI và CC BY 4.0 đã đối chiếu; 7 file, ≥5.000 dòng, ≥3 bảng, khóa header, `final_result` và `region` có bằng chứng. Cần xác nhận ngày tải archive/version và TV2 review, TV3 leader duyệt. |
 | Việc thủ công đã làm/còn cần | Đã extract 7 CSV vào raw. Còn cần: người tải xác nhận ngày tải archive; TV2 review; TV3 duyệt dataset; mở PR và dẫn link vào Issue #1. |
 | Bàn giao cho ai, nhận gì, thời điểm | TV2 nhận bảng kiểm kê, biến `final_result`/`region` và giới hạn proxy; TV3 nhận khóa header và 13 region để kiểm tra map/BI. Bàn giao sau review qua PR. |
