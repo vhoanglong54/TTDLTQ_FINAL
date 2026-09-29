@@ -1,6 +1,23 @@
 # 06 — Task board và quan hệ phụ thuộc
 
-Trạng thái tất cả task: **Todo** khi khởi tạo. TV1/TV2/TV3 là vai trò, không phải tên người. Mỗi task tạo một issue theo mẫu `.github/ISSUE_TEMPLATE/task.md`, gắn ID trong tiêu đề/nhánh/PR. Cột phụ thuộc cho biết điều kiện để nghiệm thu; phần việc chuẩn bị có thể chạy song song. Nhóm tự quản lý lịch và deadline. Đóng task theo [Definition of Done](../CONTRIBUTING.md).
+TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp, cùng owner và cùng đầu ra được gom vào một Issue để nhóm dễ quản lý. Cột phụ thuộc cho biết điều kiện để nghiệm thu; phần chuẩn bị có thể làm song song. Nhóm tự quản lý lịch và deadline. Đóng Issue theo [Definition of Done](../CONTRIBUTING.md).
+
+## Bảng giao việc thực tế
+
+| Thứ tự | Issue | Owner | Nhánh commit | Chỉ bắt đầu/chốt khi |
+|---:|---|---|---|---|
+| 1 | [#1 — T01: nguồn OULAD](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) | Khang | `data/T01-oulad-source` | Bắt đầu ngay |
+| 2 | [#2 — T02: data dictionary](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) | Khang | `data/T02-data-dictionary` | Chốt sau #1 |
+| 2 | [#3 — T03: RQ/hypothesis](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/3) | Nadi | `analysis/T03-research-questions` | Soạn ngay, chốt sau #1; dùng #2 |
+| 2 | [#4 — T04: wireframe](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/4) | Leader | `bi-model/T04-dashboard-wireframe` | Phác ngay, chốt sau #1; dùng #2–#3 |
+| 3 | [#5 — T05–T07: data pipeline](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5) | Khang | `data/T05-T07-data-pipeline` | #1–#2 đã nghiệm thu |
+| 4 | [#6 — T08, T10–T11: EDA/insight](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/6) | Nadi | `analysis/T08-T11-eda-insights` | #3 và #5 đã nghiệm thu |
+| 4 | [#7 — T09, T12: dashboard v0](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/7) | Leader | `bi-model/T09-T12-dashboard-prototype` | Bắt đầu sau #4–#5; chốt sau #6 |
+| 5 | [#8 — T13: Logistic Regression](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/8) | Leader | `bi-model/T13-logistic-regression` | #5–#6 đã nghiệm thu |
+| 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
+| 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
+
+Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; review và merge xong mới bình luận biên bản bàn giao trong Issue rồi đóng.
 
 ## Nhóm nền tảng
 

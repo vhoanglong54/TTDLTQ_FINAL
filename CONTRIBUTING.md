@@ -14,7 +14,7 @@ Tên thật được gán vào TV1–TV3 tại issue/PR đầu tiên. Mỗi ph�
 
 `main` là nhánh tích hợp và mốc demo ổn định. Tạo nhánh ngắn từ `main` theo `data/T01-...`, `analysis/T03-...`, `bi-model/T12-...`, `docs/T18-...` hoặc `fix/Txx-...`. Tên nhánh chứa task ID, chữ thường, dấu gạch ngang. Các nhánh vai trò dài hạn, nếu được tạo để chia việc, chỉ là nhánh tập hợp tạm; vẫn đưa từng task vào `main` bằng PR nhỏ và xóa nhánh task sau merge. Sau khi thiết lập sườn và nhánh khởi đầu, không push trực tiếp vào `main`.
 
-Ba nhánh khởi đầu cùng xuất phát từ `main`: `data/T01-oulad-source` (TV1), `analysis/T03-research-questions` (TV2), `bi-model/T04-dashboard-wireframe` (TV3). Mỗi người cập nhật nhánh của mình trước khi mở PR; các task kế tiếp tạo nhánh mới từ `main` hiện hành.
+Ba nhánh khởi đầu cùng xuất phát từ `main`: `data/T01-oulad-source` (TV1), `analysis/T03-research-questions` (TV2), `bi-model/T04-dashboard-wireframe` (TV3). Danh sách Issue, thứ tự và nhánh cho toàn bộ đồ án nằm trong [bảng giao việc](docs/06-tasks-and-dependencies.md). Mỗi người cập nhật nhánh của mình trước khi mở PR; task phụ thuộc tạo nhánh mới từ `main` hiện hành sau khi các PR đầu vào đã merge.
 
 Trình tự: nhận task → tạo nhánh → cập nhật hiện vật và checklist → PR nêu task ID, nguồn dữ liệu, kiểm tra đã làm, ảnh/chứng cứ khi liên quan → một thành viên khác review → merge. Nếu task đổi định nghĩa chỉ số, target, ngưỡng hoặc hạt dữ liệu, cập nhật `docs/03-data-plan.md` và sổ quyết định trước khi merge.
 
