@@ -28,8 +28,8 @@
 | Đánh giá so với tiêu chí nghiệm thu | **Chưa nghiệm thu:** nguồn UCI và CC BY 4.0 đã đối chiếu; 7 file, ≥5.000 dòng, ≥3 bảng, khóa header, `final_result` và `region` có bằng chứng. Cần xác nhận ngày tải archive/version và TV2 review, TV3 leader duyệt. |
 | Việc thủ công đã làm/còn cần | Đã extract 7 CSV vào raw. Còn cần: người tải xác nhận ngày tải archive; TV2 review; TV3 duyệt dataset; mở PR và dẫn link vào Issue #1. |
 | Bàn giao cho ai, nhận gì, thời điểm | TV2 nhận bảng kiểm kê, biến `final_result`/`region` và giới hạn proxy; TV3 nhận khóa header và 13 region để kiểm tra map/BI. Bàn giao sau review qua PR. |
-| Issue/branch/PR/reviewer | [Issue #1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1); branch `data/T01-oulad-source`; PR chưa mở; reviewer: `@nadinedatalab`, TV3 leader. |
-| Rủi ro, quyết định, ghi chú và bước tiếp theo | `OULAD.names` ghi 32.953 lượt học/đăng ký, còn hai CSV cục bộ có 32.593; D11 theo dõi. Bước tiếp theo là gửi review T01; đồng thời có thể tạo khung T02, chưa chốt dictionary trước review T01. |
+| Issue/branch/PR/reviewer | [Issue #1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1); branch `data/T01-oulad-source`; commit [95f32a3](https://github.com/vhoanglong54/TTDLTQ_FINAL/commit/95f32a3) đã push; PR chưa mở vì môi trường không có GitHub CLI; reviewer: `@nadinedatalab`, TV3 leader. |
+| Rủi ro, quyết định, ghi chú và bước tiếp theo | `OULAD.names` ghi 32.953 lượt học/đăng ký, còn hai CSV cục bộ có 32.593; D11 theo dõi. Mở PR từ [trang so sánh branch](https://github.com/vhoanglong54/TTDLTQ_FINAL/compare/main...data%2FT01-oulad-source), dẫn vào Issue #1 rồi gửi TV2/TV3 review. Có thể tạo khung T02, chưa chốt dictionary trước review T01. |
 
 ## 29/09/2026 — Đối chiếu Issue #1 và #2 với kế hoạch TV1
 
@@ -72,7 +72,7 @@ Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái k
 
 | Ngày cập nhật | Giai đoạn/task | Nội dung/hiện vật | Trạng thái | Test/đánh giá | Phụ thuộc | Bàn giao/reviewer | Việc thủ công/ghi chú |
 |---|---|---|---|---|---|---|---|
-| 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11 | Chờ review; chưa nghiệm thu | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS | — | `@nadinedatalab` review, TV3 leader duyệt; sau đó T02/T03/T04 nhận bàn giao | Xác nhận ngày tải archive/version; mở PR và dẫn link vào Issue #1; theo dõi chênh lệch 32.953/32.593 |
+| 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11; commit [95f32a3](https://github.com/vhoanglong54/TTDLTQ_FINAL/commit/95f32a3) đã push | Chờ review; chưa nghiệm thu | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS | — | `@nadinedatalab` review, TV3 leader duyệt; sau đó T02/T03/T04 nhận bàn giao | Xác nhận ngày tải archive/version; mở [PR](https://github.com/vhoanglong54/TTDLTQ_FINAL/compare/main...data%2FT01-oulad-source) và dẫn link vào Issue #1; theo dõi chênh lệch 32.953/32.593 |
 | 29/09/2026 | T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) — data dictionary | `docs/09-data-dictionary.md` chưa tạo | Chưa bắt đầu; có thể chuẩn bị khung | Chưa chạy; phải khớp 7 CSV sau T01 | T01 để nghiệm thu | `@nadinedatalab` review nghĩa biến; TV3 kiểm tra BI/model | Tạo khung trên nhánh `data/T02-data-dictionary`, chốt cột/missing/khóa sau T01 |
 | — | T05 — audit | Chưa có | Chưa bắt đầu | Chưa chạy | T01–T02 | TV2 | Cần xem bất thường theo nghiệp vụ |
 | — | T06 — cleaning | Chưa có | Chưa bắt đầu | Chưa chạy | T05 | TV2; sau đó T07 | Cần duyệt quy tắc missing/outlier |
