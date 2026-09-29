@@ -1,6 +1,6 @@
 # 02 — Ma trận rubric và bằng chứng
 
-Trạng thái lúc khởi tạo: **chưa nghiệm thu**. Tích `[x]` chỉ khi có hiện vật được review; cột đường dẫn là nơi sẽ đặt kết quả. Các điểm số dưới đây giữ nguyên barem trong DOCX, tổng 10 điểm.
+Trạng thái lúc khởi tạo: **chưa nghiệm thu**. Tích `[x]` chỉ khi có hiện vật, bằng chứng kiểm tra và leader xác nhận; cột đường dẫn là nơi sẽ đặt kết quả. Các điểm số dưới đây giữ nguyên barem trong DOCX, tổng 10 điểm.
 
 | Mục | Điểm | Bằng chứng cần nộp | Phụ trách | Đạt |
 |---|---:|---|---|:---:|
@@ -23,7 +23,7 @@ Trạng thái lúc khởi tạo: **chưa nghiệm thu**. Tích `[x]` chỉ khi c
 ## Cổng kiểm tra chất lượng
 
 - **Dữ liệu:** nguồn và số dòng xác minh trên file đã tải; 7 bảng/khóa; data dictionary; data audit; cleaning; bảng phân tích với calculated fields; kiểm tra không nhân dòng ngoài dự kiến.
-- **Insight:** 3–5 biểu đồ tĩnh tối thiểu, kiểm tra 8–10 giả thuyết theo khả năng dữ liệu, 5–7 insight chính có số liệu và review chéo.
+- **Insight:** 3–5 biểu đồ tĩnh tối thiểu, kiểm tra 8–10 giả thuyết theo khả năng dữ liệu, 5–7 insight chính có số liệu và leader xác nhận.
 - **Dashboard:** 4 trang, đủ 8 loại chart và map, kiểm thử tương tác, đối chiếu KPI/forecast, nội dung demo ổn định.
 - **Nộp cuối:** báo cáo ≥40 trang, tài liệu tham khảo IEEE, slide, video backup, link demo, 3 người tự trả lời được phần data/analysis/model/BI. DOCX cảnh báo vấn đáp yếu hoặc không hiểu code có thể bị trừ tới 4 điểm hay bị hủy kết quả nếu vi phạm liêm chính.
 

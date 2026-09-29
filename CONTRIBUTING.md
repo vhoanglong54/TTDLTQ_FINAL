@@ -8,7 +8,7 @@
 | TV2 — Analysis | RQ, hypothesis, EDA, interaction, insight, storytelling, related work | TV1 kiểm tra số liệu; TV3 kiểm tra cách thể hiện |
 | TV3 — BI + Model | Logistic Regression, Power BI, tương tác, dự báo, demo | TV1 kiểm tra dữ liệu; TV2 kiểm tra diễn giải |
 
-Tên thật được gán vào TV1–TV3 tại issue/PR đầu tiên. Mỗi phần phải được **ít nhất một người khác review**; người review cần hiểu logic đủ để giải thích khi vấn đáp.
+Tên thật được gán vào TV1–TV3 tại issue/PR đầu tiên. Review chéo được khuyến nghị cho thay đổi rủi ro cao hoặc khi leader yêu cầu, nhưng không phải điều kiện merge. Leader chịu trách nhiệm quyết định nghiệm thu và có thể tự merge sau khi kiểm tra bằng chứng.
 
 ## Nhánh
 
@@ -16,7 +16,7 @@ Tên thật được gán vào TV1–TV3 tại issue/PR đầu tiên. Mỗi ph�
 
 Ba nhánh khởi đầu cùng xuất phát từ `main`: `data/T01-oulad-source` (TV1), `analysis/T03-research-questions` (TV2), `bi-model/T04-dashboard-wireframe` (TV3). Danh sách Issue, thứ tự và nhánh cho toàn bộ đồ án nằm trong [bảng giao việc](docs/06-tasks-and-dependencies.md). Mỗi người cập nhật nhánh của mình trước khi mở PR; task phụ thuộc tạo nhánh mới từ `main` hiện hành sau khi các PR đầu vào đã merge.
 
-Trình tự: nhận task → tạo nhánh → cập nhật hiện vật và checklist → PR nêu task ID, nguồn dữ liệu, kiểm tra đã làm, ảnh/chứng cứ khi liên quan → một thành viên khác review → merge. Nếu task đổi định nghĩa chỉ số, target, ngưỡng hoặc hạt dữ liệu, cập nhật `docs/03-data-plan.md` và sổ quyết định trước khi merge.
+Trình tự: nhận task → tạo nhánh → cập nhật hiện vật và checklist → PR nêu task ID, nguồn dữ liệu, kiểm tra đã làm, ảnh/chứng cứ khi liên quan → leader kiểm tra và quyết định merge. Leader có thể yêu cầu thành viên phù hợp review khi thay đổi liên quan nghiệp vụ, số liệu hoặc phần người đó phụ trách. Nếu task đổi định nghĩa chỉ số, target, ngưỡng hoặc hạt dữ liệu, cập nhật `docs/03-data-plan.md` và sổ quyết định trước khi merge.
 
 ## Quy tắc nội dung
 
@@ -30,4 +30,4 @@ Trình tự: nhận task → tạo nhánh → cập nhật hiện vật và chec
 
 ## Definition of Done cho task
 
-Task chỉ đóng khi: hiện vật đúng đường dẫn, tiêu chí nghiệm thu trong backlog đạt, có bằng chứng kiểm tra (số dòng/khóa, ảnh dashboard, kết quả model hoặc trang báo cáo phù hợp), tài liệu liên quan cập nhật và có review chéo. Các [cổng kiểm tra](docs/06-tasks-and-dependencies.md) xác nhận đầu ra đủ chất lượng để phần phụ thuộc sử dụng; nếu định nghĩa thay đổi, nêu tác động lên các phần đó.
+Task chỉ đóng khi: hiện vật đúng đường dẫn, tiêu chí nghiệm thu trong backlog đạt, có bằng chứng kiểm tra (số dòng/khóa, ảnh dashboard, kết quả model hoặc trang báo cáo phù hợp), tài liệu liên quan cập nhật và leader xác nhận. Các [cổng kiểm tra](docs/06-tasks-and-dependencies.md) xác nhận đầu ra đủ chất lượng để phần phụ thuộc sử dụng; nếu định nghĩa thay đổi, nêu tác động lên các phần đó.

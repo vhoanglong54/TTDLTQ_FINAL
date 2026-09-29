@@ -15,7 +15,7 @@
 | Dự báo | scikit-learn Logistic Regression, xác suất rủi ro và phân lớp |
 | Trực quan tương tác | Power BI, 4 trang: Overview, Factor Analysis, Risk Analysis, Prediction |
 | Trọng tâm phân tích | Tương tác các yếu tố, risk profile, hành vi VLE theo thời gian |
-| Nhóm | TV1 Data, TV2 Analysis, TV3 BI + Model; review chéo |
+| Nhóm | TV1 Data, TV2 Analysis, TV3 BI + Model; leader điều phối và nghiệm thu, review chéo khi cần |
 | Điều phối | Task theo quan hệ phụ thuộc; nhóm tự quản lý lịch và deadline |
 
 ## Phạm vi nghiên cứu thực tế với OULAD

@@ -1,6 +1,6 @@
 # Báo cáo công việc TV1 — Data
 
-**Phạm vi:** nhật ký thực hiện các task TV1 và phần hỗ trợ/review. **Trạng thái dữ liệu hiện tại:** chưa có bằng chứng T01–T17 đã nghiệm thu. Ghi sự kiện theo ngày thực tế; nếu nhiều lần làm trong một ngày, thêm mục riêng. Mỗi kết quả phải có đường dẫn hiện vật, lệnh/test hoặc số liệu xác minh và người review khi báo hoàn thành. [Kế hoạch và prompt chung](plan.md) | [Backlog](../docs/06-tasks-and-dependencies.md).
+**Phạm vi:** nhật ký thực hiện các task TV1 và phần hỗ trợ. **Trạng thái dữ liệu hiện tại:** chỉ ghi nghiệm thu khi có bằng chứng và leader xác nhận. Ghi sự kiện theo ngày thực tế; nếu nhiều lần làm trong một ngày, thêm mục riêng. Mỗi kết quả phải có đường dẫn hiện vật, lệnh/test hoặc số liệu xác minh. [Kế hoạch và prompt chung](plan.md) | [Backlog](../docs/06-tasks-and-dependencies.md).
 
 ## 29/09/2026 — Lập kế hoạch TV1 cho T01
 
@@ -68,11 +68,11 @@ Sao chép khối này sau mỗi phiên làm. Ghi số liệu và lệnh thực; 
 
 ## Progress Log
 
-Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái khi có bằng chứng mới, không xóa lịch sử chi tiết phía trên. `Đã nghiệm thu` cần đường dẫn hiện vật, test đạt và reviewer. Với task chung, TV1 ghi phần mình đã hỗ trợ và owner xác nhận.
+Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái khi có bằng chứng mới, không xóa lịch sử chi tiết phía trên. `Đã nghiệm thu` cần đường dẫn hiện vật, test đạt và leader xác nhận. Với task chung, TV1 ghi phần mình đã hỗ trợ và owner xác nhận.
 
 | Ngày cập nhật | Giai đoạn/task | Nội dung/hiện vật | Trạng thái | Test/đánh giá | Phụ thuộc | Bàn giao/reviewer | Việc thủ công/ghi chú |
 |---|---|---|---|---|---|---|---|
-| 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11; [PR #12](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/12) | Chờ review; chưa nghiệm thu | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS | — | Đã yêu cầu `@nadinedatalab` review và `@vhoanglong54` duyệt lựa chọn dataset; sau đó T02/T03/T04 nhận bàn giao | Xác nhận ngày tải archive/version; theo dõi chênh lệch 32.953/32.593; merge/đóng Issue sau review |
+| 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11; [PR #12](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/12) | Đã nghiệm thu | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS; leader tải lại archive UCI và xác nhận 7 checksum trùng khớp | — | TV3 leader nghiệm thu; bàn giao T02/T03/T04 | Ngày tải cục bộ ban đầu không ghi nhận; theo dõi chênh lệch 32.953/32.593 tại D11 |
 | 29/09/2026 | T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) — data dictionary | `docs/09-data-dictionary.md` chưa tạo | Chưa bắt đầu; có thể chuẩn bị khung | Chưa chạy; phải khớp 7 CSV sau T01 | T01 để nghiệm thu | `@nadinedatalab` review nghĩa biến; TV3 kiểm tra BI/model | Tạo khung trên nhánh `data/T02-data-dictionary`, chốt cột/missing/khóa sau T01 |
 | — | T05 — audit | Chưa có | Chưa bắt đầu | Chưa chạy | T01–T02 | TV2 | Cần xem bất thường theo nghiệp vụ |
 | — | T06 — cleaning | Chưa có | Chưa bắt đầu | Chưa chạy | T05 | TV2; sau đó T07 | Cần duyệt quy tắc missing/outlier |
@@ -87,4 +87,4 @@ Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái k
 - Không ghi `Đạt` cho test chưa chạy; nêu lệnh, đầu vào, expected/actual và đường dẫn bằng chứng khi có.
 - Khi thay đổi target, hạt, ngưỡng, mẫu số hoặc nguồn, cập nhật [data plan](../docs/03-data-plan.md) và [decision log](../docs/08-decisions-and-open-questions.md), sau đó nêu tác động tới TV2/TV3.
 - Dữ liệu và notebook output nặng ở máy cục bộ; trong báo cáo ghi đường dẫn và cách tái tạo, không đưa CSV vào Git.
-- Chỉ chuyển task sang `Đã nghiệm thu` sau khi tiêu chí backlog đạt, tài liệu liên quan cập nhật, hiện vật có đường dẫn và ít nhất một thành viên khác review.
+- Chỉ chuyển task sang `Đã nghiệm thu` sau khi tiêu chí backlog đạt, tài liệu liên quan cập nhật, hiện vật có đường dẫn và leader xác nhận.

@@ -17,7 +17,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
 | 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
 
-Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; review và merge xong mới bình luận biên bản bàn giao trong Issue rồi đóng.
+Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; leader kiểm tra bằng chứng, quyết định merge, bình luận biên bản bàn giao trong Issue rồi đóng. Review chéo chỉ thực hiện khi leader yêu cầu.
 
 ## Nhóm nền tảng
 
@@ -38,7 +38,7 @@ Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi b�
 | T08 | TV2 / TV1 | EDA cơ bản và 3–5 biểu đồ tĩnh đầu tiên; điều chỉnh định nghĩa nhóm/giả thuyết theo phân bố thực | T06–T07 |
 | T09 | TV3 / TV1 | Khung Power BI dùng bảng mẫu sạch, định nghĩa KPI và thử geocoding map; chuẩn bị split/model feature list | T07 |
 
-**Cổng dữ liệu:** T01, T02, T05–T07 được review và bảng cho EDA/BI/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
+**Cổng dữ liệu:** T01, T02, T05–T07 được leader nghiệm thu và bảng cho EDA/BI/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
 
 ## Nhóm phân tích sâu
 
@@ -66,9 +66,9 @@ Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi b�
 | T17 | TV1 / TV2 | Viết Dataset, Data Dictionary, Preprocessing, phần data pipeline và bảng chất lượng | T07 |
 | T18 | TV2 / TV1 | Viết Introduction, Related Work, EDA, Insight/storytelling; trích dẫn IEEE | T11 |
 | T19 | TV3 / TV2 | Viết Dashboard, Regression, Prediction, cách cài đặt/sử dụng | T13–T14 |
-| T20 | Cả 3 / review chéo | Ghép báo cáo ≥40 trang: sơ đồ hệ thống, logic chart, code/pseudocode, kết luận, tài liệu tham khảo, link video | T17–T19 |
+| T20 | Cả 3 / leader nghiệm thu | Ghép báo cáo ≥40 trang: sơ đồ hệ thống, logic chart, code/pseudocode, kết luận, tài liệu tham khảo, link video | T17–T19 |
 | T21 | TV3 / TV1, TV2 | QA dashboard cuối; ảnh minh chứng 8 chart/map/tương tác, chạy demo thực tế | T14–T16 |
-| T22 | Cả 3 / review chéo | Slide, kịch bản Data Analyst, video backup tóm tắt và link, diễn tập vấn đáp cả 3 vai trò | T20–T21 |
+| T22 | Cả 3 / leader nghiệm thu | Slide, kịch bản Data Analyst, video backup tóm tắt và link, diễn tập vấn đáp cả 3 vai trò | T20–T21 |
 
 **Cổng dashboard:** T21 qua QA và các thay đổi tiếp theo ghi rõ tác động lên demo/báo cáo. **Cổng bàn giao:** T20–T22 đã có đường dẫn hiện vật, tất cả mục rubric đã được đối chiếu.
 
