@@ -1,0 +1,152 @@
+# 09 — Data dictionary và quan hệ 7 bảng OULAD
+
+**Task:** T02 / [Issue #2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2)
+**Trạng thái:** Hiện vật hoàn thành, chờ TV2/TV3 review và PR. Đây là hợp đồng từ CSV raw, không khẳng định dữ liệu đã sạch.
+
+Nguồn, license, checksum và số dòng T01: [data README](../data/README.md). Bảy CSV ở `data/raw/` (không commit). Lệnh tái tạo kiểm tra trực tiếp raw bằng Python 3.14/thư viện chuẩn:
+
+```powershell
+python src/profile_oulad_contract.py data/raw
+```
+
+`?` là mã thiếu/không biết quan sát, khác ô trống; T02 giữ nguyên raw. Các ngày là ngày tương đối với đầu presentation, không phải ngày lịch. Hạt phân tích là **một lượt học** `(code_module, code_presentation, id_student)`; một `id_student` có thể có nhiều lượt học.
+
+## Sơ đồ quan hệ và quy tắc join
+
+```mermaid
+erDiagram
+    COURSES ||--o{ STUDENT_INFO : "module presentation"
+    COURSES ||--o{ STUDENT_REGISTRATION : "module presentation"
+    COURSES ||--o{ ASSESSMENTS : "module presentation"
+    COURSES ||--o{ VLE : "module presentation"
+    ASSESSMENTS ||--o{ STUDENT_ASSESSMENT : id_assessment
+    VLE ||--o{ STUDENT_VLE : "module presentation site"
+    STUDENT_INFO ||--o| STUDENT_REGISTRATION : "module presentation student"
+    STUDENT_INFO ||--o{ STUDENT_ASSESSMENT : "via assessments"
+    STUDENT_INFO ||--o{ STUDENT_VLE : "module presentation student"
+```
+
+`studentAssessment` và `studentVle` là event nhiều dòng: T07 phải nối metadata, giới hạn cửa sổ thời gian, **tổng hợp về hạt lượt học rồi** left join vào `studentInfo`. Không nối hai event trực tiếp hay cộng KPI sau join event để tránh nhân dòng.
+
+| Kiểm tra trực tiếp raw | Kết quả | Trạng thái |
+|---|---:|---|
+| `courses` key | 22 unique; 0 null/duplicate | PASS |
+| `studentInfo`, `studentRegistration` attempt key | 32.593 unique; 0 null/duplicate mỗi bảng; hai tập khóa khớp | PASS |
+| `assessments.id_assessment`, `vle.id_site` | 206, 6.364 unique; 0 null/duplicate | PASS |
+| `studentAssessment(id_assessment,id_student)` | 173.912 unique; 0 null/duplicate | PASS |
+| 8 quan hệ join; component event key `studentVle` null | 0 unmatched; 0 null | PASS |
+| Unique event key `studentVle` | Không khẳng định | Hạt event có thể lặp; T05 audit nghiệp vụ |
+
+## Bảng và cột gốc
+
+Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năng” chỉ được dùng sau T07/T13 chốt cửa sổ thời gian và leakage.
+
+### `courses.csv` — 22 dòng, 3 cột
+
+**Hạt/khóa:** một module–presentation; `(code_module, code_presentation)`, đã unique/non-null.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `code_module` | string | 7 module; 0/0 | Mã học phần; join/filter. |
+| `code_presentation` | string | 4 kỳ; 0/0 | Mã đợt mở; join/filter. |
+| `module_presentation_length` | integer | 234–269; 0/0 | Độ dài đợt (ngày); metadata/cửa sổ thời gian. |
+
+### `studentInfo.csv` — 32.593 dòng, 12 cột
+
+**Hạt/khóa:** một lượt học; `(code_module, code_presentation, id_student)`, đã unique/non-null. Bảng neo kết quả, background và map.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `code_module`, `code_presentation`, `id_student` | string, string, integer | 0/0; `id_student` 3.733–2.716.795 | Khóa lượt học; không ghép định danh ngoài OULAD. |
+| `gender` | string | `F`, `M`; 0/0 | Background/EDA; feature chỉ khi duyệt fairness. |
+| `region` | string | 13 vùng; 0/0 | Vùng cư trú; map/EDA, geocoding cần T04/T09. |
+| `highest_education` | string | 5 mức; 0/0 | Trình độ đầu vào; background/EDA. |
+| `imd_band` | string | 10 band; 0/1.118 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. |
+| `age_band` | string | `0-35`, `35-55`, `55<=`; 0/0 | Nhóm tuổi; background/EDA. |
+| `num_of_prev_attempts` | integer | 0–6; 0/0 | Lần thử học phần trước; không phải điểm trước. |
+| `studied_credits` | integer | 30–655; 0/0 | Tổng tín chỉ đang học; feature tiềm năng. |
+| `disability` | string | `N`, `Y`; 0/0 | Background; kiểm tra fairness nếu làm feature. |
+| `final_result` | string | Distinction/Fail/Pass/Withdrawn; 0/0 | **Nhãn/kết quả**, không feature. `At_Risk=1`: Fail/Withdrawn; `0`: Pass/Distinction. |
+
+### `studentRegistration.csv` — 32.593 dòng, 5 cột
+
+**Hạt/khóa:** đăng ký/rút một lượt học; cùng attempt key, đã unique/non-null và khớp `studentInfo` hai chiều.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `code_module`, `code_presentation`, `id_student` | string, string, integer | 0/0 | Khóa lượt học/join. |
+| `date_registration` | integer | -322–167; 0/45 | Ngày đăng ký tương đối; T05 xác nhận missing. |
+| `date_unregistration` | integer | -365–444; 0/22.521 | Ngày rút tương đối; **không feature dự báo sớm** vì leakage. |
+
+### `assessments.csv` — 206 dòng, 6 cột
+
+**Hạt/khóa:** assessment của module–presentation; `id_assessment` unique/non-null; join `courses` 0 unmatched.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `code_module`, `code_presentation` | string, string | 0/0 | Context và join `courses`. |
+| `id_assessment` | integer | 1.752–40.088; 0/0 | Khóa join event assessment. |
+| `assessment_type` | string | `CMA`, `Exam`, `TMA`; 0/0 | Loại assessment; EDA/tổng hợp. |
+| `date` | integer | 12–261; 0/11 | Ngày/hạn assessment tương đối; T05 xử lý `?`. |
+| `weight` | integer/number | 0–100; 0/0 | Trọng số; không tự giả định tổng bằng 100. |
+
+### `studentAssessment.csv` — 173.912 dòng, 5 cột
+
+**Hạt/khóa:** một assessment của một sinh viên; `(id_assessment,id_student)` unique/non-null. Event khớp `assessments` và attempt suy ra khớp `studentInfo`, đều 0 unmatched.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `id_assessment`, `id_student` | integer, integer | 0/0 | Khóa event; metadata/lượt học được suy ra khi join. |
+| `date_submitted` | integer | -11–608; 0/0 | Ngày nộp tương đối; chỉ dùng event trước mốc. |
+| `is_banked` | integer | 0, 1; 0/0 | Cờ assessment banked; T05 xác minh diễn giải. |
+| `score` | integer | 0–100; 0/173 | Điểm assessment, không là điểm cuối; T05 quyết định missing. |
+
+### `vle.csv` — 6.364 dòng, 6 cột
+
+**Hạt/khóa:** tài nguyên VLE của module–presentation; `id_site` unique/non-null; join `courses` 0 unmatched.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `id_site` | integer | 526.721–1.077.905; 0/0 | Khóa site, join `studentVle` cùng module–presentation. |
+| `code_module`, `code_presentation` | string, string | 0/0 | Context site/join. |
+| `activity_type` | string | 20 loại; 0/0 | Loại tài nguyên; EDA đa dạng engagement. |
+| `week_from`, `week_to` | integer | 0–29; mỗi cột 0/5.243 | Khoảng tuần khả dụng; T05 xác nhận `?`. |
+
+### `studentVle.csv` — 10.655.280 dòng, 6 cột
+
+**Hạt:** event tương tác theo student, site, ngày. Không giả định unique theo `(code_module, code_presentation, id_student, id_site, date)`; mọi component key non-null và join `vle`/`studentInfo` 0 unmatched.
+
+| Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
+|---|---|---|---|
+| `code_module`, `code_presentation`, `id_student` | string, string, integer | 0/0 | Khóa liên kết lượt học; group-by trước join bảng chính. |
+| `id_site` | integer | 526.721–1.049.562; 0/0 | Tài nguyên truy cập; join `vle`. |
+| `date` | integer | -25–269; 0/0 | Ngày event tương đối; giới hạn feature trước mốc. |
+| `sum_click` | integer | 1–6.977; 0/0 | Số click, proxy tương tác; không là attendance/study hours. |
+
+## Biến và bàn giao
+
+| Nhóm | Raw dùng được | Biến tạo chưa tạo | Ràng buộc |
+|---|---|---|---|
+| Kết quả | `final_result` | `At_Risk` | Nhãn, không feature. |
+| Background/EDA | gender, region, education, imd, age, attempts, credits, disability | — | Insight là liên hệ quan sát, nêu mẫu số/missing. |
+| Assessment | type/date/weight/submission/banked/score | count, score/trend theo cửa sổ | Chỉ event trước mốc; score không là final grade. |
+| VLE | activity_type/date/sum_click | clicks, active days, diversity, engagement proxy | Chốt ngưỡng/cửa sổ T07/T13. |
+| Map | region | At-Risk rate / result distribution | TV3 xác minh map/cỡ mẫu. |
+
+OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation hay previous grade. Không tạo cột giả. `Risk_Probability`, `Predicted_Status`, `Risk_Band` là đầu ra T13, không có raw.
+
+| Bàn giao | Phần cần làm |
+|---|---|
+| T05 | Xác nhận cơ chế `?`, duplicate nghiệp vụ, outlier/biên score-click-date-weight, `is_banked`. |
+| T07 | Aggregate event, kiểm tra cardinality/số dòng/phân bố trước–sau join, mẫu số KPI và feature. |
+| T13 | Chốt mốc/cửa sổ/split/encoding; kiểm leakage từ label, withdrawal và event tương lai. |
+
+## Đánh giá nghiệm thu T02
+
+| Điều kiện Issue #2 | Trạng thái | Bằng chứng / giới hạn |
+|---|---|---|
+| T01 xác nhận file/nguồn, T02 khớp raw | Đạt về input | T01/#1 closed; kiểm kê tại `data/README.md`. |
+| 7 bảng, 43 cột, hạt/khóa/join/nghĩa/missing | Đạt về hiện vật | Tài liệu này; `?` được đánh dấu, không kết luận sạch. |
+| Không nhầm hạt/nhân dòng | Đạt về thiết kế | Sơ đồ và yêu cầu aggregate; T07 phải xác minh sau join. |
+| TV2/TV3 review | Chưa kiểm | Cần review ý nghĩa và BI/model. |
+| PR merge, bình luận nghiệm thu Issue | Chưa đạt | Chưa tạo PR; không đóng Issue. |
