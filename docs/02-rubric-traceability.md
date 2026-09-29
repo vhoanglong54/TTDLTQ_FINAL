@@ -6,7 +6,7 @@ Trạng thái lúc khởi tạo: **chưa nghiệm thu**. Tích `[x]` chỉ khi c
 |---|---:|---|---|:---:|
 | Bài toán và dataset hợp lệ | 0,5 | Mục tiêu, nguồn/link, giấy phép, ≥5.000 dòng, ≥3 bảng, schema, data dictionary | TV1 + nhóm duyệt | [ ] |
 | Làm sạch dữ liệu | 0,5 | Python audit missing, duplicate, outlier, invalid, category, ngày/chuỗi; quyết định xử lý và báo cáo chất lượng | TV1 | [ ] |
-| Biến đổi dữ liệu | 0,75 | Join/Merge đúng khóa và cardinality; calculated fields có định nghĩa, kiểm tra trước/sau join | TV1, TV2 review | [ ] |
+| Biến đổi dữ liệu | 0,75 | Join/Merge đúng khóa và cardinality; calculated fields có định nghĩa, kiểm tra trước/sau join | TV1 thực hiện; TV2 phối hợp khi cần | [ ] |
 | EDA | 0,75 | `03_eda.ipynb`, ít nhất 3–5 biểu đồ tĩnh Matplotlib/Seaborn và diễn giải | TV2 | [ ] |
 | UI/UX Power BI | 0,5 | Layout rõ, màu nhất quán, tiêu đề, chú thích, định nghĩa KPI | TV3 | [ ] |
 | Đa dạng biểu đồ | 1,0 | Ít nhất 8 **loại** biểu đồ khác nhau, phù hợp kiểu dữ liệu; inventory và ảnh | TV3 | [ ] |
