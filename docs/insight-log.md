@@ -7,10 +7,11 @@ Tài liệu này dùng để ghi chép các insight phát hiện được trong 
 ## Mẫu ghi chép Insight
 
 ### [Mã Insight - Ví dụ: INS-01] [Tên ngắn gọn của Insight]
+*Liên hệ với Research Question (RQ): [Mã RQ, ví dụ: RQ2]*
 *Liên hệ với giả thuyết: [Mã giả thuyết, ví dụ: H02]*
 
 **1. Câu hỏi / Giả thuyết cần kiểm chứng:**
-- *Ghi lại câu hỏi hoặc giả thuyết từ kế hoạch phân tích.*
+- *Ghi lại câu hỏi (RQ) hoặc giả thuyết (H) từ kế hoạch phân tích.*
 
 **2. Bằng chứng (Biểu đồ / Bảng):**
 - *Đính kèm hình ảnh biểu đồ hoặc bảng số liệu tổng hợp hỗ trợ cho insight này.*
