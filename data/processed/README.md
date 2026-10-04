@@ -11,7 +11,7 @@ python src/oulad_pipeline.py build data/raw
 ## Hạt, kích thước và khóa
 
 - Hạt: một lượt học `(code_module, code_presentation, id_student)`.
-- Kích thước lần chạy 04/10/2026: 32.593 dòng, 35 cột, 0 duplicate attempt key.
+- Kích thước lần chạy 04/10/2026: 32.593 dòng, 35 cột, 0 duplicate attempt key; `clean_dataset.csv` SHA-256 `4b3250f59456d9eb546291c52bd7e3ff5b4afe0a942b54df961cd193a8137701`.
 - Base là `studentInfo`; `studentRegistration` và `courses` left join one-to-one/many-to-one. `studentAssessment` và `studentVle` được aggregate trước left join nên không nhân dòng.
 - `At_Risk`: `Fail`/`Withdrawn` = 1, `Pass`/`Distinction` = 0. Đây là nhãn, không phải feature model.
 
