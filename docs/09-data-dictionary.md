@@ -129,7 +129,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 |---|---|---|---|
 | Kết quả | `final_result` | `At_Risk`, `Performance_Level` đã tạo | Nhãn, không feature. |
 | Background/EDA | gender, region, education, imd, age, attempts, credits, disability | — | Insight là liên hệ quan sát, nêu mẫu số/missing. |
-| Assessment | type/date/weight/submission/banked/score | count, score all-time, late/banked count đã tạo; theo cutoff chưa tạo | Chỉ event trước mốc; score không là final grade. |
+| Assessment | type/date/weight/submission/banked/score | count, score sum/mean all-time, late/banked count đã tạo; theo cutoff chưa tạo | Chỉ event trước mốc; score không là final grade. |
 | VLE | activity_type/date/sum_click | click, active days, resource/activity diversity all-time đã tạo; early engagement chưa tạo | `*_all_time` chỉ EDA/BI khi D04 chưa chốt; click là proxy. |
 | Map | region | At-Risk rate / result distribution | TV3 xác minh map/cỡ mẫu. |
 
