@@ -5,6 +5,7 @@ data/processed/**
 !data/raw/.gitkeep
 !data/interim/.gitkeep
 !data/processed/.gitkeep
+!data/processed/README.md
 reports/figures/generated/**
 !reports/figures/generated/.gitkeep
 

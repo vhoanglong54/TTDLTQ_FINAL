@@ -1,5 +1,19 @@
-# Python pipeline dự kiến
+# Python pipeline
 
-Các script/module ở đây sẽ phụ trách tải/đọc file cục bộ, audit, cleaning, join, feature engineering, EDA hỗ trợ, Logistic Regression và xuất bảng cho Power BI. Dùng Pandas/NumPy, Matplotlib/Seaborn và scikit-learn theo DOCX. Mã sẽ được chia theo task T05–T07, T08/T10 và T13; không có pipeline đã chạy ở thời điểm khởi tạo.
+## T05–T07 — OULAD data pipeline
 
-Mỗi script cần khai báo input/output, hạt dữ liệu, cách chạy và kiểm tra số dòng/khóa. Không hard-code đường dẫn cá nhân.
+`oulad_pipeline.py` đọc 7 CSV cục bộ và không sửa raw. Nó cần Python 3.14, pandas 2.3.3 và NumPy 2.3.5 tại thời điểm T05–T07 được chạy.
+
+```powershell
+python src/oulad_pipeline.py audit data/raw
+python src/oulad_pipeline.py clean data/raw
+python src/oulad_pipeline.py build data/raw
+python src/oulad_pipeline.py report
+```
+
+- `audit` ghi metrics cục bộ vào `data/interim/t05_audit_metrics.json`.
+- `clean` tạo 7 CSV interim ở `data/interim/`; raw luôn bất biến.
+- `build` aggregate hai event table trước khi left join về hạt `(code_module, code_presentation, id_student)`, rồi tạo `data/processed/clean_dataset.csv` cục bộ.
+- `report` tạo hiện vật tracked [Data Quality Report](../reports/data-quality-report.md).
+
+Các aggregate có hậu tố `*_all_time` là dữ liệu mô tả dùng cho EDA/BI. Khi D04 chưa chốt, chúng không được dùng làm feature dự báo sớm; `final_result`, `At_Risk` và `date_unregistration` không phải feature model.
