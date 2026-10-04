@@ -79,28 +79,35 @@ Trạng thái dùng thống nhất: `Chưa bắt đầu` → `Đang làm` → `C
 5. **Thời gian và target:** nhãn `At_Risk` đúng mapping; feature mô hình có mốc/cửa sổ đã chốt, không chứa nhãn hay dữ liệu tương lai.
 6. **Nghiệm thu:** đường dẫn hiện vật, lệnh/test, Issue/PR, xác nhận leader và tác động tới TV2/TV3 có trong [report.md](report.md). Cập nhật rubric chỉ sau khi leader xác nhận.
 
-## Prompt mẫu dùng lại cho từng giai đoạn
+## Prompt hiện hành — Issue #5: T05–T07 data pipeline
 
-Sao chép prompt sau, điền các chỗ trong `[...]` và dùng **một task ID cụ thể** mỗi lần. Nếu task chỉ hỗ trợ người khác, bàn giao đúng owner trong backlog.
+Issue #5 gộp ba giai đoạn theo thứ tự bắt buộc **T05 → T06 → T07**. Sao chép prompt dưới đây, điền **một** task hiện hành vào `[T05 | T06 | T07]`; không làm trước giai đoạn phụ thuộc và không đề xuất đóng Issue #5 khi chưa có đủ ba đầu ra.
 
 ```text
-Tôi là TV1 (Data) của repo TTDLTQ_FINAL. Hãy thực hiện [task ID: Txx] — [tên giai đoạn] trên branch gắn Txx. trong file TV1/plan.md
+Tôi là TV1 (Data/Khang) của repo TTDLTQ_FINAL. Hãy thực hiện [task ID: T05 | T06 | T07] — [Audit | Cleaning | Join và feature] trên branch `data/T05-T07-data-pipeline`, trong phạm vi Issue #5: https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5.
 
-Trước khi sửa, đọc README.md, AGENTS.md, CONTRIBUTING.md, docs/source/TTDLTQ_script.docx (phần liên quan), docs/02-rubric-traceability.md, docs/03-data-plan.md, docs/06-tasks-and-dependencies.md, docs/08-decisions-and-open-questions.md và Issue/hiện vật liên quan (T01: https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1; T02: https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2). Kiểm tra working tree và dữ liệu/hiện vật hiện có. Giữ trạng thái khởi tạo cho phần chưa có bằng chứng.
+Trước khi sửa, đọc README.md, AGENTS.md, CONTRIBUTING.md, docs/source/TTDLTQ_script.docx (phần pipeline liên quan), docs/02-rubric-traceability.md, docs/03-data-plan.md, docs/04-analysis-model-plan.md, docs/06-tasks-and-dependencies.md, docs/08-decisions-and-open-questions.md, docs/09-data-dictionary.md, TV1/plan.md, TV1/report.md và Issue #5 hiện tại. Kiểm tra `git status`, branch, 7 CSV tại `data/raw/` và các hiện vật T01/T02. Giữ trạng thái khởi tạo cho nội dung chưa có bằng chứng.
 
-Input: [đường dẫn file, phiên bản, nguồn, mốc thời gian, phụ thuộc đã đạt].
-Mục tiêu/điều kiện nghiệm thu: [trích tiêu chí Txx từ backlog và rubric].
-Việc tôi phải làm thủ công: [tải 7 CSV RAW từ Kaggle/Open University, giải nén vào data/raw, mở Power BI, chọn ngưỡng... hoặc ghi "không có"]. Nếu cần hành động thủ công mà chưa có input, ghi rõ bước, đường dẫn đích và bằng chứng tôi cần cung cấp; tiếp tục mọi phần độc lập có thể làm.
+Input đã đạt: T01/#1 và T02/#2 đã được leader nghiệm thu; 7 CSV raw bất biến tại `data/raw/`; hợp đồng 7 bảng/43 cột tại `docs/09-data-dictionary.md`; D13 ghi nhận missing mã hóa `?`. Không coi số liệu từ website là số liệu kiểm kê file cục bộ.
+
+Mục tiêu: [trích đúng yêu cầu của T05, T06 hoặc T07 trong Issue #5 và rubric].
+Việc thủ công: [ghi "không có" nếu chỉ chạy Python; nếu phải quyết định quy tắc nghiệp vụ, ghi rõ quyết định cần leader xác nhận, đường dẫn bằng chứng và tiếp tục phần độc lập]. Không mở Power BI ở T05–T07.
 
 Hãy:
-1. Kiểm kê input trước khi xử lý: tên/nguồn/version/license/ngày tải/checksum/số dòng/schema/khóa (chỉ mục nào phù hợp và có thể xác minh). Không coi số liệu từ trang web là số liệu kiểm kê file cục bộ.
-2. Thực hiện đúng phạm vi Txx; tạo mã/script tái tạo được và hiện vật ở đường dẫn repo quy định. Không commit CSV raw, dữ liệu xử lý lớn, thông tin định danh ngoài OULAD hoặc notebook output nặng.
-   Với T01: cập nhật data/README.md, ghi 7 file × tên/số dòng/số cột/SHA-256, nguồn/license/ngày tải, khóa nối, final_result, region. Với T02: chuẩn bị khung sớm nếu cần; sau T01 tạo docs/09-data-dictionary.md đủ 7 bảng/tất cả cột, sơ đồ một–nhiều và cập nhật liên kết từ data/README.md. Leader kiểm tra và nghiệm thu qua PR.
-3. Ghi rõ công nghệ/thư viện/tính năng và phiên bản nếu ảnh hưởng tái tạo; định nghĩa hạt (code_module, code_presentation, id_student), biến, mẫu số, cửa sổ thời gian, missing/outlier, proxy và quyết định thay đổi. Dùng OULAD thực tế làm chuẩn; không tạo cột giả.
-4. Chạy test phù hợp với task, ghi lệnh và kết quả thực: file/schema/row count, khóa-null/unique, cardinality/unmatched, trước–sau cleaning/join, biên giá trị, At_Risk mapping, leakage theo mốc; khi QA BI thì so Python/Power BI trên cùng filter. Với test chưa chạy được, ghi "chưa chạy" và lý do.
-5. Đánh giá output so với từng điều kiện nghiệm thu: Đạt/Chưa đạt/Chưa kiểm được, bằng chứng và giới hạn. Ghi ảnh/bảng QA/đường dẫn PR nếu có. Cập nhật docs/03-data-plan.md hoặc docs/08-decisions-and-open-questions.md khi định nghĩa/chênh lệch thay đổi; không tự đánh dấu rubric [x] trước khi có hiện vật và leader xác nhận.
-6. Cập nhật TV1/report.md: mục ngày/tháng/năm về việc đã làm, công nghệ/tính năng, input, output, test (lệnh, số liệu, pass/fail), đánh giá, bàn giao, việc thủ công, Issue/branch/PR và ghi chú; thêm/cập nhật một dòng Progress Log của Txx. Ghi trạng thái đúng thực tế.
-7. Tóm tắt thay đổi, cách tái tạo, kết quả test, rủi ro còn lại và chính xác TV2/TV3 cần nhận gì. Dẫn PR vào Issue. Chỉ ghi đã merge/đóng Issue khi có bằng chứng thật.
+1. Chỉ thực hiện đúng stage được chọn.
+   - T05: audit 7 bảng — shape, dtype, blank/`?`, duplicate, candidate key, cardinality, invalid/category, range/outlier; tạo `notebooks/01_data_audit.ipynb` và Data Quality Report.
+   - T06: sau T05, viết script cleaning tái tạo được và `notebooks/02_cleaning.ipynb`; ghi quyết định giữ/drop/impute/normalize/dtype. Raw không được sửa.
+   - T07: sau T06, nối dimension đúng khóa; tổng hợp `studentAssessment` và `studentVle` về `(code_module, code_presentation, id_student)` trước join; tạo calculated fields và `clean_dataset.csv` cục bộ, tái tạo được nhưng không commit CSV lớn.
+2. Tạo/điều chỉnh mã trong `src/` để tái tạo được. Notebook chỉ giải thích và không commit output nặng. Không commit CSV raw, interim hay processed; không thêm định danh ngoài OULAD.
+3. Ghi rõ hạt dữ liệu, schema, mẫu số, missing/outlier, proxy và mọi quyết định thay đổi. `At_Risk = 1` cho Fail/Withdrawn, `0` cho Pass/Distinction. Không dùng `final_result`, `At_Risk`, `date_unregistration`, hay assessment/VLE sau mốc dự báo làm feature.
+4. Chạy và ghi kết quả thực theo stage:
+   - T05: file/schema/row count, missing, duplicate, null/unique key, category/range/outlier; xác nhận `?` ở D13.
+   - T06: số dòng/khóa/missing/category trước–sau, rule áp dụng và test raw bất biến.
+   - T07: cardinality/unmatched, số dòng trước–sau aggregate/join, không nhân dòng, phân bố `final_result`, mapping At_Risk và leakage theo mốc.
+   Với test chưa thể chạy, ghi "chưa chạy" và lý do; không suy diễn kết quả.
+5. Cập nhật `docs/03-data-plan.md`, `docs/09-data-dictionary.md` và/hoặc `docs/08-decisions-and-open-questions.md` nếu định nghĩa, missing, khóa, proxy hay quyết định thay đổi. Chỉ tick rubric khi có hiện vật, test và leader xác nhận.
+6. Cập nhật `TV1/report.md`: ngày, stage, công nghệ/phiên bản, input, output, lệnh và actual pass/fail, đánh giá, việc thủ công, rủi ro, bàn giao cho TV2/TV3, Issue #5/branch/PR. Cập nhật đúng một dòng Progress Log tương ứng; không ghi T05–T07 đã hoàn thành khi chỉ mới xong một stage.
+7. Cuối phiên tóm tắt thay đổi, lệnh tái tạo, test, giới hạn và bước tiếp. Khi đủ T05–T07, mở một PR từ branch hiện tại với `Refs #5`, nêu lệnh chạy/số dòng/kiểm tra khóa/output. Leader kiểm tra, nghiệm thu, merge và đóng Issue; không tự ghi đã merge/đóng khi chưa có bằng chứng.
 
-Ràng buộc cố định: At_Risk = 1 cho Fail/Withdrawn và 0 cho Pass/Distinction; không dùng final_result, At_Risk, date_unregistration tương lai hoặc VLE/assessment sau mốc dự báo làm feature. Insight chỉ là liên hệ quan sát, không khẳng định nhân quả. Mỗi thay đổi gắn một task ID, có bằng chứng kiểm tra và được leader nghiệm thu.
+Ràng buộc diễn giải: insight chỉ là liên hệ quan sát; VLE click là proxy tương tác, không phải attendance hay study hours; không tạo cột sleep, lifestyle hoặc previous grade giả.
 ```
