@@ -61,7 +61,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 | `gender` | string | `F`, `M`; 0/0 | Background/EDA; feature chỉ khi duyệt fairness. |
 | `region` | string | 13 vùng; 0/0 | Vùng cư trú; map/EDA, geocoding cần T04/T09. |
 | `highest_education` | string | 5 mức; 0/0 | Trình độ đầu vào; background/EDA. |
-| `imd_band` | string | 10 band; 0/1.118 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. |
+| `imd_band` | string | 10 band; 0/1.111 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. |
 | `age_band` | string | `0-35`, `35-55`, `55<=`; 0/0 | Nhóm tuổi; background/EDA. |
 | `num_of_prev_attempts` | integer | 0–6; 0/0 | Lần thử học phần trước; không phải điểm trước. |
 | `studied_credits` | integer | 30–655; 0/0 | Tổng tín chỉ đang học; feature tiềm năng. |
@@ -76,7 +76,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 |---|---|---|---|
 | `code_module`, `code_presentation`, `id_student` | string, string, integer | 0/0 | Khóa lượt học/join. |
 | `date_registration` | integer | -322–167; 0/45 | Ngày đăng ký tương đối; T05 xác nhận missing. |
-| `date_unregistration` | integer | -365–444; 0/22.521 | Ngày rút tương đối; **không feature dự báo sớm** vì leakage. |
+| `date_unregistration` | integer | -365–444; 0/22.521 | Ngày rút tương đối; 93 lượt `Withdrawn` vẫn missing nên không suy diễn missing = không rút. **Không feature dự báo sớm** vì leakage. |
 
 ### `assessments.csv` — 206 dòng, 6 cột
 
@@ -114,7 +114,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 
 ### `studentVle.csv` — 10.655.280 dòng, 6 cột
 
-**Hạt:** event tương tác theo student, site, ngày. Không giả định unique theo `(code_module, code_presentation, id_student, id_site, date)`; mọi component key non-null và join `vle`/`studentInfo` 0 unmatched.
+**Hạt:** event tương tác theo student, site, ngày. Không giả định unique theo `(code_module, code_presentation, id_student, id_site, date)`; T05 quan sát 2.195.960 dòng trùng event key. T06 loại 787.170 duplicate **toàn dòng**, còn event-key lặp có thể là hoạt động hợp lệ và được tổng hợp ở T07. Mọi component key non-null và join `vle`/`studentInfo` 0 unmatched.
 
 | Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
 |---|---|---|---|
@@ -125,12 +125,12 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 
 ## Biến và bàn giao
 
-| Nhóm | Raw dùng được | Biến tạo chưa tạo | Ràng buộc |
+| Nhóm | Raw dùng được | Biến tạo / trạng thái T07 | Ràng buộc |
 |---|---|---|---|
-| Kết quả | `final_result` | `At_Risk` | Nhãn, không feature. |
+| Kết quả | `final_result` | `At_Risk`, `Performance_Level` đã tạo | Nhãn, không feature. |
 | Background/EDA | gender, region, education, imd, age, attempts, credits, disability | — | Insight là liên hệ quan sát, nêu mẫu số/missing. |
-| Assessment | type/date/weight/submission/banked/score | count, score/trend theo cửa sổ | Chỉ event trước mốc; score không là final grade. |
-| VLE | activity_type/date/sum_click | clicks, active days, diversity, engagement proxy | Chốt ngưỡng/cửa sổ T07/T13. |
+| Assessment | type/date/weight/submission/banked/score | count, score all-time, late/banked count đã tạo; theo cutoff chưa tạo | Chỉ event trước mốc; score không là final grade. |
+| VLE | activity_type/date/sum_click | click, active days, resource/activity diversity all-time đã tạo; early engagement chưa tạo | `*_all_time` chỉ EDA/BI khi D04 chưa chốt; click là proxy. |
 | Map | region | At-Risk rate / result distribution | TV3 xác minh map/cỡ mẫu. |
 
 OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation hay previous grade. Không tạo cột giả. `Risk_Probability`, `Predicted_Status`, `Risk_Band` là đầu ra T13, không có raw.
@@ -140,6 +140,10 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 | T05 | Xác nhận cơ chế `?`, duplicate nghiệp vụ, outlier/biên score-click-date-weight, `is_banked`. |
 | T07 | Aggregate event, kiểm tra cardinality/số dòng/phân bố trước–sau join, mẫu số KPI và feature. |
 | T13 | Chốt mốc/cửa sổ/split/encoding; kiểm leakage từ label, withdrawal và event tương lai. |
+
+## Cập nhật T05–T07 (chờ leader nghiệm thu)
+
+Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Đây là bảng mô tả sạch tái tạo cục bộ, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
 
 ## Đánh giá nghiệm thu T02
 
