@@ -312,6 +312,7 @@ def build(raw_dir: Path) -> None:
         assessment_event_count=("id_assessment", "size"),
         assessment_scored_count=("score", "count"),
         assessment_score_missing_count=("score", lambda x: int(x.isna().sum())),
+        assessment_score_sum_all_time=("score", "sum"),
         assessment_score_mean_all_time=("score", "mean"),
         assessment_score_min_all_time=("score", "min"),
         assessment_score_max_all_time=("score", "max"),
