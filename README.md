@@ -2,7 +2,7 @@
 
 Đồ án cuối kỳ môn **Tương tác dữ liệu trực quan (IDV)** của nhóm 3 thành viên. Câu hỏi trung tâm: những yếu tố nào liên hệ với kết quả học tập và có thể nhận diện sớm lượt học có nguy cơ **Fail/Withdrawn** hay không? Bộ dữ liệu đã chọn trong đề cương là **Open University Learning Analytics Dataset (OULAD)**; công nghệ đã chốt là **Python + Power BI + Logistic Regression**.
 
-Repo hiện ở **giai đoạn khởi tạo**: tài liệu yêu cầu, hợp đồng dữ liệu, kế hoạch nghiên cứu, dashboard, backlog và quy tắc làm việc. Các kết quả phân tích, mô hình và dashboard chỉ được ghi là hoàn thành khi có dữ liệu, mã và bằng chứng kiểm thử tương ứng.
+Repo đã hoàn thành nền tảng dữ liệu T01–T07; EDA, mô hình, dashboard và báo cáo tiếp tục được phát triển theo task. Chỉ ghi hoàn thành khi có hiện vật và bằng chứng kiểm tra tương ứng.
 
 ## Đọc theo thứ tự
 
@@ -24,7 +24,7 @@ Nguồn yêu cầu gốc: [TTDLTQ_script.docx](docs/source/TTDLTQ_script.docx). 
 ```text
 TTDLTQ_FINAL/
 ├── .github/                 # Mẫu issue và pull request
-├── data/                    # Hướng dẫn dữ liệu; CSV gốc và dữ liệu xử lý không commit
+├── data/                    # Raw/interim không commit; clean_dataset.csv dùng chung được theo dõi
 ├── notebooks/               # 01 audit, 02 cleaning, 03 EDA
 ├── src/                     # Script Python xử lý, kiểm tra và mô hình
 ├── dashboard/               # Power BI, đặc tả và bằng chứng tương tác

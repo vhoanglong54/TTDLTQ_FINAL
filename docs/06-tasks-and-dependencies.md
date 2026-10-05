@@ -1,6 +1,6 @@
 # 06 — Task board và quan hệ phụ thuộc
 
-TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp, cùng owner và cùng đầu ra được gom vào một Issue để nhóm dễ quản lý. Cột phụ thuộc cho biết điều kiện để nghiệm thu; phần chuẩn bị có thể làm song song. Nhóm tự quản lý lịch và deadline. Đóng Issue theo [Definition of Done](../CONTRIBUTING.md).
+TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp, cùng owner và cùng đầu ra được gom vào một Issue. Cột phụ thuộc cho biết điều kiện để bắt đầu/chốt; phần chuẩn bị có thể làm song song. Nhóm tự quản lý lịch và deadline.
 
 ## Bảng giao việc thực tế
 
@@ -17,7 +17,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
 | 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
 
-Nhánh của task phụ thuộc được tạo từ `main` mới nhất **khi bắt đầu task**, sau khi các PR đầu vào đã merge. Không tạo sớm tất cả nhánh vì chúng sẽ thiếu kết quả từ task trước. Mỗi PR ghi `Refs #<issue>`; leader kiểm tra bằng chứng, merge và đóng Issue. Không gắn reviewer, không mention thành viên để nhắc duyệt và không lặp lại biên bản ở cả PR lẫn Issue.
+Áp dụng duy nhất: **một Issue → một nhánh cụm task → một PR dùng `Closes #<issue>` kèm bằng chứng → leader quyết định merge → Issue tự đóng ngay**. Nhánh được tạo từ `main` mới nhất khi bắt đầu. Không gắn reviewer, mention nhắc duyệt hoặc lặp biên bản ở Issue.
 
 ## Nhóm nền tảng
 

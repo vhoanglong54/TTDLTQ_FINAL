@@ -1,6 +1,6 @@
 # Hợp đồng bàn giao bảng processed — T07
 
-`clean_dataset.csv` được tạo **cục bộ** và bị Git ignore. Tái tạo từ raw:
+`clean_dataset.csv` được Git theo dõi để cả nhóm dùng chung theo quyết định D16. File vẫn phải tái tạo được từ raw bằng các lệnh:
 
 ```powershell
 python src/oulad_pipeline.py audit data/raw

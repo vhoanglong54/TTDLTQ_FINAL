@@ -56,6 +56,6 @@ T02 phát hiện `?` là mã thiếu/không biết tại một số cột; chưa
 
 ## T05–T07 — Pipeline và bảng processed
 
-Data Quality Report cho audit, cleaning, aggregate/join và test thực nằm tại [reports/data-quality-report.md](../reports/data-quality-report.md). `clean_dataset.csv` được tái tạo cục bộ, không commit; schema/hạt/guard leakage để bàn giao TV2/TV3 nằm tại [data/processed/README.md](processed/README.md).
+Data Quality Report cho audit, cleaning, aggregate/join và test thực nằm tại [reports/data-quality-report.md](../reports/data-quality-report.md). `data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung theo D16 và vẫn tái tạo được bằng script; schema/hạt/guard leakage nằm tại [data/processed/README.md](processed/README.md).
 
 Hướng dẫn bàn giao theo Issue #6–#8, gồm file TV2/TV3 cần dùng, KPI/mẫu số và guard leakage: [docs/10-t05-t07-handoff.md](../docs/10-t05-t07-handoff.md).
