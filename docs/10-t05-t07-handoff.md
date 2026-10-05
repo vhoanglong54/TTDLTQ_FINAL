@@ -2,7 +2,7 @@
 
 **Nguồn bàn giao:** T05–T07 / [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5).  
 **Hạt chuẩn:** một lượt học `(code_module, code_presentation, id_student)`.  
-**Trạng thái:** pipeline đã merge vào `main`; các kết luận EDA, dashboard và model chưa được nghiệm thu trong tài liệu này.
+**Trạng thái:** T05–T07 đã được leader nghiệm thu; các kết luận EDA, dashboard và model chưa được thực hiện trong tài liệu này.
 
 ## Cách mỗi máy tái tạo dữ liệu
 
@@ -15,7 +15,7 @@ python src/oulad_pipeline.py build data/raw
 python src/oulad_pipeline.py report
 ```
 
-`data/processed/clean_dataset.csv` chỉ nằm local và không commit. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key. Chi tiết audit/cleaning/join ở [Data Quality Report](../reports/data-quality-report.md); schema đầy đủ ở [processed contract](../data/processed/README.md).
+`data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key và checksum trong [processed contract](../data/processed/README.md). Có thể tái tạo từ raw bằng bốn lệnh trên.
 
 ## Bàn giao cho TV2 — Issue #6, T08/T10/T11
 
@@ -83,4 +83,4 @@ Khi D04 được chốt, TV1 sẽ kiểm tra/bổ sung aggregate theo cutoff. Kh
 
 ## Ranh giới trách nhiệm
 
-TV1 duy trì pipeline, kiểm tra grain/schema/KPI và hỗ trợ leakage. TV2 sở hữu EDA/insight/storyline; TV3 sở hữu Power BI, model, map test và quyết định model. Leader nghiệm thu các Issue/PR; tài liệu bàn giao không phải bằng chứng TV2/TV3 đã hoàn thành task tiếp theo.
+TV1 duy trì pipeline, kiểm tra grain/schema/KPI và hỗ trợ leakage. TV2 sở hữu EDA/insight/storyline; TV3 sở hữu Power BI, model, map test và quyết định model. T05–T07 hoàn thành không đồng nghĩa các task TV2/TV3 phía sau đã hoàn thành.

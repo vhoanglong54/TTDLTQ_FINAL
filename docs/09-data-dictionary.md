@@ -141,7 +141,7 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 | T07 | Aggregate event, kiểm tra cardinality/số dòng/phân bố trước–sau join, mẫu số KPI và feature. |
 | T13 | Chốt mốc/cửa sổ/split/encoding; kiểm leakage từ label, withdrawal và event tương lai. |
 
-## Cập nhật T05–T07 (chờ leader nghiệm thu)
+## Cập nhật T05–T07 (đã nghiệm thu)
 
 Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Đây là bảng mô tả sạch tái tạo cục bộ, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
 

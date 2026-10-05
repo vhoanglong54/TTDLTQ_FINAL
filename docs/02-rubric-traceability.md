@@ -4,9 +4,9 @@ Trạng thái lúc khởi tạo: **chưa nghiệm thu**. Tích `[x]` chỉ khi c
 
 | Mục | Điểm | Bằng chứng cần nộp | Phụ trách | Đạt |
 |---|---:|---|---|:---:|
-| Bài toán và dataset hợp lệ | 0,5 | Mục tiêu, nguồn/link, giấy phép, ≥5.000 dòng, ≥3 bảng, schema, data dictionary | TV1 + nhóm duyệt | [ ] |
-| Làm sạch dữ liệu | 0,5 | Python audit missing, duplicate, outlier, invalid, category, ngày/chuỗi; quyết định xử lý và báo cáo chất lượng | TV1 | [ ] |
-| Biến đổi dữ liệu | 0,75 | Join/Merge đúng khóa và cardinality; calculated fields có định nghĩa, kiểm tra trước/sau join | TV1 thực hiện; TV2 phối hợp khi cần | [ ] |
+| Bài toán và dataset hợp lệ | 0,5 | [Charter](01-project-charter.md), [nguồn/checksum](../data/README.md), [dictionary 7 bảng](09-data-dictionary.md) | TV1 + nhóm | [x] |
+| Làm sạch dữ liệu | 0,5 | [Pipeline](../src/oulad_pipeline.py), [Data Quality Report](../reports/data-quality-report.md), notebook T05–T06 | TV1 | [x] |
+| Biến đổi dữ liệu | 0,75 | [Pipeline](../src/oulad_pipeline.py), [processed contract](../data/processed/README.md): aggregate trước join, 0 unmatched/duplicate key | TV1 | [x] |
 | EDA | 0,75 | `03_eda.ipynb`, ít nhất 3–5 biểu đồ tĩnh Matplotlib/Seaborn và diễn giải | TV2 | [ ] |
 | UI/UX Power BI | 0,5 | Layout rõ, màu nhất quán, tiêu đề, chú thích, định nghĩa KPI | TV3 | [ ] |
 | Đa dạng biểu đồ | 1,0 | Ít nhất 8 **loại** biểu đồ khác nhau, phù hợp kiểu dữ liệu; inventory và ảnh | TV3 | [ ] |

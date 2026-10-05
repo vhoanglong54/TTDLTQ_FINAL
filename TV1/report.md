@@ -1,6 +1,6 @@
 # Báo cáo công việc TV1 — Data
 
-**Phạm vi:** nhật ký thực hiện các task TV1 và phần hỗ trợ. **Trạng thái dữ liệu hiện tại:** T01–T02 đã nghiệm thu; T05–T17 chưa có bằng chứng hoàn thành. Ghi sự kiện theo ngày thực tế; nếu nhiều lần làm trong một ngày, thêm mục riêng. Mỗi kết quả phải có đường dẫn hiện vật, lệnh/test hoặc số liệu xác minh và leader xác nhận khi báo hoàn thành. [Kế hoạch và prompt chung](plan.md) | [Backlog](../docs/06-tasks-and-dependencies.md).
+**Phạm vi:** nhật ký thực hiện các task TV1 và phần hỗ trợ. **Trạng thái dữ liệu hiện tại:** T01–T07 đã nghiệm thu; T15/T17 và các phần cuối chưa bắt đầu. Mỗi kết quả phải có đường dẫn hiện vật, lệnh/test hoặc số liệu xác minh. [Kế hoạch](plan.md) | [Backlog](../docs/06-tasks-and-dependencies.md).
 
 ## 29/09/2026 — Lập kế hoạch TV1 cho T01
 
@@ -69,11 +69,11 @@
 | Input | T01/#1, T02/#2 đã nghiệm thu; 7 CSV `data/raw/`; dictionary 7 bảng/43 cột; branch `data/T05-T07-data-pipeline`; D04/D05 chưa chốt. |
 | Output/kết quả | T05 audit 7 bảng. T06 tạo 7 CSV `data/interim/` cục bộ; `studentVle` 10.655.280 → 9.868.110 sau loại 787.170 duplicate toàn dòng. T07 tạo `data/processed/clean_dataset.csv` cục bộ: 32.593 dòng, 35 cột, hạt `(code_module, code_presentation, id_student)`. |
 | Test và bằng chứng | `python src/oulad_pipeline.py audit data/raw`, `clean data/raw`, `build data/raw`, `report`: PASS. T07: assessment/VLE dimension, registration, courses đều 0 unmatched; duplicate attempt key sau join = 0; `At_Risk`: 0=15.385, 1=17.208 và mapping bốn `final_result` PASS. `python src/verify_oulad_source.py data/raw`: 7/7 header/checksum/row count PASS sau pipeline. |
-| Đánh giá so với tiêu chí nghiệm thu | **Đạt về hiện vật và chạy cục bộ:** audit, quyết định cleaning, join/aggregate, calculated fields và Data Quality Report có bằng chứng. PR #16 đã merge vào `main`; **chưa nghiệm thu/đóng Issue:** Issue #5 vẫn open và chưa có bình luận nghiệm thu của leader. D04/D05 chưa chốt nên không có feature snapshot dự báo sớm hay ngưỡng engagement. |
-| Việc thủ công đã làm/còn cần | Không cần Power BI trong T05–T07. Leader cần xác nhận D13 (1.111 `imd_band` `?`), D14 (duplicate `studentVle`), D05 (ngưỡng nhóm) và chạy lại lệnh pipeline trước nghiệm thu. D15 đã chốt theo audit: 93 lượt Withdrawn vẫn missing `date_unregistration`; cột này cấm feature model. |
+| Đánh giá so với tiêu chí nghiệm thu | **Đạt và đã nghiệm thu:** audit, cleaning, join/aggregate, calculated fields và Data Quality Report có bằng chứng; PR #16–#18 đã merge. D04/D05 chuyển sang T11/T13, không chặn EDA/BI; `*_all_time` bị cấm khỏi model sớm. |
+| Việc thủ công đã làm/còn cần | Không còn việc T05–T07. D13–D16 đã chốt; T13 phải chốt mốc dự báo và ngưỡng trước khi tạo feature model. |
 | Bàn giao cho ai, nhận gì, thời điểm | TV2: `clean_dataset.csv` tái tạo cục bộ, schema/hạt và Data Quality Report cho T08/T10. TV3: mapping `At_Risk`, aggregate mô tả, guard leakage và schema cho T09/T13; không dùng `*_all_time` cho model sớm trước D04. |
 | Issue/branch/PR | [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5); branch `data/T05-T07-data-pipeline`; [PR #16](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/16) đã merge vào `main`. |
-| Rủi ro, quyết định, ghi chú và bước tiếp theo | `studentVle` event-key lặp không tự là lỗi nên chỉ loại duplicate toàn dòng. `imd_band` giữ nullable missing, không impute; outlier IQR giữ nguyên. Cập nhật D13/D14; leader cần ghi kết luận nghiệm thu và đóng #5. Handoff chi tiết cho #6–#8 ở `docs/10-t05-t07-handoff.md`. |
+| Rủi ro, quyết định, ghi chú và bước tiếp theo | `studentVle` event-key lặp không tự là lỗi nên chỉ loại duplicate toàn dòng. `imd_band` giữ nullable missing, không impute; outlier IQR giữ nguyên. Issue #5 đã đóng; handoff cho #6–#8 ở `docs/10-t05-t07-handoff.md`. |
 
 ## Mẫu nhật ký cho ngày tiếp theo
 
@@ -104,9 +104,9 @@ Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái k
 |---|---|---|---|---|---|---|---|
 | 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11; [PR #12](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/12) | Đã nghiệm thu theo Issue #1 closed | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS | — | T02/T03/T04 nhận bàn giao | Ngày tải archive/version chưa có bằng chứng; theo dõi chênh lệch 32.953/32.593 |
 | 30/09/2026 | T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) — data dictionary | `docs/09-data-dictionary.md`, `src/profile_oulad_contract.py`, D13; [PR #13](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/13) | Đã nghiệm thu | 7 bảng/43 cột; candidate keys PASS; 9 kiểm tra quan hệ/khóa đều 0 lỗi; `?` đã ghi nhận | T01 #1 closed | TV2/TV3 dùng đầu ra cho phân tích, BI/model | Không cleaning/feature/BI; T05 xác nhận và xử lý missing |
-| 04/10/2026 | T05 — audit | `src/oulad_pipeline.py`, `notebooks/01_data_audit.ipynb`, [Data Quality Report](../reports/data-quality-report.md), PR #16 | PR merged; chờ leader nghiệm thu Issue | 7 bảng audit; D13 actual `imd_band` `?`=1.111; raw source verify PASS | T01–T02 | TV2/TV3 nhận audit | Issue #5 còn open; có event-key lặp `studentVle` |
-| 04/10/2026 | T06 — cleaning | `src/oulad_pipeline.py`, `notebooks/02_cleaning.ipynb`, 7 interim CSV local, PR #16 | PR merged; chờ leader nghiệm thu Issue | Raw checksum/header PASS; 787.170 duplicate toàn dòng `studentVle` bị loại; outlier giữ | T05 | TV2/T07 | `?` → nullable missing, không impute; raw bất biến |
-| 04/10/2026 | T07 — join/feature | `clean_dataset.csv` local, dictionary/data plan/D14, Data Quality Report, PR #16 | PR merged; chờ leader chốt D05/Issue | 32.593 output; 0 unmatched; 0 duplicate attempt key; At_Risk mapping PASS | T06 | TV2 T08/T10; TV3 T09/T13 | `*_all_time` chỉ EDA/BI; D04/D05 chưa chốt nên cấm dùng cho model sớm |
+| 05/10/2026 | T05 — audit | `src/oulad_pipeline.py`, `notebooks/01_data_audit.ipynb`, [Data Quality Report](../reports/data-quality-report.md), PR #16 | Đã nghiệm thu | 7 bảng audit; D13 `imd_band` `?`=1.111; raw source verify PASS | T01–T02 | TV2/TV3 nhận audit | Event-key lặp đã được giải thích |
+| 05/10/2026 | T06 — cleaning | `src/oulad_pipeline.py`, `notebooks/02_cleaning.ipynb`, PR #16 | Đã nghiệm thu | Raw checksum/header PASS; loại 787.170 duplicate toàn dòng `studentVle`; giữ outlier | T05 | TV2/T07 | `?` → nullable missing; raw bất biến |
+| 05/10/2026 | T07 — join/feature | `data/processed/clean_dataset.csv`, D14/D16, PR #16–#18 | Đã nghiệm thu | 32.593 output; 0 unmatched; 0 duplicate attempt key; At_Risk mapping PASS | T06 | TV2 T08/T10; TV3 T09/T13 | `*_all_time` chỉ EDA/BI; D04/D05 chốt ở T11/T13 |
 | — | T03/T08/T09/T10/T13/T18 — hỗ trợ | Chưa có | Chưa bắt đầu | Chưa chạy | Theo từng task | TV2/TV3 | Không thay owner của task |
 | — | T15 — QA Power BI | Chưa có | Chưa bắt đầu | Chưa chạy | T14 | TV3 cho T21 | Cần mở Power BI và đối chiếu Python |
 | — | T17 — phần Data báo cáo | Chưa có | Chưa bắt đầu | Chưa chạy | T07 | TV2; cả nhóm cho T20 | Kiểm tra nguồn/trích dẫn IEEE |

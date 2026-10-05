@@ -1,8 +1,12 @@
 # Dữ liệu tải về, các bảng trung gian và kết quả sinh tự động
 data/raw/**
 data/interim/**
+data/processed/**
 !data/raw/.gitkeep
 !data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/processed/README.md
+!data/processed/clean_dataset.csv
 reports/figures/generated/**
 !reports/figures/generated/.gitkeep
 

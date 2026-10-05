@@ -4,7 +4,7 @@
 
 Nguồn chọn trong DOCX là **OULAD**. Tải từ [Open University](https://research.stem.open.ac.uk/ouanalyse/dataset/) hoặc [UCI](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset); ghi URL cụ thể, ngày tải và checksum trong Data Quality Report. UCI công bố giấy phép **CC BY 4.0**; báo cáo cần trích dẫn cả nguồn dữ liệu và [bài mô tả](https://www.nature.com/articles/sdata2017171). Theo bài mô tả, `studentInfo` có 32.593 dòng và `studentVle` có 10.655.280 dòng; nhóm phải kiểm tra lại kích thước các file thực tế khi nghiệm thu task dữ liệu.
 
-Không commit CSV vào repo. Đặt 7 file gốc trong `data/raw/`, giữ nguyên tên; script sẽ tạo `data/interim/` và `data/processed/` có thể tái tạo.
+Không commit 7 CSV gốc hoặc bảng interim. Đặt raw trong `data/raw/`, giữ nguyên tên. Nhóm theo dõi duy nhất `data/processed/clean_dataset.csv` để dùng chung theo D16; các output khác phải tái tạo bằng script và không commit.
 
 ## 7 bảng và hạt dữ liệu
 
