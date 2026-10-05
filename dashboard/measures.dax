@@ -1,0 +1,79 @@
+// T09 — Core Power BI measures
+// Expected table name after CSV import: clean_dataset
+// Create these as measures, not calculated columns.
+
+Learning Attempts =
+COUNTROWS('clean_dataset')
+
+Distinct Learners =
+DISTINCTCOUNT('clean_dataset'[id_student])
+
+At-Risk Count =
+SUM('clean_dataset'[At_Risk])
+
+Not At-Risk Count =
+[Learning Attempts] - [At-Risk Count]
+
+At-Risk Rate =
+DIVIDE([At-Risk Count], [Learning Attempts])
+
+Pass Count =
+CALCULATE(
+    [Learning Attempts],
+    KEEPFILTERS(
+        'clean_dataset'[final_result] IN { "Pass", "Distinction" }
+    )
+)
+
+Pass Rate =
+DIVIDE([Pass Count], [Learning Attempts])
+
+Assessment Scored Count =
+SUM('clean_dataset'[assessment_scored_count])
+
+Assessment Score Sum =
+SUM('clean_dataset'[assessment_score_sum_all_time])
+
+Average Assessment Score =
+DIVIDE([Assessment Score Sum], [Assessment Scored Count])
+
+Attempts With Scored Assessment =
+CALCULATE(
+    [Learning Attempts],
+    KEEPFILTERS('clean_dataset'[assessment_scored_count] > 0)
+)
+
+Assessment Coverage Rate =
+DIVIDE([Attempts With Scored Assessment], [Learning Attempts])
+
+VLE Total Clicks =
+SUM('clean_dataset'[vle_total_clicks_all_time])
+
+Average VLE Clicks per Attempt =
+DIVIDE([VLE Total Clicks], [Learning Attempts])
+
+Dynamic Filter Context =
+VAR ModuleText =
+    IF(
+        ISFILTERED('clean_dataset'[code_module]),
+        CONCATENATEX(VALUES('clean_dataset'[code_module]), 'clean_dataset'[code_module], ", "),
+        "All modules"
+    )
+VAR PresentationText =
+    IF(
+        ISFILTERED('clean_dataset'[code_presentation]),
+        CONCATENATEX(VALUES('clean_dataset'[code_presentation]), 'clean_dataset'[code_presentation], ", "),
+        "All presentations"
+    )
+VAR RegionText =
+    IF(
+        ISFILTERED('clean_dataset'[region]),
+        CONCATENATEX(VALUES('clean_dataset'[region]), 'clean_dataset'[region], ", "),
+        "All regions"
+    )
+RETURN
+    ModuleText & " | " & PresentationText & " | " & RegionText
+
+// Prediction measures are intentionally omitted until T13 creates
+// actual_status, predicted_status and risk_probability at the attempt grain.
+
