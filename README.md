@@ -15,7 +15,7 @@ Repo đã hoàn thành nền tảng dữ liệu T01–T07; EDA, mô hình, dashb
 7. [Báo cáo, video và vấn đáp](docs/07-report-and-defense.md)
 8. [Quy tắc nhánh, PR và bàn giao](CONTRIBUTING.md)
 
-Kế hoạch thực hiện theo vai trò TV1: [workflow, giai đoạn và prompt chung](TV1/plan.md); tiến độ thực tế ghi tại [báo cáo TV1](TV1/report.md). Hai tài liệu này được khởi tạo trong phạm vi T01 và không thay thế Issue/PR hay bằng chứng nghiệm thu.
+Backlog, người phụ trách, nhánh làm việc và quan hệ phụ thuộc được quản lý tại [task và quan hệ phụ thuộc](docs/06-tasks-and-dependencies.md) cùng GitHub Issues. Bằng chứng kỹ thuật được lưu trong tài liệu dữ liệu, model và Tableau tương ứng; repo không duy trì thêm nhật ký cá nhân trùng lặp.
 
 Nguồn yêu cầu gốc: [TTDLTQ_script.docx](docs/source/TTDLTQ_script.docx). Khi tài liệu trong repo diễn giải một ví dụ không phù hợp với OULAD, [sổ quyết định](docs/08-decisions-and-open-questions.md) ghi rõ lý do và việc cần xác nhận bằng dữ liệu thực.
 

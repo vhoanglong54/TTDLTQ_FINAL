@@ -1,6 +1,6 @@
 # Dữ liệu
 
-`raw/` giữ nguyên nguồn cục bộ. `interim/` là bảng tạm; `processed/` là bảng phân tích và đầu ra dự báo có thể tái tạo. CSV ở cả ba thư mục bị `.gitignore`; chỉ commit mã, tài liệu, schema, data dictionary và báo cáo chất lượng.
+`raw/` giữ nguyên nguồn cục bộ và `interim/` là bảng tạm; CSV trong hai thư mục này bị `.gitignore`. `processed/` là đầu ra có thể tái tạo; riêng `processed/clean_dataset.csv` được theo dõi theo D16 để nhóm dùng chung. Output model trong `processed/model/` chỉ giữ local khi chưa được leader duyệt.
 
 ## T01 — Xác minh nguồn OULAD
 
@@ -58,4 +58,4 @@ T02 phát hiện `?` là mã thiếu/không biết tại một số cột; chưa
 
 Data Quality Report cho audit, cleaning, aggregate/join và test thực nằm tại [reports/data-quality-report.md](../reports/data-quality-report.md). `data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung theo D16 và vẫn tái tạo được bằng script; schema/hạt/guard leakage nằm tại [data/processed/README.md](processed/README.md).
 
-Hướng dẫn bàn giao theo Issue #6–#8, gồm file TV2/TV3 cần dùng, KPI/mẫu số và guard leakage: [docs/10-t05-t07-handoff.md](../docs/10-t05-t07-handoff.md).
+Thông tin bàn giao được đặt ngay tại nguồn sử dụng: schema, hạt và guard leakage ở [data/processed/README.md](processed/README.md); mục tiêu và phương pháp model ở [docs/04-analysis-model-plan.md](../docs/04-analysis-model-plan.md); dữ liệu đầu vào Tableau và quy tắc KPI ở [dashboard/build-guide.md](../dashboard/build-guide.md).
