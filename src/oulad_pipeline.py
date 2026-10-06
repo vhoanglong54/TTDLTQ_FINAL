@@ -343,7 +343,6 @@ def build(raw_dir: Path) -> None:
 
     base = info.merge(registration, on=ATTEMPT_KEY, how="left", validate="one_to_one", indicator="registration_merge")
     registration_unmatched = int((base["registration_merge"] != "both").sum())
-    base["has_registration_record"] = (base["registration_merge"] == "both").astype("int8")
     base = base.drop(columns="registration_merge")
     base = base.merge(courses, on=["code_module", "code_presentation"], how="left", validate="many_to_one", indicator="courses_merge")
     courses_unmatched = int((base["courses_merge"] != "both").sum())
@@ -352,10 +351,38 @@ def build(raw_dir: Path) -> None:
     base = base.drop(columns="assessment_merge")
     base = base.merge(vle_agg, on=ATTEMPT_KEY, how="left", validate="one_to_one", indicator="vle_merge")
     base = base.drop(columns="vle_merge")
+
+    # The raw OULAD literal "10-20" is a deprivation band, not a date.  The
+    # raw source remains unchanged; normalize this dashboard-ready output so
+    # Excel/Tableau cannot coerce it to Oct-20.
+    base["imd_band"] = base["imd_band"].replace({"10-20": "10-20%"})
+    base["imd_band_display"] = base["imd_band"].fillna("Unknown")
+
+    # Missing aggregates after a left join mean no observed event.  Counts and
+    # totals have a valid zero, unlike score statistics and event dates.
+    zero_when_no_event = [
+        "assessment_event_count",
+        "assessment_scored_count",
+        "assessment_score_missing_count",
+        "assessment_score_sum_all_time",
+        "assessment_banked_count",
+        "assessment_late_submission_count_all_time",
+        "assessment_type_nunique",
+        "vle_event_count",
+        "vle_total_clicks_all_time",
+        "vle_active_days_all_time",
+        "vle_resource_count_all_time",
+        "vle_activity_type_count_all_time",
+    ]
+    base[zero_when_no_event] = base[zero_when_no_event].fillna(0)
     base["At_Risk"] = base["final_result"].map({"Fail": 1, "Withdrawn": 1, "Pass": 0, "Distinction": 0}).astype("int8")
     base["Performance_Level"] = base["final_result"]
     if base[ATTEMPT_KEY].duplicated().any():
         raise ValueError("T07 failed: joined output is not unique at learner-attempt grain.")
+    if (base["imd_band"] == "10-20").any() or base["imd_band_display"].isna().any():
+        raise ValueError("T07 failed: imd_band Tableau normalization did not complete.")
+    if base[zero_when_no_event].isna().any().any():
+        raise ValueError("T07 failed: dashboard count/total aggregates still contain nulls.")
     output = PROCESSED / "clean_dataset.csv"
     base.to_csv(output, index=False)
     metrics = {
@@ -365,6 +392,19 @@ def build(raw_dir: Path) -> None:
         "joined_output_duplicate_attempt_keys": int(base.duplicated(ATTEMPT_KEY).sum()),
         "final_result": {str(key): int(value) for key, value in base["final_result"].value_counts().sort_index().items()},
         "at_risk": {str(key): int(value) for key, value in base["At_Risk"].value_counts().sort_index().items()},
+        "dashboard_ready": {
+            "imd_band_normalized_10_20_to_10_20_percent": int((base["imd_band"] == "10-20%").sum()),
+            "imd_band_display_unknown": int((base["imd_band_display"] == "Unknown").sum()),
+            "zero_filled_columns": zero_when_no_event,
+            "zero_filled_columns_nulls_after": int(base[zero_when_no_event].isna().sum().sum()),
+            "excluded_zero_variance_column": "has_registration_record",
+            "retained_nullable_columns": [
+                "date_registration", "date_unregistration", "assessment_score_mean_all_time",
+                "assessment_score_min_all_time", "assessment_score_max_all_time",
+                "vle_first_event_day", "vle_last_event_day",
+            ],
+        },
+ 
         "feature_guard": "All *_all_time VLE/assessment aggregates are descriptive EDA/dashboard fields only. D04 prediction cutoff is unconfirmed, so they must not be used as early-model features. final_result, At_Risk and date_unregistration are prohibited model features.",
     }
     JOIN_METRICS.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -387,7 +427,7 @@ def report() -> None:
     join_metrics = load_metrics(JOIN_METRICS)
     lines = [
         "# Data Quality Report — OULAD (T05–T07)", "",
-        f"**Ngày chạy pipeline:** {date.today().strftime('%d/%m/%Y')}.  ",
+        f"**Ngày chạy pipeline:** {date.today().strftime('%d/%m/%Y')}.",
         "**Task/Issue:** T05–T07 / [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5).  ",
         "**Hạt đầu ra:** một lượt học `(code_module, code_presentation, id_student)`.  ",
         f"**Công nghệ:** Python, pandas {audit_metrics['pandas']}, NumPy {audit_metrics['numpy']}.  ",
@@ -451,6 +491,14 @@ def report() -> None:
         lines.append(f"| `{key}` | {n(value)} |")
     for key, value in join_metrics["unmatched"].items():
         lines.append(f"| unmatched `{key}` | {n(value)} |")
+    dashboard_ready = join_metrics.get("dashboard_ready", {})
+    if dashboard_ready:
+        lines += [
+            f"| `imd_band` `10-20` normalized to `10-20%` | {n(dashboard_ready['imd_band_normalized_10_20_to_10_20_percent'])} |",
+            f"| `imd_band_display = Unknown` | {n(dashboard_ready['imd_band_display_unknown'])} |",
+            f"| nulls after selected aggregate zero-fill | {n(dashboard_ready['zero_filled_columns_nulls_after'])} |",
+            f"| excluded zero-variance QA field | `{dashboard_ready['excluded_zero_variance_column']}` |",
+        ]
     lines += [
         f"| duplicate attempt key sau join | {n(join_metrics['joined_output_duplicate_attempt_keys'])} |",
         f"| `final_result` | {', '.join(f'{key}={value:,}' for key, value in join_metrics['final_result'].items())} |",

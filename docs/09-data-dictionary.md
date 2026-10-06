@@ -61,7 +61,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 | `gender` | string | `F`, `M`; 0/0 | Background/EDA; feature chỉ khi duyệt fairness. |
 | `region` | string | 13 vùng; 0/0 | Vùng cư trú; map/EDA, GeoJSON mapping cần T04/T09. |
 | `highest_education` | string | 5 mức; 0/0 | Trình độ đầu vào; background/EDA. |
-| `imd_band` | string | 10 band; 0/1.111 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. |
+| `imd_band` | string | 10 band; 0/1.111 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. Trong processed, chuẩn hóa literal raw `10-20` thành `10-20%` để tránh bị Excel/Tableau hiểu là ngày. |
 | `age_band` | string | `0-35`, `35-55`, `55<=`; 0/0 | Nhóm tuổi; background/EDA. |
 | `num_of_prev_attempts` | integer | 0–6; 0/0 | Lần thử học phần trước; không phải điểm trước. |
 | `studied_credits` | integer | 30–655; 0/0 | Tổng tín chỉ đang học; feature tiềm năng. |
@@ -143,7 +143,7 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 
 ## Cập nhật T05–T07 (đã nghiệm thu)
 
-Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Đây là bảng mô tả sạch tái tạo cục bộ, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
+Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Hotfix Tableau chuẩn hóa `imd_band`, thêm `imd_band_display`, fill 0 có chọn lọc cho count/tổng event và bỏ `has_registration_record` zero variance. Đây là bảng mô tả sạch tái tạo, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
 
 ## Đánh giá nghiệm thu T02
 

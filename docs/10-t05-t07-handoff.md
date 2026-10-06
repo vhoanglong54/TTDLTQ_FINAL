@@ -15,6 +15,7 @@ python src/oulad_pipeline.py build data/raw
 python src/oulad_pipeline.py report
 ```
 
+`data/processed/clean_dataset.csv` là input chuẩn duy nhất cho EDA/dashboard và được build lại từ raw, không chỉnh tay. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key. Chi tiết audit/cleaning/join ở [Data Quality Report](../reports/data-quality-report.md); schema đầy đủ ở [processed contract](../data/processed/README.md).
 `data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key và checksum trong [processed contract](../data/processed/README.md). Có thể tái tạo từ raw bằng bốn lệnh trên.
 
 ## Bàn giao cho TV2 — Issue #6, T08/T10/T11
@@ -31,13 +32,13 @@ python src/oulad_pipeline.py report
 ### Biến TV2 có thể dùng ngay
 
 - Kết quả mô tả: `final_result`, `At_Risk`, `Performance_Level`, `code_module`, `code_presentation`, `region`.
-- Background: `gender`, `highest_education`, `imd_band`, `age_band`, `num_of_prev_attempts`, `studied_credits`, `disability`.
+- Background: `gender`, `highest_education`, `imd_band`, `imd_band_display`, `age_band`, `num_of_prev_attempts`, `studied_credits`, `disability`.
 - Assessment mô tả: `assessment_event_count`, `assessment_scored_count`, `assessment_score_sum_all_time`, `assessment_score_mean_all_time`, `assessment_banked_count`, `assessment_late_submission_count_all_time`.
 - VLE mô tả: `vle_event_count`, `vle_total_clicks_all_time`, `vle_active_days_all_time`, `vle_resource_count_all_time`, `vle_activity_type_count_all_time`, `vle_first_event_day`, `vle_last_event_day`.
 
 ### TV2 phải tránh và cần báo lại TV1/leader
 
-- `imd_band` có 1.111 missing; ghi rõ loại/giữ missing trong mẫu số, không xem đây là thu nhập cá nhân.
+- `imd_band` có 1.111 missing; dùng `imd_band_display` nếu biểu đồ phải hiển thị `Unknown`, không xem đây là thu nhập cá nhân. Literal raw `10-20` đã chuẩn hóa thành `10-20%` trong processed.
 - `assessment_score_mean_all_time` chỉ là mean theo từng lượt học; khi cần mean chung phải dùng tổng score/chia tổng scored count.
 - VLE click là proxy tương tác, không phải attendance, study hours hay nguyên nhân kết quả.
 - `*_all_time` được dùng EDA mô tả, nhưng không được gọi là engagement **sớm** hay dùng để suy luận dự báo trước D04.
@@ -49,7 +50,7 @@ python src/oulad_pipeline.py report
 
 | Mục TV3 làm | Input/hướng dẫn | Điều TV3 cần điều chỉnh hoặc kiểm tra |
 |---|---|---|
-| Import | Đọc **một** `data/processed/clean_dataset.csv` cho dashboard v0. | Không join hai raw event table tại runtime; aggregate đã làm ở T07. |
+| Import | Import **một** `data/processed/clean_dataset.csv` cho dashboard v0. | Không join hai raw event table trong BI; aggregate đã làm ở T07. |
 | Grain | Một row = một lượt học. | KPI Total Learning Attempts = count rows; Distinct Learners = distinct count `id_student`; không đổi tên/gộp hai KPI. |
 | Risk KPI | `At_Risk` là nhãn lịch sử. | At-Risk Count = sum `At_Risk`; At-Risk Rate = sum `At_Risk` / count rows trong cùng filter context. |
 | Result KPI | `final_result`/`Performance_Level`. | Pass Rate phải định nghĩa rõ, khuyến nghị `(Pass + Distinction) / total learning attempts`; không gọi là điểm trung bình. |

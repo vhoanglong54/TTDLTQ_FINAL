@@ -1,6 +1,6 @@
 # Data Quality Report — OULAD (T05–T07)
 
-**Ngày chạy pipeline:** 04/10/2026.  
+**Ngày chạy pipeline:** 06/10/2026.
 **Task/Issue:** T05–T07 / [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5).  
 **Hạt đầu ra:** một lượt học `(code_module, code_presentation, id_student)`.  
 **Công nghệ:** Python, pandas 2.3.3, NumPy 2.3.5.  
@@ -122,6 +122,10 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 | unmatched `vle_dimension` | 0 |
 | unmatched `registration` | 0 |
 | unmatched `courses` | 0 |
+| `imd_band` `10-20` normalized to `10-20%` | 3,516 |
+| `imd_band_display = Unknown` | 1,111 |
+| nulls after selected aggregate zero-fill | 0 |
+| excluded zero-variance QA field | `has_registration_record` |
 | duplicate attempt key sau join | 0 |
 | `final_result` | Distinction=3,024, Fail=7,052, Pass=12,361, Withdrawn=10,156 |
 | `At_Risk` | 0=15,385, 1=17,208 |
