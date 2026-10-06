@@ -75,6 +75,21 @@
 | Issue/branch/PR | [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5); branch `data/T05-T07-data-pipeline`; [PR #16](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/16) đã merge vào `main`. |
 | Rủi ro, quyết định, ghi chú và bước tiếp theo | `studentVle` event-key lặp không tự là lỗi nên chỉ loại duplicate toàn dòng. `imd_band` giữ nullable missing, không impute; outlier IQR giữ nguyên. Cập nhật D13/D14; leader cần ghi kết luận nghiệm thu và đóng #5. Handoff chi tiết cho #6–#8 ở `docs/10-t05-t07-handoff.md`. |
 
+## 06/10/2026 — T07 hotfix: tương thích Tableau cho processed dataset
+
+| Mục | Nội dung thực tế |
+|---|---|
+| Nội dung đã làm | Sửa `src/oulad_pipeline.py` và rebuild từ 7 CSV raw; không sửa tay CSV. Chuẩn hóa `imd_band` `10-20` thành `10-20%`, thêm `imd_band_display`, fill 0 có chọn lọc cho aggregate event count/tổng và loại `has_registration_record` zero variance. |
+| Công nghệ/tính năng và phiên bản | Python 3.14, pandas; `replace`, `fillna`, join validation và assertion sau build. |
+| Input | 7 CSV raw bất biến; output T07 v1; phản hồi lỗi type/missing khi Tableau import. |
+| Output/kết quả | `data/processed/clean_dataset.csv`: 32.593 dòng, 35 cột, SHA-256 `ddd7e6c87f4f6c5e7bddedd4d0cfa80bdb5551eaef5867159534821f2c57d94d`; `data/processed/README.md`, `docs/03-data-plan.md`, `docs/09-data-dictionary.md`, `docs/10-t05-t07-handoff.md`, D16. |
+| Test và bằng chứng | Rebuild `audit`, `clean`, `build`, `report` PASS. Output: 0 duplicate attempt key; 0 literal `10-20`; 3.516 `10-20%`; 1.111 `imd_band_display=Unknown`; 0 null selected count/tổng; `date_registration` null=45, `date_unregistration` null=22.521, assessment mean null=6.773, VLE last-day null=3.365; At_Risk mapping PASS; raw verify 7/7 PASS. |
+| Đánh giá so với tiêu chí nghiệm thu | Đạt về rebuild/test cục bộ. Chưa có PR, review/leader nghiệm thu hoặc merge cho hotfix; D16 giữ trạng thái chờ leader. |
+| Việc thủ công đã làm/còn cần | TV3/Tableau phải refresh nguồn file và ép kiểu field theo processed README; test map region vẫn thuộc T09/D06. |
+| Bàn giao cho ai | TV2/TV3 dùng duy nhất `data/processed/clean_dataset.csv` v2; TV3 không dùng `*_all_time`, `vle_last_event_day`, nhãn hay ngày rút làm feature early-warning. |
+| Issue/branch/PR | T07 / Issue #5; branch `data/T05-T07-data-pipeline`; PR hotfix chưa tạo. |
+| Rủi ro, quyết định, ghi chú và bước tiếp theo | Không suy diễn missing `date_unregistration`; map region chưa được tự mapping. Leader cần review D16 và schema trước khi merge. |
+
 ## Mẫu nhật ký cho ngày tiếp theo
 
 Sao chép khối này sau mỗi phiên làm. Ghi số liệu và lệnh thực; dùng `Chưa chạy` nếu chưa có kết quả.
@@ -107,6 +122,7 @@ Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái k
 | 04/10/2026 | T05 — audit | `src/oulad_pipeline.py`, `notebooks/01_data_audit.ipynb`, [Data Quality Report](../reports/data-quality-report.md), PR #16 | PR merged; chờ leader nghiệm thu Issue | 7 bảng audit; D13 actual `imd_band` `?`=1.111; raw source verify PASS | T01–T02 | TV2/TV3 nhận audit | Issue #5 còn open; có event-key lặp `studentVle` |
 | 04/10/2026 | T06 — cleaning | `src/oulad_pipeline.py`, `notebooks/02_cleaning.ipynb`, 7 interim CSV local, PR #16 | PR merged; chờ leader nghiệm thu Issue | Raw checksum/header PASS; 787.170 duplicate toàn dòng `studentVle` bị loại; outlier giữ | T05 | TV2/T07 | `?` → nullable missing, không impute; raw bất biến |
 | 04/10/2026 | T07 — join/feature | `clean_dataset.csv` local, dictionary/data plan/D14, Data Quality Report, PR #16 | PR merged; chờ leader chốt D05/Issue | 32.593 output; 0 unmatched; 0 duplicate attempt key; At_Risk mapping PASS | T06 | TV2 T08/T10; TV3 T09/T13 | `*_all_time` chỉ EDA/BI; D04/D05 chưa chốt nên cấm dùng cho model sớm |
+| 06/10/2026 | T07 hotfix Tableau / D16 | Pipeline rebuild, processed contract, handoff, data plan/dictionary | Chờ leader review/PR | 32.593×35; 0 duplicate key; normalized IMD PASS; selected aggregate null=0; raw 7/7 PASS | T07 | TV2/TV3 dùng một `clean_dataset.csv` v2 | Map/cutoff/model chưa chốt; không sửa CSV thủ công |
 | — | T03/T08/T09/T10/T13/T18 — hỗ trợ | Chưa có | Chưa bắt đầu | Chưa chạy | Theo từng task | TV2/TV3 | Không thay owner của task |
 | — | T15 — QA Power BI | Chưa có | Chưa bắt đầu | Chưa chạy | T14 | TV3 cho T21 | Cần mở Power BI và đối chiếu Python |
 | — | T17 — phần Data báo cáo | Chưa có | Chưa bắt đầu | Chưa chạy | T07 | TV2; cả nhóm cho T20 | Kiểm tra nguồn/trích dẫn IEEE |
