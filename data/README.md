@@ -58,4 +58,4 @@ T02 phát hiện `?` là mã thiếu/không biết tại một số cột; chưa
 
 Data Quality Report cho audit, cleaning, aggregate/join và test thực nằm tại [reports/data-quality-report.md](../reports/data-quality-report.md). `data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung theo D16 và vẫn tái tạo được bằng script; schema/hạt/guard leakage nằm tại [data/processed/README.md](processed/README.md).
 
-Thông tin bàn giao được đặt ngay tại nguồn sử dụng: schema, hạt và guard leakage ở [data/processed/README.md](processed/README.md); mục tiêu và phương pháp model ở [docs/04-analysis-model-plan.md](../docs/04-analysis-model-plan.md); dữ liệu đầu vào Tableau và quy tắc KPI ở [dashboard/build-guide.md](../dashboard/build-guide.md).
+Thông tin bàn giao được đặt ngay tại nguồn sử dụng: schema, hạt và guard leakage ở [data/processed/README.md](processed/README.md); mục tiêu và phương pháp ở [tài liệu model](../docs/04-model.md); dữ liệu đầu vào Tableau và quy tắc KPI ở [dashboard/build-guide.md](../dashboard/build-guide.md).

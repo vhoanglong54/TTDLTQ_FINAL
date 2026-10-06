@@ -114,7 +114,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 
 ### `studentVle.csv` — 10.655.280 dòng, 6 cột
 
-**Hạt:** event tương tác theo student, site, ngày. Không giả định unique theo `(code_module, code_presentation, id_student, id_site, date)`; T05 quan sát 2.195.960 dòng trùng event key. T06 loại 787.170 duplicate **toàn dòng**, còn event-key lặp có thể là hoạt động hợp lệ và được tổng hợp ở T07. Mọi component key non-null và join `vle`/`studentInfo` 0 unmatched.
+**Hạt raw:** đóng góp click theo student, site và ngày; T05 quan sát 2.195.960 dòng vượt quá số khóa logic duy nhất. T06 không xóa exact duplicate riêng lẻ mà gom đủ `(code_module, code_presentation, id_student, id_site, date)` và cộng `sum_click`, tạo 8.459.320 dòng logic. Tổng click giữ nguyên 39.605.099; mọi component key non-null và join `vle`/`studentInfo` 0 unmatched.
 
 | Cột | Kiểu raw | Giá trị / missing | Ý nghĩa, vai trò |
 |---|---|---|---|
@@ -129,8 +129,8 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 |---|---|---|---|
 | Kết quả | `final_result` | `At_Risk`, `Performance_Level` đã tạo | Nhãn, không feature. |
 | Background/EDA | gender, region, education, imd, age, attempts, credits, disability | — | Insight là liên hệ quan sát, nêu mẫu số/missing. |
-| Assessment | type/date/weight/submission/banked/score | count, score sum/mean all-time, late/banked count đã tạo; theo cutoff chưa tạo | Chỉ event trước mốc; score không là final grade. |
-| VLE | activity_type/date/sum_click | click, active days, resource/activity diversity all-time đã tạo; early engagement chưa tạo | `*_all_time` chỉ EDA/dashboard khi D04 chưa chốt; click là proxy. |
+| Assessment | type/date/weight/submission/banked/score | aggregate all-time cho EDA; snapshot T13 có count, score, hoàn thành, điểm/trọng số đến hạn, nộp trễ và tỷ lệ điểm dưới 40 tại cutoff | Chỉ submission `date_submitted <= 105`; lịch bài đến hạn làm mẫu số; score không là final grade. |
+| VLE | activity_type/date/sum_click | aggregate all-time cho EDA; snapshot T13 có click/active day/resource, 20 activity type, cửa sổ 7/28 ngày, tỷ trọng gần đây và recency | `*_all_time` chỉ EDA/dashboard; model chỉ dùng event `date <= 105`; click là proxy. |
 | Map | region | At-Risk rate / result distribution | TV3 xác minh map/cỡ mẫu. |
 
 OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation hay previous grade. Không tạo cột giả. `Risk_Probability`, `Predicted_Status`, `Risk_Band` là đầu ra T13, không có raw.
@@ -141,9 +141,21 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 | T07 | Aggregate event, kiểm tra cardinality/số dòng/phân bố trước–sau join, mẫu số KPI và feature. |
 | T13 | Chốt mốc/cửa sổ/split/encoding; kiểm leakage từ label, withdrawal và event tương lai. |
 
+## Checklist dữ liệu phục vụ EDA và model
+
+| Kiểm tra | Kết quả đã xác minh | Nguồn bằng chứng |
+|---|---|---|
+| `studentVle` khớp metadata `vle` và lượt học | 0 unmatched; event key được gom theo learner–resource–day và bảo toàn tổng click. | [Data Quality Report](../reports/data-quality-report.md) |
+| Assessment thiếu điểm, nộp trễ và banked | 173 score missing; 49.318 lượt nộp trễ; `is_banked`: 0=172.003, 1=1.909. | [Data Quality Report](../reports/data-quality-report.md) |
+| Ý nghĩa `date_unregistration` | Có 93 lượt `Withdrawn` vẫn thiếu ngày rút; không coi missing là “không rút” và không dùng làm feature. | Bảng `studentRegistration` phía trên |
+| Missing `imd_band` | 1.111 giá trị; giữ nullable trong dữ liệu sạch, dùng `Unknown` khi trình bày/encode và công bố mẫu số. | Bảng `studentInfo` và Data Quality Report |
+| Hạt dữ liệu sau aggregate/join | 32.593 lượt học, 0 duplicate attempt key và 0 unmatched dimension chính. | Phần cập nhật T05–T07 phía dưới |
+
+Checklist này thay thế các câu hỏi xác minh cũ: kết quả đã được đặt cạnh data dictionary thay vì lặp trong tài liệu model.
+
 ## Cập nhật T05–T07 (đã nghiệm thu)
 
-Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Hotfix Tableau chuẩn hóa `imd_band`, thêm `imd_band_display`, fill 0 có chọn lọc cho count/tổng event và bỏ `has_registration_record` zero variance. Đây là bảng mô tả sạch tái tạo, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
+Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Hotfix Tableau chuẩn hóa `imd_band`, thêm `imd_band_display`, fill 0 có chọn lọc cho count/tổng event và bỏ `has_registration_record` zero variance. Đây là bảng mô tả sạch tái tạo, không phải snapshot feature dự báo sớm. Model local v4 dựng snapshot cutoff ngày 105 riêng; D04/D05 vẫn chờ leader chốt.
 
 ## Đánh giá nghiệm thu T02
 

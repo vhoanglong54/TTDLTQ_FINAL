@@ -20,4 +20,4 @@ Các aggregate có hậu tố `*_all_time` là dữ liệu mô tả dùng cho ED
 
 ## T13 — Logistic Regression dự báo At-Risk
 
-Toàn bộ mục tiêu, quy trình, lệnh chạy, feature contract, thí nghiệm, metric, artifact và cách bàn giao sang Tableau được quản lý tại một nguồn duy nhất: [kế hoạch phân tích và model](../docs/04-analysis-model-plan.md#model-logistic-regression--tài-liệu-chuẩn-duy-nhất).
+Toàn bộ mục tiêu, quy trình, lệnh chạy, feature contract, thí nghiệm, metric, artifact và cách bàn giao sang Tableau được quản lý tại một nguồn duy nhất: [tài liệu model](../docs/04-model.md).

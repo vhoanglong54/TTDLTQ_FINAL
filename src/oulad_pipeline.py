@@ -1,8 +1,8 @@
 """Reproducible T05--T07 pipeline for the local OULAD CSV files.
 
-The raw directory is read-only.  Stage outputs are written beneath data/interim
-and data/processed, which are ignored by Git.  The tracked Data Quality Report
-is generated from the JSON metrics that the stages produce.
+The raw directory is read-only.  Interim outputs stay local.  The shared
+processed output is data/processed/clean_dataset.csv; the tracked Data Quality
+Report is generated from the JSON metrics that the stages produce.
 
 Examples (PowerShell):
     python src/oulad_pipeline.py audit data/raw
@@ -43,6 +43,7 @@ FILES = (
     "studentVle.csv",
 )
 ATTEMPT_KEY = ["code_module", "code_presentation", "id_student"]
+VLE_EVENT_KEY = ATTEMPT_KEY + ["id_site", "date"]
 KEYS = {
     "courses.csv": ["code_module", "code_presentation"],
     "studentInfo.csv": ATTEMPT_KEY,
@@ -260,11 +261,44 @@ def clean_frame(name: str, frame: pd.DataFrame) -> tuple[pd.DataFrame, dict[str,
     for column in cleaned.columns:
         if column not in NUMERIC_COLUMNS[name]:
             cleaned[column] = cleaned[column].astype("string").str.strip()
-    duplicate_rows = int(cleaned.duplicated().sum())
-    if duplicate_rows:
-        cleaned = cleaned.drop_duplicates().copy()
+    exact_duplicate_rows = int(cleaned.duplicated().sum())
+    before_click_total: int | None = None
+    after_click_total: int | None = None
+    consolidated_event_key_rows = 0
+
+    if name == "studentVle.csv":
+        # OULAD can contain several source rows for the same learner, resource
+        # and day.  They are click contributions, not safe-to-delete duplicate
+        # observations.  Normalize to the documented daily-resource grain by
+        # summing sum_click, thereby preserving the complete interaction volume.
+        before_click_total = int(cleaned["sum_click"].sum())
+        before_rows = len(cleaned)
+        cleaned = (
+            cleaned.groupby(VLE_EVENT_KEY, as_index=False, dropna=False)["sum_click"]
+            .sum()
+        )
+        consolidated_event_key_rows = before_rows - len(cleaned)
+        after_click_total = int(cleaned["sum_click"].sum())
+        if before_click_total != after_click_total:
+            raise AssertionError("studentVle normalization changed the total click count.")
+        if cleaned[VLE_EVENT_KEY].duplicated().any():
+            raise AssertionError("studentVle normalization did not produce a unique event key.")
+        dropped_exact_duplicates = 0
+    else:
+        dropped_exact_duplicates = exact_duplicate_rows
+        if dropped_exact_duplicates:
+            cleaned = cleaned.drop_duplicates().copy()
+
     after_missing = {column: int(cleaned[column].isna().sum()) for column in cleaned.columns}
-    return cleaned, {"before": before, "after": {"rows": len(cleaned), "missing": after_missing}, "dropped_exact_duplicates": duplicate_rows}
+    return cleaned, {
+        "before": before,
+        "after": {"rows": len(cleaned), "missing": after_missing},
+        "exact_duplicate_rows_observed": exact_duplicate_rows,
+        "dropped_exact_duplicates": dropped_exact_duplicates,
+        "consolidated_event_key_rows": consolidated_event_key_rows,
+        "click_total_before": before_click_total,
+        "click_total_after": after_click_total,
+    }
 
 
 def clean(raw_dir: Path) -> None:
@@ -274,7 +308,8 @@ def clean(raw_dir: Path) -> None:
     rules = [
         "Raw CSV are read only; '?' is normalized to nullable missing in interim outputs, never imputed.",
         "String fields are trimmed; numeric fields are cast to nullable Int64 or Float64 according to observed values.",
-        "Exact full-row duplicates are dropped only if observed; outliers are retained for later interpretation.",
+        "Exact full-row duplicates are dropped only in non-event tables; outliers are retained for later interpretation.",
+        "studentVle rows are consolidated by code_module, code_presentation, id_student, id_site and date; sum_click is summed and its total must remain unchanged.",
         "date_unregistration missing is retained as unknown/not-recorded and is prohibited from prediction features; it is not assumed equivalent to not Withdrawn.",
         "studentAssessment.score missing and assessment/vle unknown dates/weeks remain missing; no score/date imputation is performed.",
     ]
@@ -405,10 +440,10 @@ def build(raw_dir: Path) -> None:
             ],
         },
  
-        "feature_guard": "All *_all_time VLE/assessment aggregates are descriptive EDA/dashboard fields only. D04 prediction cutoff is unconfirmed, so they must not be used as early-model features. final_result, At_Risk and date_unregistration are prohibited model features.",
+        "feature_guard": "All *_all_time VLE/assessment aggregates are descriptive EDA/dashboard fields only and must not be used as early-model features. The local model proposal builds a separate day-105 snapshot. final_result, At_Risk and date_unregistration are prohibited model features.",
     }
     JOIN_METRICS.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"T07 processed dataset written locally to {output.relative_to(ROOT)}")
+    print(f"T07 processed dataset written to {output.relative_to(ROOT)}")
 
 
 def load_metrics(path: Path) -> dict[str, Any]:
@@ -471,18 +506,30 @@ def report() -> None:
         "", "`date_unregistration` missing không đồng nghĩa chắc chắn với không rút: trong raw có 93 lượt `Withdrawn` vẫn missing, trong khi 10.063 lượt `Withdrawn` có ngày rút. Do đó T06 giữ missing và mọi bước model phải cấm cột này.",
     ]
     lines += [
-        "", "`studentVle` là event table: duplicate event key không tự động là lỗi nghiệp vụ; nó không được dùng làm key unique của bảng phân tích. T05 kiểm tra event-key và T07 tổng hợp trước join. T06 chạy duplicate toàn cục và loại 787.170 duplicate toàn dòng; số T05 trong bảng là diagnostic theo chunk, nên không dùng nó làm số duplicate cuối cùng.",
+        "", "`studentVle` là bảng đóng góp click. Nhiều dòng cùng learner–resource–day được gom theo khóa `(code_module, code_presentation, id_student, id_site, date)` và cộng `sum_click`; không xóa chỉ vì toàn dòng giống nhau. T06 bắt buộc bảo toàn tổng click trước/sau chuẩn hóa.",
         "", "## T06 — Cleaning", "",
         "Lệnh tái tạo: `python src/oulad_pipeline.py clean data/raw`.", "",
     ]
     for rule in clean_metrics["rules"]:
         lines.append(f"- {rule}")
-    lines += ["", "| Bảng | Dòng trước | Dòng sau | Duplicate bị drop | Missing sau (tổng) |", "|---|---:|---:|---:|---:|"]
+    lines += ["", "| Bảng | Dòng trước | Dòng sau | Exact duplicate quan sát | Dòng gom theo event key | Duplicate bị xóa | Missing sau |", "|---|---:|---:|---:|---:|---:|---:|"]
     for name in FILES:
         table = clean_metrics["tables"][name]
-        lines.append(f"| `{name}` | {n(table['before']['rows'])} | {n(table['after']['rows'])} | {n(table['dropped_exact_duplicates'])} | {n(sum(table['after']['missing'].values()))} |")
+        lines.append(
+            f"| `{name}` | {n(table['before']['rows'])} | {n(table['after']['rows'])} | "
+            f"{n(table['exact_duplicate_rows_observed'])} | "
+            f"{n(table['consolidated_event_key_rows'])} | "
+            f"{n(table['dropped_exact_duplicates'])} | "
+            f"{n(sum(table['after']['missing'].values()))} |"
+        )
+    vle_clean = clean_metrics["tables"]["studentVle.csv"]
     lines += [
-        "", "Quyết định cần leader biết: `imd_band` giữ missing nullable (không thay bằng median); TV2/TV3 có thể hiển thị/encode category `Unknown` ở bước dùng dữ liệu nhưng phải ghi rõ mẫu số. D04 (cutoff dự báo) và D05 (ngưỡng nhóm) chưa chốt nên không đặt ngưỡng ở T06.",
+        "",
+        f"`studentVle.sum_click` được bảo toàn: {n(vle_clean['click_total_before'])} trước "
+        f"và {n(vle_clean['click_total_after'])} sau khi gom event key.",
+    ]
+    lines += [
+        "", "Quyết định cần leader biết: `imd_band` giữ missing nullable (không thay bằng median); TV2/TV3 có thể hiển thị/encode category `Unknown` ở bước dùng dữ liệu nhưng phải ghi rõ mẫu số. T06 không đặt ngưỡng model; bản local v4 đang đề xuất D04 cutoff ngày 105 và D05 threshold 0,415, chờ leader duyệt.",
         "", "## T07 — Join, aggregate và calculated fields", "",
         "Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.", "",
         "| Chỉ số | Kết quả |", "|---|---:|",
@@ -503,17 +550,17 @@ def report() -> None:
         f"| duplicate attempt key sau join | {n(join_metrics['joined_output_duplicate_attempt_keys'])} |",
         f"| `final_result` | {', '.join(f'{key}={value:,}' for key, value in join_metrics['final_result'].items())} |",
         f"| `At_Risk` | {', '.join(f'{key}={value:,}' for key, value in join_metrics['at_risk'].items())} |",
-        "", "`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.",
+        "", "`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Model phải dựng snapshot giới hạn cutoff riêng. Không tạo attendance, study hours, sleep hoặc previous grade giả.",
         "", "## Đánh giá điều kiện nghiệm thu Issue #5", "",
         "| Điều kiện | Trạng thái | Bằng chứng / giới hạn |", "|---|---|---|",
-        "| Pipeline tái tạo từ 7 CSV | Đạt về chạy cục bộ | Script và các lệnh trên; `clean_dataset.csv` là local/ignored. Leader cần chạy lại trước nghiệm thu. |",
-        "| Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; 787.170 duplicate toàn dòng `studentVle` được loại ở T06, event-key lặp vẫn được giữ và aggregate đúng hạt ở T07. |",
+        "| Pipeline tái tạo từ 7 CSV | Đạt về chạy cục bộ | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16. Bản hiệu chỉnh đang chờ leader duyệt trước commit. |",
+        "| Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; `studentVle` được gom theo learner–resource–day và bảo toàn tổng `sum_click`; bảng khác chỉ loại exact duplicate khi có. |",
         "| Join không nhân dòng | Đạt theo test T07 | Output cùng số dòng `studentInfo`, duplicate attempt key 0; event được aggregate trước join. |",
-        "| Dùng được cho EDA/model/Tableau | Chưa nghiệm thu | Chờ leader kiểm tra schema; D04/D05 chưa chốt nên chưa có bảng feature dự báo sớm. |",
-        "| PR merge / Issue đóng | Chưa đạt | Chưa có PR, merge hoặc nghiệm thu leader. |",
+        "| Dùng được cho EDA/Tableau và làm nền model | Đạt local có giới hạn | Bảng processed dành cho mô tả; model dùng bảng interim và feature theo cutoff, không dùng aggregate `*_all_time`. |",
+        "| Hiệu chỉnh event VLE | Chờ leader duyệt | Logic bảo toàn click, report và output local đã tái tạo; chưa commit/push. |",
         "", "## Bàn giao và giới hạn", "",
         "- TV2 nhận `clean_dataset.csv` tái tạo cục bộ cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.",
-        "- TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Chỉ TV3/leader chốt D04, D05, split và danh sách feature mô hình.",
+        "- TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Bản model local v4 đề xuất cutoff ngày 105, threshold 0,415 và split theo `id_student`; leader duyệt trước khi commit.",
         "- Không có thao tác dashboard trong T05–T07. Không có insight hay kết quả model được công bố ở đây.",
     ]
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")

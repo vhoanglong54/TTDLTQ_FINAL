@@ -82,7 +82,7 @@ Lệnh tái tạo: `python src/oulad_pipeline.py audit data/raw`.
 
 `date_unregistration` missing không đồng nghĩa chắc chắn với không rút: trong raw có 93 lượt `Withdrawn` vẫn missing, trong khi 10.063 lượt `Withdrawn` có ngày rút. Do đó T06 giữ missing và mọi bước model phải cấm cột này.
 
-`studentVle` là event table: duplicate event key không tự động là lỗi nghiệp vụ; nó không được dùng làm key unique của bảng phân tích. T05 kiểm tra event-key và T07 tổng hợp trước join. T06 chạy duplicate toàn cục và loại 787.170 duplicate toàn dòng; số T05 trong bảng là diagnostic theo chunk, nên không dùng nó làm số duplicate cuối cùng.
+`studentVle` là bảng đóng góp click. Nhiều dòng cùng learner–resource–day được gom theo khóa `(code_module, code_presentation, id_student, id_site, date)` và cộng `sum_click`; không xóa chỉ vì toàn dòng giống nhau. T06 bắt buộc bảo toàn tổng click trước/sau chuẩn hóa.
 
 ## T06 — Cleaning
 
@@ -90,21 +90,24 @@ Lệnh tái tạo: `python src/oulad_pipeline.py clean data/raw`.
 
 - Raw CSV are read only; '?' is normalized to nullable missing in interim outputs, never imputed.
 - String fields are trimmed; numeric fields are cast to nullable Int64 or Float64 according to observed values.
-- Exact full-row duplicates are dropped only if observed; outliers are retained for later interpretation.
+- Exact full-row duplicates are dropped only in non-event tables; outliers are retained for later interpretation.
+- studentVle rows are consolidated by code_module, code_presentation, id_student, id_site and date; sum_click is summed and its total must remain unchanged.
 - date_unregistration missing is retained as unknown/not-recorded and is prohibited from prediction features; it is not assumed equivalent to not Withdrawn.
 - studentAssessment.score missing and assessment/vle unknown dates/weeks remain missing; no score/date imputation is performed.
 
-| Bảng | Dòng trước | Dòng sau | Duplicate bị drop | Missing sau (tổng) |
-|---|---:|---:|---:|---:|
-| `courses.csv` | 22 | 22 | 0 | 0 |
-| `studentInfo.csv` | 32,593 | 32,593 | 0 | 1,111 |
-| `studentRegistration.csv` | 32,593 | 32,593 | 0 | 22,566 |
-| `assessments.csv` | 206 | 206 | 0 | 11 |
-| `studentAssessment.csv` | 173,912 | 173,912 | 0 | 173 |
-| `vle.csv` | 6,364 | 6,364 | 0 | 10,486 |
-| `studentVle.csv` | 10,655,280 | 9,868,110 | 787,170 | 0 |
+| Bảng | Dòng trước | Dòng sau | Exact duplicate quan sát | Dòng gom theo event key | Duplicate bị xóa | Missing sau |
+|---|---:|---:|---:|---:|---:|---:|
+| `courses.csv` | 22 | 22 | 0 | 0 | 0 | 0 |
+| `studentInfo.csv` | 32,593 | 32,593 | 0 | 0 | 0 | 1,111 |
+| `studentRegistration.csv` | 32,593 | 32,593 | 0 | 0 | 0 | 22,566 |
+| `assessments.csv` | 206 | 206 | 0 | 0 | 0 | 11 |
+| `studentAssessment.csv` | 173,912 | 173,912 | 0 | 0 | 0 | 173 |
+| `vle.csv` | 6,364 | 6,364 | 0 | 0 | 0 | 10,486 |
+| `studentVle.csv` | 10,655,280 | 8,459,320 | 787,170 | 2,195,960 | 0 | 0 |
 
-Quyết định cần leader biết: `imd_band` giữ missing nullable (không thay bằng median); TV2/TV3 có thể hiển thị/encode category `Unknown` ở bước dùng dữ liệu nhưng phải ghi rõ mẫu số. D04 (cutoff dự báo) và D05 (ngưỡng nhóm) chưa chốt nên không đặt ngưỡng ở T06.
+`studentVle.sum_click` được bảo toàn: 39,605,099 trước và 39,605,099 sau khi gom event key.
+
+Quyết định cần leader biết: `imd_band` giữ missing nullable (không thay bằng median); TV2/TV3 có thể hiển thị/encode category `Unknown` ở bước dùng dữ liệu nhưng phải ghi rõ mẫu số. T06 không đặt ngưỡng model; bản local v4 đang đề xuất D04 cutoff ngày 105 và D05 threshold 0,415, chờ leader duyệt.
 
 ## T07 — Join, aggregate và calculated fields
 
@@ -115,7 +118,7 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 | `studentInfo` | 32,593 |
 | `studentAssessment_events` | 173,912 |
 | `assessment_aggregated_attempts` | 25,843 |
-| `studentVle_events` | 9,868,110 |
+| `studentVle_events` | 8,459,320 |
 | `vle_aggregated_attempts` | 29,228 |
 | `joined_output` | 32,593 |
 | unmatched `assessment_dimension` | 0 |
@@ -130,20 +133,20 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 | `final_result` | Distinction=3,024, Fail=7,052, Pass=12,361, Withdrawn=10,156 |
 | `At_Risk` | 0=15,385, 1=17,208 |
 
-`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.
+`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Model phải dựng snapshot giới hạn cutoff riêng. Không tạo attendance, study hours, sleep hoặc previous grade giả.
 
 ## Đánh giá điều kiện nghiệm thu Issue #5
 
 | Điều kiện | Trạng thái | Bằng chứng / giới hạn |
 |---|---|---|
-| Pipeline tái tạo từ 7 CSV | Đạt | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16, có checksum và cách tái tạo. |
-| Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; 787.170 duplicate toàn dòng `studentVle` được loại ở T06, event-key lặp vẫn được giữ và aggregate đúng hạt ở T07. |
+| Pipeline tái tạo từ 7 CSV | Đạt về chạy cục bộ | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16. Bản hiệu chỉnh đang chờ leader duyệt trước commit. |
+| Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; `studentVle` được gom theo learner–resource–day và bảo toàn tổng `sum_click`; bảng khác chỉ loại exact duplicate khi có. |
 | Join không nhân dòng | Đạt theo test T07 | Output cùng số dòng `studentInfo`, duplicate attempt key 0; event được aggregate trước join. |
-| Dùng được cho EDA/Tableau và làm nền cho model | Đạt có giới hạn | Schema đã kiểm tra. D04/D05 được chốt ở T11/T13; `*_all_time` bị cấm khỏi model dự báo sớm. |
-| PR merge / Issue đóng | Đạt | PR #16–#18 đã merge; leader nghiệm thu T05–T07 và đóng Issue #5. |
+| Dùng được cho EDA/Tableau và làm nền model | Đạt local có giới hạn | Bảng processed dành cho mô tả; model dùng bảng interim và feature theo cutoff, không dùng aggregate `*_all_time`. |
+| Hiệu chỉnh event VLE | Chờ leader duyệt | Logic bảo toàn click, report và output local đã tái tạo; chưa commit/push. |
 
 ## Bàn giao và giới hạn
 
-- TV2 nhận `data/processed/clean_dataset.csv` dùng chung cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.
-- TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Chỉ TV3/leader chốt D04, D05, split và danh sách feature mô hình.
+- TV2 nhận `clean_dataset.csv` tái tạo cục bộ cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.
+- TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Bản model local v4 đề xuất cutoff ngày 105, threshold 0,415 và split theo `id_student`; leader duyệt trước khi commit.
 - Không có thao tác dashboard trong T05–T07. Không có insight hay kết quả model được công bố ở đây.

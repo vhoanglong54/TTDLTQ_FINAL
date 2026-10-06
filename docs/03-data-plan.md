@@ -16,7 +16,7 @@ Không commit 7 CSV gốc hoặc bảng interim. Đặt raw trong `data/raw/`, g
 | `assessments.csv` | Một bài đánh giá của module-presentation | `id_assessment`; đối chiếu thêm module-presentation |
 | `studentAssessment.csv` | Một bài nộp của một sinh viên | `(id_assessment, id_student)`; nối `assessments` để lấy module-presentation |
 | `vle.csv` | Một tài nguyên VLE của module-presentation | `id_site` và module-presentation; kiểm tra uniqueness thực tế |
-| `studentVle.csv` | Tương tác theo sinh viên, tài nguyên và ngày tương đối | `(code_module, code_presentation, id_student, id_site, date)` có thể lặp; **không giả định unique** |
+| `studentVle.csv` | Đóng góp click theo sinh viên, tài nguyên và ngày tương đối | Raw có thể lặp `(code_module, code_presentation, id_student, id_site, date)`; T06 gom theo khóa này và cộng `sum_click` |
 
 **Hạt bảng phân tích chính:** `(code_module, code_presentation, id_student)`. Cần tổng hợp `studentAssessment` và `studentVle` về hạt này **trước** khi nối với `studentInfo`. Nối trực tiếp hai bảng sự kiện nhiều dòng sẽ nhân bản bản ghi và sai tỷ lệ/KPI. Kiểm tra khóa, mối quan hệ, số dòng unmatched và số dòng sau join trong audit.
 
@@ -56,7 +56,7 @@ Calculated fields dự kiến, phải chốt ngưỡng bằng EDA và ghi lại 
 
 T05–T07 được chạy tái lập từ raw bằng `src/oulad_pipeline.py`; hiện vật và các lệnh tái tạo nằm trong [Data Quality Report](../reports/data-quality-report.md). Script giữ raw bất biến, ghi seven bảng interim cục bộ và build một `clean_dataset.csv` chuẩn cho EDA/dashboard.
 
-- T06 chuẩn hóa mã `?` thành nullable missing, không impute và chỉ loại duplicate **toàn dòng** khi có bằng chứng. `studentVle` giảm từ 10.655.280 xuống 9.868.110 event sau khi loại 787.170 duplicate toàn dòng; outlier IQR được giữ để diễn giải, không xóa tự động.
+- T06 chuẩn hóa mã `?` thành nullable missing, không impute và chỉ loại exact duplicate ở bảng không phải event khi có bằng chứng. `studentVle` được gom từ 10.655.280 dòng raw thành 8.459.320 khóa student–resource–day bằng cách cộng `sum_click`; tổng click giữ nguyên 39.605.099. Outlier IQR được giữ để diễn giải, không xóa tự động.
 - T07 aggregate `studentAssessment` và `studentVle` trước khi left join. Đầu ra giữ 32.593 lượt học, 0 unmatched dimension/registration/courses và 0 duplicate attempt key.
 - Hotfix Tableau 06/10/2026 chuẩn hóa `imd_band` `10-20` thành `10-20%`, thêm `imd_band_display` (`Unknown` cho missing), điền 0 có chọn lọc cho aggregate count/tổng không có event và bỏ `has_registration_record` zero variance. Không fill score summary, event day hay registration dates; không xóa outlier.
-- `*_all_time` là aggregate mô tả cho EDA/BI, không phải feature dự báo sớm. D04 (cutoff) và D05 (ngưỡng nhóm) chưa được leader chốt; `final_result`, `At_Risk` và `date_unregistration` vẫn bị cấm khỏi feature model.
+- `*_all_time` là aggregate mô tả cho EDA/BI, không phải feature dự báo sớm. Model local v4 đang đề xuất D04 cutoff ngày 105 và D05 threshold 0,415, đều chờ leader duyệt; `final_result`, `At_Risk` và `date_unregistration` vẫn bị cấm khỏi feature model.

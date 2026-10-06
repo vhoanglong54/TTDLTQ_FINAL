@@ -20,7 +20,7 @@
 
 ## Phạm vi nghiên cứu thực tế với OULAD
 
-OULAD có thông tin nhân khẩu học, vùng, `imd_band` (chỉ báo mức thiếu thốn của khu vực), lượt học, bài đánh giá, đăng ký và VLE clicks. `region` đủ để lập bản đồ phân bố theo vùng sau khi kiểm tra mapping địa lý. Dữ liệu **không ghi trực tiếp** sleep, stress, motivation, physical activity, attendance trên lớp, study hours hay điểm của học phần trước. Những mục này trong quy trình tổng quát của DOCX là gợi ý trước khi chọn data; xem phương án thay thế tại [kế hoạch dữ liệu](03-data-plan.md) và [kế hoạch phân tích](04-analysis-model-plan.md).
+OULAD có thông tin nhân khẩu học, vùng, `imd_band` (chỉ báo mức thiếu thốn của khu vực), lượt học, bài đánh giá, đăng ký và VLE clicks. `region` đủ để lập bản đồ phân bố theo vùng sau khi kiểm tra mapping địa lý. Dữ liệu **không ghi trực tiếp** sleep, stress, motivation, physical activity, attendance trên lớp, study hours hay điểm của học phần trước. Những mục này trong quy trình tổng quát của DOCX là gợi ý trước khi chọn data; xem phương án thay thế tại [kế hoạch dữ liệu](03-data-plan.md) và [đặc tả phân tích/Tableau](05-dashboard-spec.md).
 
 Không tự tạo `Average Score` hay `Grade_Change` với ý nghĩa điểm cuối khóa nếu OULAD không có điểm số đó. Có thể tính điểm bài đánh giá đã nộp với tên và mẫu số tường minh.
 

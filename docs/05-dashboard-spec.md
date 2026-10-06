@@ -27,6 +27,35 @@ Không join raw event table trong Tableau và không train model lại khi ngư�
 
 Đây là kiến trúc thông tin, không khóa số dashboard/sheet hoặc loại chart cuối.
 
+## Câu hỏi nghiên cứu theo dữ liệu OULAD
+
+| Câu hỏi trong đề cương | Cách kiểm tra trên OULAD | Điều chỉnh cần lưu ý |
+|---|---|---|
+| Phân bố kết quả? | So sánh `final_result` theo module, presentation và region. | Bổ sung region để phục vụ geographic map. |
+| Attendance/Study Hours? | Dùng VLE clicks, ngày hoạt động và loại tài nguyên làm proxy tương tác sớm. | OULAD không có attendance hoặc giờ học; không được gọi click là thời gian học. |
+| Previous Performance? | Dùng `num_of_prev_attempts` và điểm assessment sớm. | OULAD không có điểm học phần trước. |
+| Lifestyle/socioeconomic? | So sánh theo `imd_band`, age, region và disability. | Bỏ lifestyle vì không có sleep/stress; `imd_band` chỉ mô tả khu vực. |
+| Tổ hợp rủi ro? | Kết hợp VLE, assessment sớm, previous attempts và IMD. | Chỉ kết luận liên hệ quan sát, không khẳng định nhân quả. |
+| Logistic Regression? | Đánh giá khả năng nhận diện `At_Risk` trước khi khóa học kết thúc. | Quy trình và metric nằm tại [tài liệu model](04-model.md). |
+
+## Giả thuyết EDA và storytelling
+
+Các giả thuyết dưới đây là điều cần kiểm tra, chưa phải insight đã được chứng minh. Mọi kết luận phải kèm mẫu số/cỡ nhóm, missing và giới hạn diễn giải.
+
+| ID | Giả thuyết cần kiểm tra | Biến và visual phù hợp | Giới hạn chính |
+|---|---|---|---|
+| H01 | Kết quả khác nhau giữa module và presentation. | `final_result`, `At_Risk`; stacked bar theo module–presentation. | Khác biệt có thể do độ khó/cấu trúc đánh giá. |
+| H02 | Tương tác VLE sớm thấp liên hệ với At-Risk cao hơn. | Click sớm; boxplot và bar tỷ lệ At-Risk. | Click chỉ là proxy tương tác. |
+| H03 | Tương tác giảm theo tuần liên hệ với nguy cơ cao hơn. | Click theo tuần và slope; line chart theo nhóm. | Deadline assessment có thể tạo đỉnh tương tác. |
+| H04 | Nhiều lần học lại liên hệ với tỷ lệ At-Risk cao hơn. | `num_of_prev_attempts`; bar chart. | Không cho biết kết quả cụ thể của lần học trước. |
+| H05 | Điểm assessment sớm thấp liên hệ với nguy cơ cao hơn. | Điểm/nộp bài trước cutoff; histogram hoặc boxplot. | Phải nêu nhóm chưa có bài được chấm. |
+| H06 | Tương tác thấp kết hợp điểm sớm thấp tạo nhóm rủi ro cao hơn từng yếu tố riêng. | Nhóm engagement × assessment; heatmap. | Kiểm tra cỡ mẫu từng ô tổ hợp. |
+| H07 | Liên hệ giữa VLE và At-Risk khác nhau theo `imd_band`. | IMD × engagement; heatmap hoặc clustered bar. | IMD là đặc trưng khu vực, không phải thu nhập cá nhân. |
+| H08 | Đa dạng tài nguyên VLE liên hệ với kết quả tốt hơn. | Số `activity_type`; scatter/line theo At-Risk rate. | Loại tài nguyên bắt buộc và tự chọn không đồng nhất. |
+| H09 | Tỷ lệ At-Risk khác nhau giữa các region. | `region`; geographic map và bar đối chiếu. | Xác minh mapping 13/13 vùng và cỡ mẫu trước kết luận. |
+
+EDA dùng Python để kiểm tra phân bố và giả thuyết trước khi chốt inventory Tableau. Không chọn biểu đồ chỉ để đủ số lượng và không biến tương quan thành quan hệ nhân quả.
+
 ## Ràng buộc từ rubric
 
 Phương án visual sau EDA phải đáp ứng nguyên vẹn:
@@ -49,8 +78,11 @@ Python xuất dữ liệu theo đủ khóa `(code_module, code_presentation, id_
 - `dataset_split`
 - `prediction_threshold`
 - `model_version`
+- `risk_band`, `error_type`, `cutoff_day`
 
 Tableau dùng relationship theo đủ khóa hoặc một bảng dashboard đã được Python nối và kiểm tra. File mô hình `.joblib`/`.pkl` không phải data source Tableau.
+
+KPI đánh giá đọc từ `model_metrics.csv`; confusion matrix, ROC/PR, calibration và khoảng tin cậy lần lượt đọc các bảng output đã kiểm tra. Trang Prediction mặc định lọc `dataset_split = test` và phải ghi rõ cutoff 105, threshold 0,415, model version `lr-oulad-c105-s42-v4`. Khoảng tin cậy dùng `model_confidence_intervals.csv`; không tự tính lại model trong Tableau. Chỉ dùng output khi `model_verification.csv` có 9/9 dòng PASS.
 
 ## Cổng chốt visual
 

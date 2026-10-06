@@ -17,7 +17,7 @@ Không nhập bảy bảng raw vào workbook và không join bảng event nhiề
 3. Khi có kết quả T13, dùng relationship theo đủ ba khóa hoặc dùng một bảng dashboard đã được Python nối và kiểm tra trước.
 4. Đối chiếu KPI với baseline Python trước khi tạo storyline.
 
-Không đưa file mô hình `.joblib`/`.pkl` vào Tableau. Python dùng mô hình để sinh `risk_probability`, `predicted_status`, `actual_status`, `risk_band`, `threshold` và `model_version`; Tableau hiển thị các trường đó.
+Không đưa file mô hình `.joblib`/`.pkl` vào Tableau. Python dùng mô hình để sinh `risk_probability`, `predicted_status`, `actual_status`, `risk_band`, `prediction_threshold` và `model_version`; Tableau hiển thị các trường đó. Metric và khoảng tin cậy đọc từ `model_metrics.csv` và `model_confidence_intervals.csv`, mặc định lọc test.
 
 ## 3. Ranh giới quyết định hiện tại
 
