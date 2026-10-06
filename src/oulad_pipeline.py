@@ -404,7 +404,8 @@ def build(raw_dir: Path) -> None:
                 "vle_first_event_day", "vle_last_event_day",
             ],
         },
-        "feature_guard": "All *_all_time VLE/assessment aggregates are descriptive EDA/BI fields only. D04 prediction cutoff is unconfirmed, so they must not be used as early-model features. final_result, At_Risk and date_unregistration are prohibited model features.",
+ 
+        "feature_guard": "All *_all_time VLE/assessment aggregates are descriptive EDA/dashboard fields only. D04 prediction cutoff is unconfirmed, so they must not be used as early-model features. final_result, At_Risk and date_unregistration are prohibited model features.",
     }
     JOIN_METRICS.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"T07 processed dataset written locally to {output.relative_to(ROOT)}")
@@ -502,18 +503,18 @@ def report() -> None:
         f"| duplicate attempt key sau join | {n(join_metrics['joined_output_duplicate_attempt_keys'])} |",
         f"| `final_result` | {', '.join(f'{key}={value:,}' for key, value in join_metrics['final_result'].items())} |",
         f"| `At_Risk` | {', '.join(f'{key}={value:,}' for key, value in join_metrics['at_risk'].items())} |",
-        "", "`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/BI trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.",
+        "", "`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.",
         "", "## Đánh giá điều kiện nghiệm thu Issue #5", "",
         "| Điều kiện | Trạng thái | Bằng chứng / giới hạn |", "|---|---|---|",
         "| Pipeline tái tạo từ 7 CSV | Đạt về chạy cục bộ | Script và các lệnh trên; `clean_dataset.csv` là local/ignored. Leader cần chạy lại trước nghiệm thu. |",
         "| Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; 787.170 duplicate toàn dòng `studentVle` được loại ở T06, event-key lặp vẫn được giữ và aggregate đúng hạt ở T07. |",
         "| Join không nhân dòng | Đạt theo test T07 | Output cùng số dòng `studentInfo`, duplicate attempt key 0; event được aggregate trước join. |",
-        "| Dùng được cho EDA/model/Power BI | Chưa nghiệm thu | Chờ leader kiểm tra schema; D04/D05 chưa chốt nên chưa có bảng feature dự báo sớm. |",
+        "| Dùng được cho EDA/model/Tableau | Chưa nghiệm thu | Chờ leader kiểm tra schema; D04/D05 chưa chốt nên chưa có bảng feature dự báo sớm. |",
         "| PR merge / Issue đóng | Chưa đạt | Chưa có PR, merge hoặc nghiệm thu leader. |",
         "", "## Bàn giao và giới hạn", "",
         "- TV2 nhận `clean_dataset.csv` tái tạo cục bộ cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.",
         "- TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Chỉ TV3/leader chốt D04, D05, split và danh sách feature mô hình.",
-        "- Không có thao tác Power BI trong T05–T07. Không có insight hay kết quả model được công bố ở đây.",
+        "- Không có thao tác dashboard trong T05–T07. Không có insight hay kết quả model được công bố ở đây.",
     ]
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Data Quality Report written to {REPORT.relative_to(ROOT)}")

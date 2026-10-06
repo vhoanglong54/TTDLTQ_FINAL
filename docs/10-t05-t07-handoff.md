@@ -1,8 +1,8 @@
-# 10 — Bàn giao dữ liệu T05–T07 cho EDA, Power BI và model
+# 10 — Bàn giao dữ liệu T05–T07 cho EDA, Tableau và model
 
 **Nguồn bàn giao:** T05–T07 / [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5).  
 **Hạt chuẩn:** một lượt học `(code_module, code_presentation, id_student)`.  
-**Trạng thái:** pipeline đã merge vào `main`; các kết luận EDA, dashboard và model chưa được nghiệm thu trong tài liệu này.
+**Trạng thái:** T05–T07 đã được leader nghiệm thu; các kết luận EDA, dashboard và model chưa được thực hiện trong tài liệu này.
 
 ## Cách mỗi máy tái tạo dữ liệu
 
@@ -16,6 +16,7 @@ python src/oulad_pipeline.py report
 ```
 
 `data/processed/clean_dataset.csv` là input chuẩn duy nhất cho EDA/dashboard và được build lại từ raw, không chỉnh tay. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key. Chi tiết audit/cleaning/join ở [Data Quality Report](../reports/data-quality-report.md); schema đầy đủ ở [processed contract](../data/processed/README.md).
+`data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung. Kiểm tra nhanh trước khi dùng: 32.593 dòng, 35 cột, 0 duplicate attempt key và checksum trong [processed contract](../data/processed/README.md). Có thể tái tạo từ raw bằng bốn lệnh trên.
 
 ## Bàn giao cho TV2 — Issue #6, T08/T10/T11
 
@@ -43,9 +44,9 @@ python src/oulad_pipeline.py report
 - `*_all_time` được dùng EDA mô tả, nhưng không được gọi là engagement **sớm** hay dùng để suy luận dự báo trước D04.
 - Không tạo sleep/lifestyle/previous-grade giả. Khi phát hiện thiếu schema, denominator hoặc cần đổi định nghĩa nhóm, ghi vào `docs/08-decisions-and-open-questions.md` và báo TV1 trước khi chốt insight.
 
-## Bàn giao cho TV3 — Issue #7, T09/T12 Power BI
+## Bàn giao cho TV3 — Issue #7, T09/T12 Tableau
 
-### T09: dựng skeleton dữ liệu và KPI
+### T09: khởi tạo data source và baseline Tableau
 
 | Mục TV3 làm | Input/hướng dẫn | Điều TV3 cần điều chỉnh hoặc kiểm tra |
 |---|---|---|
@@ -55,13 +56,13 @@ python src/oulad_pipeline.py report
 | Result KPI | `final_result`/`Performance_Level`. | Pass Rate phải định nghĩa rõ, khuyến nghị `(Pass + Distinction) / total learning attempts`; không gọi là điểm trung bình. |
 | Assessment KPI | `assessment_score_sum_all_time`, `assessment_scored_count`. | Average Assessment Score = `SUM(score_sum) / SUM(scored_count)` nếu mẫu số > 0; **không** average `assessment_score_mean_all_time`. Nhãn phải là assessment score, không phải final score. |
 | Engagement KPI | VLE aggregate `*_all_time`. | Gọi là VLE engagement/click proxy; nêu mẫu số và không gọi attendance/study hours. |
-| Map | `region`. | Thử geocoding thật cho 13 region; nếu Power BI không nhận đúng UK regions, tạo bảng mapping có nguồn/bằng chứng, không tự gán tọa độ. |
+| Map | `region`. | Dùng GeoJSON/boundary và bảng mapping có nguồn cho đủ 13 region; không tự gán tọa độ hoặc polygon. |
 
 ### T12: dashboard v0 sau insight #6
 
 - Giữ filter context nhất quán: `code_module`, `code_presentation`, `region`; khi thêm `id_student`, ghi rõ đây là distinct learner hay attempt row.
 - Dùng insight được TV2 chốt trong #6; không lấy con số trực tiếp từ biểu đồ mà không đối chiếu Python trên cùng filter.
-- Lưu `.pbix`/link theo `dashboard/README.md`, ảnh prototype và bảng KPI/measure. Không đưa raw CSV vào Git.
+- Lưu workbook/link Tableau theo `dashboard/README.md`, ảnh prototype và bảng KPI/test. Không đưa raw CSV hoặc extract lớn chưa được duyệt vào Git.
 - Mọi chênh lệch KPI, lỗi map hoặc filter phải ghi để TV1 đối chiếu ở T15, không tự chỉnh mẫu số im lặng.
 
 ## Chuẩn bị TV3 cho Issue #8 — T13 Logistic Regression
@@ -77,10 +78,10 @@ Khi D04 được chốt, TV1 sẽ kiểm tra/bổ sung aggregate theo cutoff. Kh
 ## Điểm TV3 cần phản hồi cho TV1
 
 - Kết quả thử map `region`: nhận được/không nhận được, cách mapping và nguồn.
-- Danh sách KPI/DAX cùng định nghĩa mẫu số; nhất là Pass Rate, At-Risk Rate và Average Assessment Score.
+- Danh sách hàm KPI Python cùng định nghĩa mẫu số; nhất là Pass Rate, At-Risk Rate và Average Assessment Score.
 - Quyết định D04/D05 để TV1 tạo/kiểm tra feature đúng thời điểm.
-- Mọi cột dashboard/model cần thêm, cùng mục đích EDA/BI/model và mốc thời gian. TV1 không thêm cột giả hoặc cột có leakage.
+- Mọi cột dashboard/model cần thêm, cùng mục đích EDA/dashboard/model và mốc thời gian. TV1 không thêm cột giả hoặc cột có leakage.
 
 ## Ranh giới trách nhiệm
 
-TV1 duy trì pipeline, kiểm tra grain/schema/KPI và hỗ trợ leakage. TV2 sở hữu EDA/insight/storyline; TV3 sở hữu Power BI, model, map test và quyết định model. Leader nghiệm thu các Issue/PR; tài liệu bàn giao không phải bằng chứng TV2/TV3 đã hoàn thành task tiếp theo.
+TV1 duy trì pipeline, kiểm tra grain/schema/KPI và hỗ trợ leakage. TV2 sở hữu EDA/insight/storyline; TV3 sở hữu Tableau, model, map test và quyết định model. T05–T07 hoàn thành không đồng nghĩa các task TV2/TV3 phía sau đã hoàn thành.

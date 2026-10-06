@@ -1,6 +1,7 @@
 # Hợp đồng bàn giao bảng processed — T07
 
 `clean_dataset.csv` là **một tập processed chuẩn duy nhất** được build tái lập từ raw; không sửa bằng Excel/Tableau. Tái tạo từ raw:
+`clean_dataset.csv` được Git theo dõi để cả nhóm dùng chung theo quyết định D16. File vẫn phải tái tạo được từ raw bằng các lệnh:
 
 ```powershell
 python src/oulad_pipeline.py audit data/raw
@@ -28,7 +29,7 @@ python src/oulad_pipeline.py build data/raw
 ## Handoff guardrails
 
 - Tỷ lệ/KPI dùng mẫu số **lượt học**, không suy ra số sinh viên unique nếu chưa deduplicate theo `id_student` theo định nghĩa riêng.
-- `*_all_time` chỉ là aggregate mô tả cho EDA/BI. D04 chưa chốt nên không dùng chúng làm feature dự báo sớm.
+- `*_all_time` chỉ là aggregate mô tả cho EDA/dashboard. D04 chưa chốt nên không dùng chúng làm feature dự báo sớm.
 - Với Average Assessment Score theo filter, dùng `SUM(assessment_score_sum_all_time) / SUM(assessment_scored_count)` khi mẫu số lớn hơn 0; không dùng trung bình trực tiếp của `assessment_score_mean_all_time` vì sẽ sai trọng số.
 - Tuyệt đối loại khỏi model feature: `final_result`, `At_Risk`, `date_unregistration` và bất cứ assessment/VLE nào sau cutoff được leader chốt.
 - `imd_band` được chuẩn hóa `10-20` → `10-20%`; raw không thay đổi. `imd_band` missing vẫn nullable, còn `imd_band_display` dùng `Unknown` cho Tableau; không tự diễn giải là thu nhập cá nhân.

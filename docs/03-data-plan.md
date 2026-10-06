@@ -4,7 +4,7 @@
 
 Nguồn chọn trong DOCX là **OULAD**. Tải từ [Open University](https://research.stem.open.ac.uk/ouanalyse/dataset/) hoặc [UCI](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset); ghi URL cụ thể, ngày tải và checksum trong Data Quality Report. UCI công bố giấy phép **CC BY 4.0**; báo cáo cần trích dẫn cả nguồn dữ liệu và [bài mô tả](https://www.nature.com/articles/sdata2017171). Theo bài mô tả, `studentInfo` có 32.593 dòng và `studentVle` có 10.655.280 dòng; nhóm phải kiểm tra lại kích thước các file thực tế khi nghiệm thu task dữ liệu.
 
-Không commit CSV vào repo. Đặt 7 file gốc trong `data/raw/`, giữ nguyên tên; script sẽ tạo `data/interim/` và `data/processed/` có thể tái tạo.
+Không commit 7 CSV gốc hoặc bảng interim. Đặt raw trong `data/raw/`, giữ nguyên tên. Nhóm theo dõi duy nhất `data/processed/clean_dataset.csv` để dùng chung theo D16; các output khác phải tái tạo bằng script và không commit.
 
 ## 7 bảng và hạt dữ liệu
 
@@ -48,7 +48,7 @@ Calculated fields dự kiến, phải chốt ngưỡng bằng EDA và ghi lại 
 2. Phân biệt missing có cấu trúc (`date_unregistration` trống khi không rút, bài không nộp không có dòng) với lỗi dữ liệu; ghi lý do drop/impute/giữ nguyên.
 3. Chuẩn hóa kiểu cho ngày **tương đối** và chuỗi; kiểm tra score `[0,100]`, clicks không âm, khóa không null, thời gian phù hợp. Outlier được xem xét theo nghiệp vụ, không xóa máy móc.
 4. Nối các dimension và tổng hợp sự kiện theo hạt mục tiêu; kiểm tra cardinality, unmatched keys, số dòng và phân bố kết quả trước/sau.
-5. Tạo calculated fields và bảng cho EDA/Power BI/model; lưu data dictionary và Data Quality Report.
+5. Tạo calculated fields và bảng cho EDA/Tableau/model; lưu data dictionary và Data Quality Report.
 
 Đầu ra theo DOCX: `notebooks/01_data_audit.ipynb`, `notebooks/02_cleaning.ipynb`, `data/processed/clean_dataset.csv`, Data Quality Report. Script trong `src/` là nguồn tái tạo; không sửa CSV thủ công trong Excel/Tableau.
 

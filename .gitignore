@@ -1,8 +1,12 @@
 # Dữ liệu tải về, các bảng trung gian và kết quả sinh tự động
 data/raw/**
 data/interim/**
+data/processed/**
 !data/raw/.gitkeep
 !data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/processed/README.md
+!data/processed/clean_dataset.csv
 reports/figures/generated/**
 !reports/figures/generated/.gitkeep
 
@@ -15,8 +19,12 @@ venv/
 *.egg-info/
 .pytest_cache/
 
+# Tableau — file phục hồi/cục bộ; workbook chính chỉ thêm khi T09 có hiện vật
+*.twbr
+~$*.twb
+~$*.twbx
+
 # Hệ điều hành / biên tập
 .DS_Store
 Thumbs.db
 ~$*.docx
-~$*.pbix

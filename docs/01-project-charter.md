@@ -2,7 +2,7 @@
 
 ## Bài toán và kết quả mong muốn
 
-Đề tài theo `TTDLTQ_script.docx`: **Nghiên cứu và phân tích các yếu tố ảnh hưởng đến kết quả học tập của sinh viên đại học**. Hướng đã chốt: mô tả kết quả học tập → tìm yếu tố liên quan → xem tương tác giữa nhiều yếu tố → nhận diện nhóm rủi ro → dự báo `At_Risk` → kể chuyện bằng Power BI. Vì dữ liệu là quan sát, phần phân tích dùng từ **liên hệ/khác biệt**, không kết luận tác động nhân quả.
+Đề tài theo `TTDLTQ_script.docx`: **Nghiên cứu và phân tích các yếu tố ảnh hưởng đến kết quả học tập của sinh viên đại học**. Hướng đã chốt: mô tả kết quả học tập → tìm yếu tố liên quan → xem tương tác giữa nhiều yếu tố → nhận diện nhóm rủi ro → dự báo `At_Risk` → kể chuyện bằng dashboard Tableau. Vì dữ liệu là quan sát, phần phân tích dùng từ **liên hệ/khác biệt**, không kết luận tác động nhân quả.
 
 Đơn vị phân tích chính là một **lượt học module-presentation của một sinh viên**. Kết quả gốc là `final_result` với bốn lớp `Pass`, `Distinction`, `Fail`, `Withdrawn`; nhãn mô hình là `At_Risk = 1` cho `Fail/Withdrawn`, `0` cho `Pass/Distinction`. Đây là kết quả **cuối khóa**; dự báo sớm cần chốt thời điểm chỉ dùng dữ liệu đã xuất hiện trước thời điểm đó.
 
@@ -13,9 +13,9 @@
 | Dữ liệu | OULAD, 7 bảng CSV liên kết, hơn 5.000 dòng, có `region`, nguồn học thuật rõ |
 | Xử lý/EDA | Python, Pandas/NumPy, Matplotlib/Seaborn |
 | Dự báo | scikit-learn Logistic Regression, xác suất rủi ro và phân lớp |
-| Trực quan tương tác | Power BI, 4 trang: Overview, Factor Analysis, Risk Analysis, Prediction |
+| Trực quan tương tác | Tableau; bốn phần nội dung dự kiến: Overview, Factor Analysis, Risk Analysis, Prediction. Loại biểu đồ cụ thể chưa chốt. |
 | Trọng tâm phân tích | Tương tác các yếu tố, risk profile, hành vi VLE theo thời gian |
-| Nhóm | TV1 Data, TV2 Analysis, TV3 BI + Model; leader điều phối, kiểm tra và nghiệm thu |
+| Nhóm | TV1 Data, TV2 Analysis, TV3 Dashboard + Model; leader điều phối, kiểm tra và nghiệm thu |
 | Điều phối | Task theo quan hệ phụ thuộc; nhóm tự quản lý lịch và deadline |
 
 ## Phạm vi nghiên cứu thực tế với OULAD

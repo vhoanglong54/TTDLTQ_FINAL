@@ -1,20 +1,16 @@
-## Task
+Closes #ISSUE_NUMBER
 
-ID: TXX
+## Tóm tắt
 
-Owner: TV?
+- Task: TXX
+- Owner: TV?
+- Thay đổi chính:
 
-## Thay đổi và lý do
-
-
-## Bằng chứng kiểm tra
+## Bằng chứng
 
 - Dữ liệu/khóa/mẫu số hoặc chart/model tương ứng:
 - Lệnh chạy, ảnh, bảng QA hoặc trang báo cáo:
 
-## Checklist
+## Leader
 
-- [ ] Khớp tiêu chí nghiệm thu trong `docs/06-tasks-and-dependencies.md` và rubric liên quan.
-- [ ] Tài liệu, data dictionary hoặc decision log liên quan đã cập nhật.
-- [ ] Không commit dữ liệu thô/output lớn; không có feature sau mốc dự báo.
-- [ ] Leader đã kiểm tra bằng chứng và quyết định merge.
+- [ ] Đầu ra và bằng chứng đạt yêu cầu; merge PR này đồng thời nghiệm thu và đóng Issue.

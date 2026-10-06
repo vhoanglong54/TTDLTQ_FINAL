@@ -59,7 +59,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 |---|---|---|---|
 | `code_module`, `code_presentation`, `id_student` | string, string, integer | 0/0; `id_student` 3.733–2.716.795 | Khóa lượt học; không ghép định danh ngoài OULAD. |
 | `gender` | string | `F`, `M`; 0/0 | Background/EDA; feature chỉ khi duyệt fairness. |
-| `region` | string | 13 vùng; 0/0 | Vùng cư trú; map/EDA, geocoding cần T04/T09. |
+| `region` | string | 13 vùng; 0/0 | Vùng cư trú; map/EDA, GeoJSON mapping cần T04/T09. |
 | `highest_education` | string | 5 mức; 0/0 | Trình độ đầu vào; background/EDA. |
 | `imd_band` | string | 10 band; 0/1.111 | Thiếu thốn **khu vực**, không là thu nhập cá nhân. Trong processed, chuẩn hóa literal raw `10-20` thành `10-20%` để tránh bị Excel/Tableau hiểu là ngày. |
 | `age_band` | string | `0-35`, `35-55`, `55<=`; 0/0 | Nhóm tuổi; background/EDA. |
@@ -130,7 +130,7 @@ Ký hiệu missing trong bảng là `blank / ?`. Vai trò “feature tiềm năn
 | Kết quả | `final_result` | `At_Risk`, `Performance_Level` đã tạo | Nhãn, không feature. |
 | Background/EDA | gender, region, education, imd, age, attempts, credits, disability | — | Insight là liên hệ quan sát, nêu mẫu số/missing. |
 | Assessment | type/date/weight/submission/banked/score | count, score sum/mean all-time, late/banked count đã tạo; theo cutoff chưa tạo | Chỉ event trước mốc; score không là final grade. |
-| VLE | activity_type/date/sum_click | click, active days, resource/activity diversity all-time đã tạo; early engagement chưa tạo | `*_all_time` chỉ EDA/BI khi D04 chưa chốt; click là proxy. |
+| VLE | activity_type/date/sum_click | click, active days, resource/activity diversity all-time đã tạo; early engagement chưa tạo | `*_all_time` chỉ EDA/dashboard khi D04 chưa chốt; click là proxy. |
 | Map | region | At-Risk rate / result distribution | TV3 xác minh map/cỡ mẫu. |
 
 OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation hay previous grade. Không tạo cột giả. `Risk_Probability`, `Predicted_Status`, `Risk_Band` là đầu ra T13, không có raw.
@@ -141,7 +141,7 @@ OULAD không đo trực tiếp attendance, study hours, sleep, stress/motivation
 | T07 | Aggregate event, kiểm tra cardinality/số dòng/phân bố trước–sau join, mẫu số KPI và feature. |
 | T13 | Chốt mốc/cửa sổ/split/encoding; kiểm leakage từ label, withdrawal và event tương lai. |
 
-## Cập nhật T05–T07 (chờ leader nghiệm thu)
+## Cập nhật T05–T07 (đã nghiệm thu)
 
 Hiện vật [Data Quality Report](../reports/data-quality-report.md) ghi dữ liệu thực, script và lệnh chạy. T07 aggregate `studentAssessment` thành 25.843 và `studentVle` thành 29.228 attempt có event rồi left join vào 32.593 lượt học của `studentInfo`; output 0 duplicate attempt key, 0 unmatched assessment/VLE dimension/registration/courses. Hotfix Tableau chuẩn hóa `imd_band`, thêm `imd_band_display`, fill 0 có chọn lọc cho count/tổng event và bỏ `has_registration_record` zero variance. Đây là bảng mô tả sạch tái tạo, không phải snapshot feature dự báo sớm: D04/D05 vẫn cần leader chốt.
 

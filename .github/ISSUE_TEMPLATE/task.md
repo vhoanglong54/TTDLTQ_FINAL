@@ -10,6 +10,8 @@ assignees: []
 
 **Owner:** TV?
 
+**Nhánh:** `role/TXX-ten-ngan`
+
 **Phụ thuộc:** T??
 **Rubric liên quan:**
 
@@ -17,13 +19,12 @@ assignees: []
 
 - [ ]
 
-## Hiện vật và đường dẫn
+## Đầu ra cần bàn giao
 
 -
 
-## Điều kiện nghiệm thu / bằng chứng
+## Bằng chứng để leader kiểm tra
 
-- [ ] Số liệu, khóa và mẫu số đã đối chiếu nếu liên quan dữ liệu.
-- [ ] Chart/model/dashboard được kiểm tra theo rubric nếu liên quan.
-- [ ] Data dictionary/Insight Log/decision log đã cập nhật nếu định nghĩa thay đổi.
-- [ ] Leader đã kiểm tra bằng chứng và quyết định nghiệm thu.
+- [ ] Đường dẫn hiện vật.
+- [ ] Lệnh chạy, số liệu, ảnh hoặc bảng QA phù hợp.
+- [ ] Tiêu chí rubric liên quan đã được đối chiếu.

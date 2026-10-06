@@ -11,10 +11,10 @@ Rubric yêu cầu báo cáo khoa học **ít nhất 40 trang**, demo chạy tr�
 | EDA & Insights | 3–5 biểu đồ tĩnh tối thiểu, 8–10 hypothesis, 5–7 insight, interaction và storytelling | TV2 |
 | Dashboard | Layout 4 trang, logic chọn ≥8 chart, map, luồng lọc/drill/tooltip/cross-filter, QA | TV3 |
 | Regression & Prediction | Target, mốc thời gian, feature, split, Logistic Regression, metric, ngưỡng, hạn chế và chart dự báo | TV3 |
-| Installation & Demo | Cách lấy data/tái tạo bảng/chạy Power BI, kịch bản demo, link video backup | TV3 + cả nhóm |
+| Installation & Demo | Cách lấy data/tái tạo bảng/mở workbook Tableau, kịch bản demo, link video backup | TV3 + cả nhóm |
 | Conclusion & References | Kết quả chính, giới hạn, hướng phát triển, tài liệu tham khảo chuẩn IEEE | Cả 3 |
 
-Chèn sơ đồ pipeline **bài toán → nguồn OULAD → audit → cleaning → join/feature → EDA/interaction → insight/risk profile → Logistic Regression → Power BI → báo cáo/demo**. Trình bày mã hoặc pseudocode đủ để giải thích quyết định xử lý, cách tính KPI và logic mô hình; hình/chart có caption, nguồn và lý do chọn.
+Chèn sơ đồ pipeline **bài toán → nguồn OULAD → audit → cleaning → join/feature → EDA/interaction → insight/risk profile → Logistic Regression → Tableau → báo cáo/demo**. Trình bày mã hoặc pseudocode đủ để giải thích quyết định xử lý, cách tính KPI, relationship/calculated field/cross-filter và logic mô hình; hình/chart có caption, nguồn và lý do chọn.
 
 ## Kịch bản demo đề xuất
 
@@ -26,4 +26,4 @@ Chèn sơ đồ pipeline **bài toán → nguồn OULAD → audit → cleaning �
 
 ## Vấn đáp
 
-Mỗi người cần tự diễn giải: nguồn/giấy phép và khóa nối; cleaning và lý do giữ/xử lý missing; cách tính KPI; phân biệt association với causation; feature proxy; lý do tránh leakage; split và metric; thao tác Power BI. Tập thử câu hỏi chéo giữa TV1, TV2 và TV3. DOCX lưu ý bảo vệ tại lớp có thể quyết định điểm: trả lời yếu/ỷ lại hoặc dùng code/dashboard không hiểu có thể bị trừ tối đa 4 điểm, vi phạm liêm chính có thể bị hủy kết quả.
+Mỗi người cần tự diễn giải: nguồn/giấy phép và khóa nối; cleaning và lý do giữ/xử lý missing; cách tính KPI; phân biệt association với causation; feature proxy; lý do tránh leakage; split và metric; cách filter/drill/cross-filter được lập trình. Tập thử câu hỏi chéo giữa TV1, TV2 và TV3. DOCX lưu ý bảo vệ tại lớp có thể quyết định điểm: trả lời yếu/ỷ lại hoặc dùng code/dashboard không hiểu có thể bị trừ tối đa 4 điểm, vi phạm liêm chính có thể bị hủy kết quả.
