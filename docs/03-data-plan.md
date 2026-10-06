@@ -48,7 +48,7 @@ Calculated fields dự kiến, phải chốt ngưỡng bằng EDA và ghi lại 
 2. Phân biệt missing có cấu trúc (`date_unregistration` trống khi không rút, bài không nộp không có dòng) với lỗi dữ liệu; ghi lý do drop/impute/giữ nguyên.
 3. Chuẩn hóa kiểu cho ngày **tương đối** và chuỗi; kiểm tra score `[0,100]`, clicks không âm, khóa không null, thời gian phù hợp. Outlier được xem xét theo nghiệp vụ, không xóa máy móc.
 4. Nối các dimension và tổng hợp sự kiện theo hạt mục tiêu; kiểm tra cardinality, unmatched keys, số dòng và phân bố kết quả trước/sau.
-5. Tạo calculated fields và bảng cho EDA/Power BI/model; lưu data dictionary và Data Quality Report.
+5. Tạo calculated fields và bảng cho EDA/Tableau/model; lưu data dictionary và Data Quality Report.
 
 Đầu ra theo DOCX: `notebooks/01_data_audit.ipynb`, `notebooks/02_cleaning.ipynb`, `data/processed/clean_dataset.csv` (file cục bộ), Data Quality Report. Script trong `src/` sẽ là nguồn tái tạo khi bước này được triển khai.
 
@@ -58,4 +58,4 @@ T05–T07 đã được chạy cục bộ ngày 04/10/2026 bằng `src/oulad_pip
 
 - T06 chuẩn hóa mã `?` thành nullable missing, không impute và chỉ loại duplicate **toàn dòng** khi có bằng chứng. `studentVle` giảm từ 10.655.280 xuống 9.868.110 event sau khi loại 787.170 duplicate toàn dòng; outlier IQR được giữ để diễn giải, không xóa tự động.
 - T07 aggregate `studentAssessment` và `studentVle` trước khi left join. Đầu ra giữ 32.593 lượt học, 0 unmatched dimension/registration/courses và 0 duplicate attempt key.
-- `*_all_time` là aggregate mô tả cho EDA/BI, không phải feature dự báo sớm. D04 (cutoff) và D05 (ngưỡng nhóm) chưa được leader chốt; `final_result`, `At_Risk` và `date_unregistration` vẫn bị cấm khỏi feature model.
+- `*_all_time` là aggregate mô tả cho EDA/dashboard, không phải feature dự báo sớm. D04 (cutoff) và D05 (ngưỡng nhóm) chưa được leader chốt; `final_result`, `At_Risk` và `date_unregistration` vẫn bị cấm khỏi feature model.

@@ -19,8 +19,12 @@ venv/
 *.egg-info/
 .pytest_cache/
 
+# Tableau — file phục hồi/cục bộ; workbook chính chỉ thêm khi T09 có hiện vật
+*.twbr
+~$*.twb
+~$*.twbx
+
 # Hệ điều hành / biên tập
 .DS_Store
 Thumbs.db
 ~$*.docx
-~$*.pbix

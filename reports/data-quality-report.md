@@ -126,7 +126,7 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 | `final_result` | Distinction=3,024, Fail=7,052, Pass=12,361, Withdrawn=10,156 |
 | `At_Risk` | 0=15,385, 1=17,208 |
 
-`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/BI trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.
+`At_Risk = 1` cho `Fail`/`Withdrawn`; `0` cho `Pass`/`Distinction`. `Performance_Level` giữ bốn lớp kết quả. Các aggregate `*_all_time` chỉ dành cho mô tả/EDA/dashboard trước khi D04 được chốt; tuyệt đối không đưa chúng vào mô hình dự báo sớm. Không tạo attendance, study hours, sleep hoặc previous grade giả.
 
 ## Đánh giá điều kiện nghiệm thu Issue #5
 
@@ -135,11 +135,11 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 | Pipeline tái tạo từ 7 CSV | Đạt | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16, có checksum và cách tái tạo. |
 | Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; 787.170 duplicate toàn dòng `studentVle` được loại ở T06, event-key lặp vẫn được giữ và aggregate đúng hạt ở T07. |
 | Join không nhân dòng | Đạt theo test T07 | Output cùng số dòng `studentInfo`, duplicate attempt key 0; event được aggregate trước join. |
-| Dùng được cho EDA/Power BI và làm nền cho model | Đạt có giới hạn | Schema đã kiểm tra. D04/D05 được chốt ở T11/T13; `*_all_time` bị cấm khỏi model dự báo sớm. |
+| Dùng được cho EDA/Tableau và làm nền cho model | Đạt có giới hạn | Schema đã kiểm tra. D04/D05 được chốt ở T11/T13; `*_all_time` bị cấm khỏi model dự báo sớm. |
 | PR merge / Issue đóng | Đạt | PR #16–#18 đã merge; leader nghiệm thu T05–T07 và đóng Issue #5. |
 
 ## Bàn giao và giới hạn
 
 - TV2 nhận `data/processed/clean_dataset.csv` dùng chung cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.
 - TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Chỉ TV3/leader chốt D04, D05, split và danh sách feature mô hình.
-- Không có thao tác Power BI trong T05–T07. Không có insight hay kết quả model được công bố ở đây.
+- Không có thao tác dashboard trong T05–T07. Không có insight hay kết quả model được công bố ở đây.

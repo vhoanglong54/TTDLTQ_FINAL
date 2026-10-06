@@ -6,7 +6,7 @@ T01–T07 đã nghiệm thu. **Issue tiếp theo của TV1:** [#9 — T15 QA das
 
 ## Mục tiêu và quy tắc xuyên suốt
 
-TV1 chịu trách nhiệm nguồn OULAD, data dictionary, audit, cleaning, join, feature engineering, đối chiếu số liệu Power BI và phần Data của báo cáo. TV1 hỗ trợ EDA, feature cho mô hình và demo; TV2 sở hữu insight/EDA, TV3 sở hữu Logistic Regression/Power BI. Áp dụng một Issue → một nhánh → một PR có bằng chứng → leader merge → Issue đóng ngay.
+TV1 chịu trách nhiệm nguồn OULAD, data dictionary, audit, cleaning, join, feature engineering, đối chiếu số liệu dashboard và phần Data của báo cáo. TV1 hỗ trợ EDA, feature cho mô hình và demo; TV2 sở hữu insight/EDA, TV3 sở hữu Logistic Regression/Tableau. Áp dụng một Issue → một nhánh → một PR có bằng chứng → leader merge → Issue đóng ngay.
 
 - Dữ liệu gốc gồm **7 CSV OULAD**. Hạt bảng phân tích chính là **một lượt học** theo `(code_module, code_presentation, id_student)`; không đồng nhất lượt học với số sinh viên duy nhất.
 - `At_Risk = 1` cho `Fail/Withdrawn`, `0` cho `Pass/Distinction`. `final_result` và `At_Risk` chỉ là nhãn/kết quả; không đưa dữ liệu sau mốc dự báo vào feature.
@@ -23,10 +23,10 @@ flowchart LR
     D --> E["T07 · Tổng hợp sự kiện, join và feature"]
     E --> F["Cổng dữ liệu: schema, khóa, số dòng, leader nghiệm thu"]
     F --> G["TV2 · T08/T10 EDA và insight"]
-    F --> H["TV3 · T09/T13 BI và mô hình"]
+    F --> H["TV3 · T09/T13 dashboard và mô hình"]
     G --> I["T17 · Phần Data trong báo cáo"]
     H --> J["TV3 · T14 dashboard"]
-    J --> K["T15 · TV1 đối chiếu Python với Power BI"]
+    J --> K["T15 · TV1 đối chiếu giao diện với hàm Python"]
     I --> L["T20/T22 · Báo cáo, demo và vấn đáp chung"]
     K --> L
 ```
@@ -40,7 +40,7 @@ Riêng T02, có thể chuẩn bị khung `docs/09-data-dictionary.md` khi T01 c�
 | Issue / phần TV1 | Branch và thời điểm được phép làm | Hiện vật/bàn giao bắt buộc | Trạng thái thực tế |
 |---|---|---|---|
 | [#5 — T05–T07 Data pipeline](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5) | `data/T05-T07-data-pipeline` | Audit, cleaning, aggregate/join, processed contract, `clean_dataset.csv` và test | **Đã nghiệm thu; Issue đóng** |
-| [#9 — T15 QA Python/Power BI](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Branch sẽ là `bi-model/T14-T16-T21-dashboard-qa`, chỉ tạo sau #7/#8; dùng output đã chốt của #5/#6 | Bảng QA tại `dashboard/`: filter, KPI/count/ratio, join, region, model output, chênh lệch và ảnh bằng chứng | Bị phụ thuộc #5/#6/#7/#8 |
+| [#9 — T15 QA dashboard/Python](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Branch sẽ là `bi-model/T14-T16-T21-dashboard-qa`, chỉ tạo sau #7/#8; dùng output đã chốt của #5/#6 | Bảng QA tại `dashboard/`: filter, KPI/count/ratio, join, region, model output, chênh lệch và ảnh bằng chứng | Bị phụ thuộc #5/#6/#7/#8 |
 | [#10 — T17 phần Data báo cáo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Branch sẽ là `docs/T17-T22-report-demo` khi #5/#6/#8/#9 ổn định; chỉ có thể chuẩn bị outline sớm | Dataset, dictionary, preprocessing, pipeline, Data Quality Report, sơ đồ và trích dẫn IEEE | Chờ output T07; chưa viết kết quả chưa chạy |
 | [#10 — T20/T22 phần chung](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cùng branch báo cáo; sau các hiện vật data/EDA/model/dashboard | Bằng chứng rubric, phần TV1 giải thích được, slide/demo/video/vấn đáp cùng nhóm | Chờ các task đầu vào |
 
@@ -53,12 +53,12 @@ Trạng thái dùng thống nhất: `Chưa bắt đầu` → `Đang làm` → `C
 | Giai đoạn / task | Nội dung và hướng dẫn thực hiện | Việc thủ công cần ghi rõ | Input | Output và điều kiện kiểm tra | Phụ thuộc; bàn giao cho | Trạng thái | Ghi chú |
 |---|---|---|---|---|---|---|---|
 | 1. Xác minh nguồn — **T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1)** | Đã kiểm kê 7 CSV tại `data/raw/` bằng `src/verify_oulad_source.py`: tên, số dòng, số cột, SHA-256, header khóa, `final_result` và `region` nằm trong [data/README.md](../data/README.md). Đối chiếu nguồn [UCI](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset)/Open University; cập nhật giới hạn nguồn tại decision log. | Đã extract/kiểm kê; không commit CSV gốc. Ngày tải archive chính xác chưa có bằng chứng cục bộ. | 7 CSV cục bộ, `OULAD.names`, trang UCI. | `data/README.md` có bảng kiểm kê và lệnh tái tạo; test 7/7 header đạt, 10.900.970 dòng tổng, ≥5.000 dòng, ≥3 bảng nối được, có `final_result` và `region`. | T01 đã đóng; bàn giao T02, T03, T04. | Đã nghiệm thu theo Issue #1 | `OULAD.names` và CSV có chênh lệch 32.953/32.593, theo dõi D11. |
-| 2. Hợp đồng dữ liệu — **T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2)** | Lập từ điển từ 7 CSV thực: đủ 43 cột, dtype, nghĩa, giá trị/missing, vai trò, hạt/khóa, sơ đồ và biến bàn giao; tổng hợp hai bảng event trước join. | **Không còn thao tác thủ công**; không commit raw. | T01 đã closed; 7 CSV `data/raw/`, [data plan](../docs/03-data-plan.md). | [docs/09-data-dictionary.md](../docs/09-data-dictionary.md), link từ `data/README.md`, script `src/profile_oulad_contract.py`; test schema/key/join. | Bàn giao TV2 dùng cho phân tích, TV3 dùng cho BI/model; đầu ra T05/T07. | Đã nghiệm thu | PR #13 đã merge; 7 bảng/43 cột, candidate keys PASS và 9 kiểm tra quan hệ/khóa đều 0 lỗi. |
+| 2. Hợp đồng dữ liệu — **T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2)** | Lập từ điển từ 7 CSV thực: đủ 43 cột, dtype, nghĩa, giá trị/missing, vai trò, hạt/khóa, sơ đồ và biến bàn giao; tổng hợp hai bảng event trước join. | **Không còn thao tác thủ công**; không commit raw. | T01 đã closed; 7 CSV `data/raw/`, [data plan](../docs/03-data-plan.md). | [docs/09-data-dictionary.md](../docs/09-data-dictionary.md), link từ `data/README.md`, script `src/profile_oulad_contract.py`; test schema/key/join. | Bàn giao TV2 dùng cho phân tích, TV3 dùng cho dashboard/model; đầu ra T05/T07. | Đã nghiệm thu | PR #13 đã merge; 7 bảng/43 cột, candidate keys PASS và 9 kiểm tra quan hệ/khóa đều 0 lỗi. |
 | 3. Audit — **T05** | Audit 7 bảng: shape, type, missing, duplicate, khóa, outlier và category. | — | T01–T02, 7 CSV raw | Notebook, script và Data Quality Report. | Bàn giao T06/TV2/TV3. | Đã nghiệm thu | `imd_band` có 1.111 `?`; event-key lặp đã giải thích. |
 | 4. Cleaning — **T06** | Chuyển `?` thành nullable missing, loại full-row duplicate có bằng chứng, giữ outlier nghiệp vụ và raw bất biến. | — | T05 | Script, notebook và số liệu trước–sau. | Bàn giao T07. | Đã nghiệm thu | Loại 787.170 duplicate toàn dòng `studentVle`. |
 | 5. Join, feature — **T07 / [#5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5)** | Aggregate hai bảng sự kiện trước khi join về hạt lượt học; tạo calculated fields mô tả. | — | T06 | `data/processed/clean_dataset.csv`, contract và test join. | Bàn giao TV2 T08/T10 và TV3 T09/T13. | Đã nghiệm thu | 32.593 dòng, 0 duplicate key/unmatched; D04/D05 chốt ở T11/T13. |
 | 6. Hỗ trợ phân tích/model — **#7/T09, #8/T13, T08/T10/T18** | Bàn giao schema processed, hạt, mẫu số KPI, `region`/map fields; kiểm tra feature availability, split và leakage khi cần. | **Có:** làm rõ thay đổi schema/mốc/ngưỡng. | Output T07 và yêu cầu owner. | Contract, bảng đối chiếu hoặc decision log. | Không thay owner TV2/TV3. | Chưa bắt đầu | T03 đã nghiệm thu; EDA/model chưa bắt đầu. |
-| 7. QA dashboard — **T15 / [#9](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9)** | Trên cùng filter module/presentation/region, so Python với Power BI: số lượt học, distinct students (nếu có), 4 lớp kết quả, pass/at-risk rate, region và đầu ra model. Điều tra lệch do join, mẫu số hoặc filter. | **Có:** mở Power BI, thử filter/tooltip/map và lưu ảnh hoặc bảng bằng chứng. | Dashboard T14, output T07/T13; #5/#6/#7/#8 đã nghiệm thu. | Bảng QA tại `dashboard/` có giá trị hai bên, chênh lệch, kết luận và đường dẫn ảnh; không chấp nhận lệch chưa giải thích. | T21/leader sửa dashboard; cả nhóm dùng cho demo. | Chưa bắt đầu | Chỉ tạo branch `bi-model/T14-T16-T21-dashboard-qa` khi phụ thuộc đạt; output model theo khóa lượt học. |
+| 7. QA dashboard — **T15 / [#9](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9)** | Trên cùng filter module/presentation/region, so Tableau với baseline Python độc lập: số lượt học, distinct students, 4 lớp kết quả, pass/at-risk rate, region và đầu ra model. Điều tra lệch do aggregate, mẫu số hoặc relationship. | **Có:** mở workbook Tableau, thử filter/tooltip/map và lưu ảnh hoặc bảng bằng chứng. | Dashboard T14, output T07/T13; #5/#6/#7/#8 đã nghiệm thu. | Bảng QA tại `dashboard/` có giá trị hai bên, chênh lệch, kết luận và đường dẫn ảnh; không chấp nhận lệch chưa giải thích. | T21/leader sửa dashboard; cả nhóm dùng cho demo. | Chưa bắt đầu | Chỉ tạo branch `bi-model/T14-T16-T21-dashboard-qa` khi phụ thuộc đạt; output model theo khóa lượt học. |
 | 8. Viết phần Data — **T17 / [#10](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10)** | Viết Dataset, nguồn/license, 7 bảng, hạt/khóa, dictionary, audit, cleaning, join, feature, QA và sơ đồ pipeline; trích dẫn IEEE và nêu giới hạn. | **Có:** chọn bảng/hình minh họa, kiểm tra câu chữ, số liệu và trích dẫn. | T07 cùng Data Quality Report, dictionary và mã; bản ổn định của #5/#6/#8/#9. | Phần Data có đường dẫn trong `reports/`, số liệu khớp hiện vật, đủ để ghép báo cáo ≥40 trang. | Bàn giao cả nhóm cho T20. | Chưa bắt đầu | Có thể chuẩn bị outline, không viết số liệu/kết quả chưa chạy; branch báo cáo tạo sau các phụ thuộc. |
 | 9. Tích hợp và bảo vệ — **T20, T22 / [#10](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10)** | Đối chiếu báo cáo, link video và bằng chứng rubric; tập giải thích nguồn, khóa, cleaning, KPI, proxy, leakage và luồng dashboard. | **Có:** diễn tập vấn đáp và xác nhận phần trình bày cuối với cả nhóm. | T17–T21 và bản báo cáo/demo. | Phần Data chính xác, bằng chứng rubric đủ và sẵn sàng giải thích khi vấn đáp. | Theo phụ thuộc T20/T22; bàn giao cả nhóm. | Chưa bắt đầu | T20/T22 là trách nhiệm chung; TV1 thực hiện T17 và T15 trước khi tích hợp. |
 
@@ -93,7 +93,7 @@ Trước khi sửa, đọc README.md, AGENTS.md, CONTRIBUTING.md, docs/source/TT
 Input đã đạt: T01/#1 và T02/#2 đã được leader nghiệm thu; 7 CSV raw bất biến tại `data/raw/`; hợp đồng 7 bảng/43 cột tại `docs/09-data-dictionary.md`; D13 ghi nhận missing mã hóa `?`. Không coi số liệu từ website là số liệu kiểm kê file cục bộ.
 
 Mục tiêu: [trích đúng yêu cầu của T05, T06 hoặc T07 trong Issue #5 và rubric].
-Việc thủ công: [ghi "không có" nếu chỉ chạy Python; nếu phải quyết định quy tắc nghiệp vụ, ghi rõ quyết định cần leader xác nhận, đường dẫn bằng chứng và tiếp tục phần độc lập]. Không mở Power BI ở T05–T07.
+Việc thủ công: [ghi "không có" nếu chỉ chạy Python; nếu phải quyết định quy tắc nghiệp vụ, ghi rõ quyết định cần leader xác nhận, đường dẫn bằng chứng và tiếp tục phần độc lập]. Không chạy dashboard ở T05–T07.
 
 Hãy:
 1. Chỉ thực hiện đúng stage được chọn.

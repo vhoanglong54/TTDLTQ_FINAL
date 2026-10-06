@@ -1,27 +1,71 @@
-# 05 — Đặc tả Power BI và kiểm thử tương tác
+# 05 — Đặc tả dashboard Tableau
 
-Dashboard có 4 trang theo DOCX. [Wireframe T04](../dashboard/wireframe.md) là thiết kế triển khai chính. Mỗi trang nêu hạt, mẫu số và mốc dữ liệu trên tooltip hoặc phần giải thích. Màu cho `At_Risk`/`Not_At_Risk` dùng nhất quán.
+Tableau là công cụ dashboard duy nhất theo D17. Python tiếp tục xử lý dữ liệu, EDA và Logistic Regression; Tableau kết nối bảng sạch/output model đã kiểm tra để trực quan hóa và tương tác.
 
-| Trang | Nội dung bắt buộc | Bản thiết kế ban đầu |
-|---|---|---|
-| 1. Overview | Total Students, Average Score, Pass Rate, At-Risk Rate; Histogram, Bar, Map, Line | `Total Students` hiển thị **lượt học** hoặc tách thêm distinct students; `Average Score` là trung bình `studentAssessment.score` của bài đã nộp, gắn nhãn rõ; Pass Rate = `(Pass + Distinction)/lượt học`; At-Risk Rate = `(Fail + Withdrawn)/lượt học`. Histogram score bài đánh giá, bar kết quả, map rủi ro theo region, line engagement theo tuần. |
-| 2. Factor Analysis | Scatter, Boxplot, Heatmap, Treemap, Stacked Bar | Engagement so với điểm bài sớm/kết quả; phân phối theo previous attempts/IMD; tương tác hai yếu tố; treemap theo loại tài nguyên hoặc module; kiểm tra cỡ mẫu. |
-| 3. Risk Analysis | At-Risk Students; theo Attendance, Study Group, Previous Performance, Region | Dùng **engagement group**, **module/presentation hoặc nhóm hành vi**, **previous attempts/early assessment**, `region`. Không gọi là attendance/study group/previous grade nếu dữ liệu không có. |
-| 4. Prediction | Predicted Risk, Risk Probability, Actual vs Predicted, High/Medium/Low | Phân phối xác suất, confusion matrix hoặc actual vs predicted, bảng nhóm nguy cơ, tooltip về mốc dự báo/ngưỡng/số lượng. |
+Tài liệu này chỉ chốt kiến trúc và tiêu chí. **Loại biểu đồ, inventory visual, layout cuối và theme chưa được chốt**; chúng phải dựa trên EDA và Insight Log của Issue #6.
 
-## Kiểm kê loại biểu đồ đã chốt ở T04
+## Kiến trúc trách nhiệm
 
-Thiết kế có 16 visual instances và 12 **loại khác nhau**, không tính KPI card/table: donut, clustered column, Azure Maps filled map, line, scatter/bubble, box-and-whisker, matrix heatmap, 100% stacked bar, treemap, decomposition tree, histogram và ribbon. Boxplot là custom có điều kiện; fallback là histogram + percentile/median. Heatmap dùng Matrix + conditional formatting. T14 chỉ đánh dấu rubric sau khi có ảnh kiểm thử visual thực tế.
+| Lớp | Trách nhiệm |
+|---|---|
+| Data pipeline | Python tái tạo `clean_dataset.csv`, kiểm tra schema, khóa và hạt một lượt học |
+| Baseline KPI | Python tính số chuẩn để TV1 đối chiếu với Tableau |
+| Mô hình | scikit-learn Logistic Regression; Python xuất xác suất, nhãn dự báo, split, threshold và model version |
+| Dashboard | Tableau quản lý data source/relationship, calculated fields, worksheet/dashboard/story và tương tác |
+| Bằng chứng | Workbook/link, ảnh/video, checklist QA, version công cụ và checksum input |
 
-## Map và liên kết
+Không join raw event table trong Tableau và không train model lại khi người dùng đổi filter. Tableau chỉ trình bày output model đã được kiểm tra.
 
-Chọn **At-Risk Rate by Region** theo D06. `region` là nhãn vùng OULAD, không có tọa độ; T09 phải kiểm tra geocoding/boundary đủ 13/13 region. Nếu Power BI geocode mơ hồ, dùng lookup có nguồn trích dẫn, giữ khóa mapping; không đổi nhãn hoặc gán tọa độ tự chế. Tooltip map nêu numerator, denominator và số lượt học.
+## Luồng nội dung dự kiến
 
-Slicer nhiều cấp: module → presentation → region, thêm nhóm engagement/IMD nếu phù hợp. Drill-down phải có cấp rõ, ví dụ module → presentation → region hoặc region → module; người dùng có thể quay lại cấp trước. Cross-filter giữa các biểu đồ phải được kiểm tra trên từng trang; tooltip hover cho phép xem tỷ lệ, số lượng, nhóm và định nghĩa. Ghi rõ visual nào không nên bị filter để giữ baseline.
+| Phần | Câu hỏi |
+|---|---|
+| Overview | Quy mô dữ liệu và kết quả học tập tổng quan ra sao? |
+| Factor Analysis | Những yếu tố và tương tác nào có liên hệ với kết quả? |
+| Risk Analysis | Những nhóm nào có tỷ lệ At-Risk đáng chú ý? |
+| Prediction | Logistic Regression nhận diện At-Risk tốt đến đâu và sai ở đâu? |
 
-## QA dashboard
+Đây là kiến trúc thông tin, không khóa số dashboard/sheet hoặc loại chart cuối.
 
-- Đối chiếu số lượt học, bốn lớp kết quả, pass/at-risk rate và model output giữa Python và Power BI trên cùng bộ filter.
-- Kiểm tra 4 trang, 8 loại biểu đồ, map là geographic, tiêu đề/chú thích, filter nhiều cấp, drill-down, tooltip, cross-filter.
-- Test tổ hợp module/presentation/region, nhóm không có dữ liệu, reset filter, hiệu năng với bảng VLE đã được tổng hợp.
-- Lưu ảnh hoặc video minh chứng, file `.pbix` và bảng QA tại `dashboard/`; kiểm tra kích thước file trước khi commit (dùng Git LFS nếu cần).
+## Ràng buộc từ rubric
+
+Phương án visual sau EDA phải đáp ứng nguyên vẹn:
+
+- Số loại biểu đồ tối thiểu theo rubric, lựa chọn phù hợp kiểu dữ liệu.
+- Ít nhất một geographic map thực sự.
+- Filter nhiều cấp, drill-down, tooltip và cross-filtering.
+- Storytelling/insight có số liệu, mẫu số, cỡ mẫu và giới hạn diễn giải.
+- Tích hợp kết quả Logistic Regression lên dashboard.
+
+`region` là nhãn OULAD, chưa phải geometry. T09 phải kiểm tra geographic role hoặc spatial file/mapping có nguồn và coverage đủ 13/13 nhãn; không tự chế tọa độ hoặc polygon.
+
+## Tích hợp Logistic Regression
+
+Python xuất dữ liệu theo đủ khóa `(code_module, code_presentation, id_student)` với tối thiểu:
+
+- `actual_status`
+- `predicted_status`
+- `risk_probability`
+- `dataset_split`
+- `prediction_threshold`
+- `model_version`
+
+Tableau dùng relationship theo đủ khóa hoặc một bảng dashboard đã được Python nối và kiểm tra. File mô hình `.joblib`/`.pkl` không phải data source Tableau.
+
+## Cổng chốt visual
+
+Chỉ chốt inventory/layout sau khi:
+
+1. Issue #6 có EDA và 5–7 insight được nghiệm thu.
+2. T09 xác nhận data source, KPI và map khả thi trong Tableau.
+3. T13 xác nhận output/metric/threshold cho phần Prediction.
+4. Leader ghi quyết định mới vào `docs/08-decisions-and-open-questions.md`.
+
+## QA
+
+- Đối chiếu attempts, distinct learners, kết quả, pass/at-risk rate và output model giữa Python với Tableau trên cùng filter context.
+- Kiểm tra relationship không nhân dòng và phân biệt lượt học với distinct learner.
+- Kiểm tra filter, drill-down, tooltip, cross-filter, reset và trạng thái không có dữ liệu.
+- Lưu workbook/link, ảnh/video, version Tableau, checksum input và bảng QA trong `dashboard/`/báo cáo.
+
+Không đánh dấu mục rubric hoàn thành chỉ vì đã chọn Tableau hoặc tạo workbook rỗng.
