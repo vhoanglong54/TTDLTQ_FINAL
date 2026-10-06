@@ -3,7 +3,7 @@
 - Đọc `README.md`, `docs/02-rubric-traceability.md`, `docs/03-data-plan.md` và task liên quan trước khi sửa.
 - Ghi đúng trạng thái thực tế; không viết rằng insight, mô hình hay dashboard đã có khi chưa có bằng chứng.
 - DOCX gốc là yêu cầu; OULAD là nguồn quyết định các cột thực tế. Không tạo dữ liệu hoặc cột giả để làm đủ rubric. Ghi chênh lệch vào `docs/08-decisions-and-open-questions.md`.
-- Không sửa `docs/02-rubric-traceability.md` hoặc PHẦN II trong DOCX. Công nghệ dashboard hiện hành là **Tableau** theo D17. Python tiếp tục dùng cho data/EDA/Logistic Regression; Tableau chỉ nhận bảng sạch và output model đã kiểm tra.
+- Không tự ý sửa barem, điểm số hoặc tiêu chí chấm trong `docs/02-rubric-traceability.md` và PHẦN II của DOCX. Công nghệ dashboard duy nhất là **Tableau** theo D17; tên công cụ trong tài liệu triển khai phải thống nhất với quyết định này. Python tiếp tục dùng cho data/EDA/Logistic Regression; Tableau chỉ nhận bảng sạch và output model đã kiểm tra.
 - Quy trình duy nhất: một Issue mô tả việc → một nhánh cho cụm task → một PR có tóm tắt và bằng chứng → leader quyết định merge → Issue đóng ngay. Không yêu cầu review chéo, reviewer, mention nhắc duyệt hay biên bản lặp lại.
 - Không commit 7 CSV gốc, dữ liệu trung gian, thông tin định danh ngoài OULAD hoặc notebook có output nặng. Chỉ `data/processed/clean_dataset.csv` được theo dõi để nhóm dùng chung; phải giữ script tái tạo và checksum.
 - Giữ `At_Risk` là nhãn từ `final_result`: `Fail/Withdrawn = 1`, `Pass/Distinction = 0`. Không dùng nhãn hoặc thông tin xảy ra sau mốc dự báo làm feature.
