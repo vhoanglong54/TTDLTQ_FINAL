@@ -28,7 +28,7 @@ python src/oulad_pipeline.py build data/raw
 ## Handoff guardrails
 
 - Tỷ lệ/KPI dùng mẫu số **lượt học**, không suy ra số sinh viên unique nếu chưa deduplicate theo `id_student` theo định nghĩa riêng.
-- `*_all_time` chỉ là aggregate mô tả cho EDA/BI. D04 chưa chốt nên không dùng chúng làm feature dự báo sớm.
+- `*_all_time` chỉ là aggregate mô tả cho EDA/dashboard. D04 chưa chốt nên không dùng chúng làm feature dự báo sớm.
 - Với Average Assessment Score theo filter, dùng `SUM(assessment_score_sum_all_time) / SUM(assessment_scored_count)` khi mẫu số lớn hơn 0; không dùng trung bình trực tiếp của `assessment_score_mean_all_time` vì sẽ sai trọng số.
 - Tuyệt đối loại khỏi model feature: `final_result`, `At_Risk`, `date_unregistration` và bất cứ assessment/VLE nào sau cutoff được leader chốt.
 - `imd_band` missing vẫn nullable; không tự diễn giải là thu nhập cá nhân. VLE click là proxy tương tác, không phải attendance/study hours.

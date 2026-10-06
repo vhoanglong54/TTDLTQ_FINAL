@@ -16,4 +16,4 @@ python src/oulad_pipeline.py report
 - `build` aggregate hai event table trước khi left join về hạt `(code_module, code_presentation, id_student)`, rồi tạo `data/processed/clean_dataset.csv` cục bộ.
 - `report` tạo hiện vật tracked [Data Quality Report](../reports/data-quality-report.md).
 
-Các aggregate có hậu tố `*_all_time` là dữ liệu mô tả dùng cho EDA/BI. Khi D04 chưa chốt, chúng không được dùng làm feature dự báo sớm; `final_result`, `At_Risk` và `date_unregistration` không phải feature model.
+Các aggregate có hậu tố `*_all_time` là dữ liệu mô tả dùng cho EDA/dashboard. Khi D04 chưa chốt, chúng không được dùng làm feature dự báo sớm; `final_result`, `At_Risk` và `date_unregistration` không phải feature model.

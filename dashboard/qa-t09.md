@@ -1,6 +1,6 @@
-# T09 — Baseline đối chiếu Power BI
+# T09 — Baseline đối chiếu dashboard Tableau
 
-Các giá trị dưới đây được tính trực tiếp từ `data/processed/clean_dataset.csv` ở trạng thái **không có filter**. Power BI phải khớp trước khi tiếp tục T12.
+Các giá trị dưới đây được tính trực tiếp từ `data/processed/clean_dataset.csv` ở trạng thái **không có filter**. Tableau phải khớp trước khi tiếp tục T12. Việc chốt loại biểu đồ không thuộc checklist hiện tại.
 
 ## Baseline toàn bộ dữ liệu
 
@@ -38,13 +38,14 @@ File input có SHA-256 `4b3250f59456d9eb546291c52bd7e3ff5b4afe0a942b54df961cd193
 | West Midlands Region | 2.582 | 1.464 | 56,7002% |
 | Yorkshire Region | 2.006 | 1.106 | 55,1346% |
 
-## Checklist T09 trong Power BI Desktop
+## Checklist T09 — Tableau
 
-- [ ] Import đúng một bảng `clean_dataset`, 32.593 dòng và 35 cột.
-- [ ] Tất cả core measure trong `measures.dax` được tạo và khớp baseline không filter.
-- [ ] Slicer module/presentation/region thay đổi cả numerator và denominator đúng filter context.
-- [ ] Azure Maps nhận diện/hiển thị đủ 13 region; chụp ảnh và ghi trường hợp geocode sai.
-- [ ] Tooltip map hiển thị Attempts, At-Risk Count và At-Risk Rate.
-- [ ] Page 1–3 có skeleton theo `wireframe.md`; Page 4 ghi rõ “Awaiting T13 model output”.
-- [ ] Lưu `.pbix` và ảnh bằng chứng theo hướng dẫn trong `evidence/README.md`.
+- [ ] Có workbook Tableau thật và ghi rõ version/cách mở.
+- [ ] Data source đọc đúng bảng sạch, hạt và ba cột khóa.
+- [ ] KPI không filter khớp toàn bộ baseline trên.
+- [ ] Relationship với output model theo đủ khóa và không nhân dòng, khi T13 có output.
+- [ ] Map thử nghiệm có geometry/mapping nguồn rõ và coverage đủ 13 region.
+- [ ] Filter, drill-down, tooltip và cross-filtering được kiểm bằng ảnh/bằng chứng.
+- [ ] Ghi checksum input, version Tableau và hạn chế kỹ thuật trong `evidence/README.md`.
 
+Hiện chưa mục nào được đánh dấu hoàn thành. Chọn Tableau không đồng nghĩa T09 hoặc rubric dashboard đã được nghiệm thu.

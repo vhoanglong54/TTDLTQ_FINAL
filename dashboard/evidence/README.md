@@ -1,12 +1,13 @@
-# Bằng chứng Power BI
+# Bằng chứng dashboard Tableau
 
-Lưu ảnh kiểm thử theo tên:
+Thư mục này chỉ nhận bằng chứng khi workbook Tableau thực tế đã được tạo và kiểm tra. Hiện chưa có visual nào được nghiệm thu.
 
-- `t09-overview.png`
-- `t09-map-13-regions.png`
-- `t09-drilldown.png`
-- `t09-cross-filter.png`
-- `t12-page-1-overview.png` đến `t12-page-4-prediction.png`
+Mỗi lần bàn giao cần ghi:
 
-Không đưa dữ liệu raw vào ảnh. Với ảnh map/tooltip, bảo đảm nhìn được filter context, numerator, denominator và `N`. Ghi phiên bản Power BI Desktop và ngày kiểm tra trong PR hoặc `qa-t09.md`.
+- Version Tableau và hệ điều hành.
+- Tên workbook/data source và checksum input.
+- Filter context, numerator/denominator và `N` của ảnh.
+- Bằng chứng map, filter nhiều cấp, drill-down, tooltip và cross-filtering.
+- Model version, cutoff và threshold trên phần Prediction.
 
+Không lưu dữ liệu raw, secrets hoặc thông tin định danh ngoài OULAD.

@@ -27,7 +27,7 @@
 | Test và bằng chứng | Chạy `python src/verify_oulad_source.py data/raw`: exit code 0; 7/7 file tồn tại và header bắt buộc PASS; quy tắc ≥5.000 dòng PASS. Chưa chạy uniqueness/cardinality/unmatched vì thuộc T02/T05/T07. |
 | Đánh giá so với tiêu chí nghiệm thu | **Đã nghiệm thu theo Issue #1 đã closed:** nguồn UCI và CC BY 4.0 đã đối chiếu; 7 file, ≥5.000 dòng, ≥3 bảng, khóa header, `final_result` và `region` có bằng chứng. Giới hạn ngày tải archive/version vẫn theo dõi D11. |
 | Việc thủ công đã làm/còn cần | Đã extract 7 CSV vào raw. PR #12 đã merge và Issue #1 đã closed; người tải vẫn có thể bổ sung bằng chứng ngày tải archive vào D11 nếu tìm được. |
-| Bàn giao cho ai, nhận gì, thời điểm | TV2 nhận bảng kiểm kê, biến `final_result`/`region` và giới hạn proxy; TV3 nhận khóa header và 13 region để kiểm tra map/BI. Bàn giao qua PR #12. |
+| Bàn giao cho ai, nhận gì, thời điểm | TV2 nhận bảng kiểm kê, biến `final_result`/`region` và giới hạn proxy; TV3 nhận khóa header và 13 region để kiểm tra map/dashboard. Bàn giao qua PR #12. |
 | Issue/branch/PR | [Issue #1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1); branch `data/T01-oulad-source`; [PR #12](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/12) đã merge; leader đã nghiệm thu. |
 | Rủi ro, quyết định, ghi chú và bước tiếp theo | `OULAD.names` ghi 32.953 lượt học/đăng ký, còn hai CSV cục bộ có 32.593; D11 theo dõi. PR #12 đã merge và Issue #1 đã closed; T02 dùng file thực để chốt dictionary. |
 
@@ -41,7 +41,7 @@
 | Output/kết quả | Kế hoạch nêu đúng `docs/09-data-dictionary.md`, nhánh T02, bảng kiểm kê T01 gồm số cột và điều kiện PR merge/đóng Issue; ghi nhận chênh lệch Kaggle so với nguồn nêu ở Issue trong decision log. |
 | Test/đánh giá | Kiểm tra cấu trúc Markdown, đường dẫn tương đối và đối chiếu checklist với nội dung hai Issue; chưa kiểm tra CSV, nguồn thực tế hoặc schema. |
 | Việc thủ công còn cần | T01: tải/kiểm kê CSV và ghi bằng chứng. T02: có thể chuẩn bị khung tài liệu; chốt theo 7 file sau T01. |
-| Bàn giao | T01 bàn giao nguồn; T02 bàn giao nghĩa biến và schema dùng cho BI/model. Đây là ghi nhận lịch sử trước khi leader rút gọn quy trình. |
+| Bàn giao | T01 bàn giao nguồn; T02 bàn giao nghĩa biến và schema dùng cho dashboard/model. Đây là ghi nhận lịch sử trước khi leader rút gọn quy trình. |
 | Issue/branch/PR | [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) và [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) đang mở theo thông tin nhóm cung cấp; PR chưa ghi nhận. |
 | Trạng thái/ghi chú | Mới đồng bộ kế hoạch với Issue; cả T01 và T02 chưa nghiệm thu. |
 
@@ -54,7 +54,7 @@
 | Input | 7 CSV cục bộ `data/raw/`, checksum/số dòng T01 tại [data README](../data/README.md), UCI/Open University và T01/#1 đã closed. Ngày tải archive/version chính xác vẫn chưa có bằng chứng cục bộ. |
 | Output/kết quả | `docs/09-data-dictionary.md`; `data/README.md` dẫn tới từ điển; D12 ghi cơ chế `?`. Không tạo/commit CSV processed hay feature. |
 | Test và bằng chứng | `python src/profile_oulad_contract.py data/raw`: exit 0; 7 bảng/43 cột; 22/32.593/32.593/206/173.912/6.364 candidate keys PASS; 8 quan hệ join 0 unmatched; component key `studentVle` 0 null. Không assert unique event key `studentVle`. |
-| Đánh giá nghiệm thu | **Đạt:** dictionary/schema/hạt/khóa/join; PR #13 đã merge và leader đã kiểm tra lại trên bộ OULAD chính thức. Cleaning, calculated fields, QA BI, leakage theo mốc chưa chạy vì thuộc T05/T07/T13/T15. |
+| Đánh giá nghiệm thu | **Đạt:** dictionary/schema/hạt/khóa/join; PR #13 đã merge và leader đã kiểm tra lại trên bộ OULAD chính thức. Cleaning, calculated fields, QA dashboard, leakage theo mốc chưa chạy vì thuộc T05/T07/T13/T15. |
 | Việc thủ công đã làm/còn cần | Không còn thao tác thủ công cho T02. |
 | Bàn giao cho ai | TV2: nghĩa biến, proxy và giới hạn insight. TV3: grain, join, `final_result`/`region`, danh sách leakage và map/model inputs. T05 nhận D12/missing audit; T07 nhận quy tắc aggregate. |
 | Issue/branch/PR | [Issue #2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2), branch `data/T02-data-dictionary`; [PR #13](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/13) đã merge; leader nghiệm thu. |
@@ -69,7 +69,7 @@
 | Input | T01/#1, T02/#2 đã nghiệm thu; 7 CSV `data/raw/`; dictionary 7 bảng/43 cột; branch `data/T05-T07-data-pipeline`; D04/D05 chưa chốt. |
 | Output/kết quả | T05 audit 7 bảng. T06 tạo 7 CSV `data/interim/` cục bộ; `studentVle` 10.655.280 → 9.868.110 sau loại 787.170 duplicate toàn dòng. T07 tạo `data/processed/clean_dataset.csv` cục bộ: 32.593 dòng, 35 cột, hạt `(code_module, code_presentation, id_student)`. |
 | Test và bằng chứng | `python src/oulad_pipeline.py audit data/raw`, `clean data/raw`, `build data/raw`, `report`: PASS. T07: assessment/VLE dimension, registration, courses đều 0 unmatched; duplicate attempt key sau join = 0; `At_Risk`: 0=15.385, 1=17.208 và mapping bốn `final_result` PASS. `python src/verify_oulad_source.py data/raw`: 7/7 header/checksum/row count PASS sau pipeline. |
-| Đánh giá so với tiêu chí nghiệm thu | **Đạt và đã nghiệm thu:** audit, cleaning, join/aggregate, calculated fields và Data Quality Report có bằng chứng; PR #16–#18 đã merge. D04/D05 chuyển sang T11/T13, không chặn EDA/BI; `*_all_time` bị cấm khỏi model sớm. |
+| Đánh giá so với tiêu chí nghiệm thu | **Đạt và đã nghiệm thu:** audit, cleaning, join/aggregate, calculated fields và Data Quality Report có bằng chứng; PR #16–#18 đã merge. D04/D05 chuyển sang T11/T13, không chặn EDA/dashboard; `*_all_time` bị cấm khỏi model sớm. |
 | Việc thủ công đã làm/còn cần | Không còn việc T05–T07. D13–D16 đã chốt; T13 phải chốt mốc dự báo và ngưỡng trước khi tạo feature model. |
 | Bàn giao cho ai, nhận gì, thời điểm | TV2: `clean_dataset.csv` tái tạo cục bộ, schema/hạt và Data Quality Report cho T08/T10. TV3: mapping `At_Risk`, aggregate mô tả, guard leakage và schema cho T09/T13; không dùng `*_all_time` cho model sớm trước D04. |
 | Issue/branch/PR | [Issue #5](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5); branch `data/T05-T07-data-pipeline`; [PR #16](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/16) đã merge vào `main`. |
@@ -103,12 +103,12 @@ Một dòng cho mỗi task hoặc mốc hỗ trợ; cập nhật trạng thái k
 | Ngày cập nhật | Giai đoạn/task | Nội dung/hiện vật | Trạng thái | Test/đánh giá | Phụ thuộc | Bàn giao | Việc thủ công/ghi chú |
 |---|---|---|---|---|---|---|---|
 | 29/09/2026 | T01 / [#1](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/1) — nguồn và kiểm kê | `data/README.md`, `src/verify_oulad_source.py`, D11; [PR #12](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/12) | Đã nghiệm thu theo Issue #1 closed | 7/7 header PASS; 10.900.970 dòng tổng; SHA-256 từng file; ≥5.000 dòng PASS | — | T02/T03/T04 nhận bàn giao | Ngày tải archive/version chưa có bằng chứng; theo dõi chênh lệch 32.953/32.593 |
-| 30/09/2026 | T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) — data dictionary | `docs/09-data-dictionary.md`, `src/profile_oulad_contract.py`, D13; [PR #13](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/13) | Đã nghiệm thu | 7 bảng/43 cột; candidate keys PASS; 9 kiểm tra quan hệ/khóa đều 0 lỗi; `?` đã ghi nhận | T01 #1 closed | TV2/TV3 dùng đầu ra cho phân tích, BI/model | Không cleaning/feature/BI; T05 xác nhận và xử lý missing |
+| 30/09/2026 | T02 / [#2](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/2) — data dictionary | `docs/09-data-dictionary.md`, `src/profile_oulad_contract.py`, D13; [PR #13](https://github.com/vhoanglong54/TTDLTQ_FINAL/pull/13) | Đã nghiệm thu | 7 bảng/43 cột; candidate keys PASS; 9 kiểm tra quan hệ/khóa đều 0 lỗi; `?` đã ghi nhận | T01 #1 closed | TV2/TV3 dùng đầu ra cho phân tích, dashboard/model | Không cleaning/feature/dashboard; T05 xác nhận và xử lý missing |
 | 05/10/2026 | T05 — audit | `src/oulad_pipeline.py`, `notebooks/01_data_audit.ipynb`, [Data Quality Report](../reports/data-quality-report.md), PR #16 | Đã nghiệm thu | 7 bảng audit; D13 `imd_band` `?`=1.111; raw source verify PASS | T01–T02 | TV2/TV3 nhận audit | Event-key lặp đã được giải thích |
 | 05/10/2026 | T06 — cleaning | `src/oulad_pipeline.py`, `notebooks/02_cleaning.ipynb`, PR #16 | Đã nghiệm thu | Raw checksum/header PASS; loại 787.170 duplicate toàn dòng `studentVle`; giữ outlier | T05 | TV2/T07 | `?` → nullable missing; raw bất biến |
-| 05/10/2026 | T07 — join/feature | `data/processed/clean_dataset.csv`, D14/D16, PR #16–#18 | Đã nghiệm thu | 32.593 output; 0 unmatched; 0 duplicate attempt key; At_Risk mapping PASS | T06 | TV2 T08/T10; TV3 T09/T13 | `*_all_time` chỉ EDA/BI; D04/D05 chốt ở T11/T13 |
+| 05/10/2026 | T07 — join/feature | `data/processed/clean_dataset.csv`, D14/D16, PR #16–#18 | Đã nghiệm thu | 32.593 output; 0 unmatched; 0 duplicate attempt key; At_Risk mapping PASS | T06 | TV2 T08/T10; TV3 T09/T13 | `*_all_time` chỉ EDA/dashboard; D04/D05 chốt ở T11/T13 |
 | — | T03/T08/T09/T10/T13/T18 — hỗ trợ | Chưa có | Chưa bắt đầu | Chưa chạy | Theo từng task | TV2/TV3 | Không thay owner của task |
-| — | T15 — QA Power BI | Chưa có | Chưa bắt đầu | Chưa chạy | T14 | TV3 cho T21 | Cần mở Power BI và đối chiếu Python |
+| — | T15 — QA dashboard Tableau | Chưa có | Chưa bắt đầu | Chưa chạy | T14 | TV3 cho T21 | Cần mở workbook và đối chiếu KPI với baseline Python |
 | — | T17 — phần Data báo cáo | Chưa có | Chưa bắt đầu | Chưa chạy | T07 | TV2; cả nhóm cho T20 | Kiểm tra nguồn/trích dẫn IEEE |
 | — | T20/T22 — tích hợp/bảo vệ | Chưa có | Chưa bắt đầu | Chưa chạy | T17–T21 theo backlog | Cả nhóm | Diễn tập vấn đáp thủ công; TV1 hỗ trợ T21 |
 

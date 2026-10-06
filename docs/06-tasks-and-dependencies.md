@@ -26,7 +26,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | T01 | TV1 / TV2, TV3 | Tải OULAD từ nguồn chính thức; ghi link, license, ngày tải, checksum, số dòng từng bảng, xác nhận ≥5.000 dòng và ≥3 bảng trong `data/README.md`/Data Quality Report | — |
 | T02 | TV1 / TV2 | Data dictionary cho 7 bảng: cột, kiểu, khóa, hạt, missing, ý nghĩa; sơ đồ quan hệ và danh sách biến dùng | T01 |
 | T03 | TV2 / TV1 | Chốt RQ1–RQ6 theo OULAD, kiểm tra 8–10 hypothesis; lập mẫu Insight Log và sơ bộ related work | T01 |
-| T04 | TV3 / TV2 | Wireframe 4 trang; inventory ≥8 chart; kiểm tra khả thi map `region`, filter và drill-down | T01 |
+| T04 | TV3 / TV2 | Khung nội dung dashboard và khả thi map/filter/drill-down. Sau quyết định Tableau, inventory visual phải chốt lại ở T12 sau EDA; chưa khóa loại biểu đồ tại T04. | T01 |
 
 ## Nhóm dữ liệu sạch
 
@@ -36,9 +36,9 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | T06 | TV1 / TV2 | `02_cleaning.ipynb` + script: quy tắc missing/outlier/normalize/datatype; bảng sạch tái tạo được | T05 |
 | T07 | TV1 / TV2 | Join 7 bảng hoặc ít nhất 3 bảng đủ rubric; kiểm cardinality/unmatched; tổng hợp VLE/assessment đúng hạt; calculated fields và `clean_dataset.csv` cục bộ | T06 |
 | T08 | TV2 / TV1 | EDA cơ bản và 3–5 biểu đồ tĩnh đầu tiên; điều chỉnh định nghĩa nhóm/giả thuyết theo phân bố thực | T06–T07 |
-| T09 | TV3 / TV1 | Khung Power BI dùng bảng mẫu sạch, định nghĩa KPI và thử geocoding map; chuẩn bị split/model feature list | T07 |
+| T09 | TV3 / TV1 | Khởi tạo Tableau với bảng sạch; ghi relationship/calculated fields, đối chiếu KPI bằng Python và thử mapping `region`; chưa chốt inventory visual | T07 |
 
-**Cổng dữ liệu:** T01, T02, T05–T07 được leader nghiệm thu và bảng cho EDA/BI/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
+**Cổng dữ liệu:** T01, T02, T05–T07 được leader nghiệm thu và bảng cho EDA/dashboard/model có schema ổn định. Nếu thiếu dữ liệu map hoặc khóa, ghi quyết định và tác động ngay.
 
 ## Nhóm phân tích sâu
 
@@ -46,7 +46,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 |---|---|---|---|
 | T10 | TV2 / TV1 | `03_eda.ipynb`: phân bố, temporal VLE, assessment, IMD/region, tương tác; kiểm nhóm nhỏ và khoảng thời gian | T07–T08 |
 | T11 | TV2 / TV3 | Insight Log 5–7 insight chính, mỗi insight có bằng chứng, mẫu số và giới hạn; risk profile và storyline | T10 |
-| T12 | TV3 / TV2 | Dashboard v0 bốn trang với visual chính, kiểm tra cross-filter/prototype drill-down | T09–T11 |
+| T12 | TV3 / TV2 | Dựa trên EDA/Insight Log để chốt visual/layout, dựng dashboard Tableau v0 và kiểm tra cross-filter/prototype drill-down | T09–T11 |
 
 **Cổng insight:** T10–T11 có đủ bằng chứng và được leader nghiệm thu; khi định nghĩa insight thay đổi, cập nhật dashboard/báo cáo tương ứng.
 
@@ -56,7 +56,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 |---|---|---|---|
 | T13 | TV3 / TV1, TV2 | Chốt mốc dự báo, train/test split, encoding; Logistic Regression; metric, leakage check, risk probability; xuất `actual_status`/`predicted_status` theo khóa lượt học | T07, T11 |
 | T14 | TV3 / TV2, TV1 | Hoàn thiện 4 trang, ≥8 loại chart, map, multi-level filters, drill-down, tooltip, cross-filter và trang Prediction | T12–T13 |
-| T15 | TV1 / TV3 | QA số liệu Power BI so với Python: counts, ratios, joins, risk output, region; lưu bảng đối chiếu | T14 |
+| T15 | TV1 / TV3 | QA số liệu giao diện so với hàm Python: counts, ratios, joins, risk output, region; lưu bảng đối chiếu | T14 |
 | T16 | TV2 / TV3 | QA insight, câu chuyện, tên chart/tooltip/nhóm; tránh nói nhân quả hoặc gọi proxy là đo trực tiếp | T14 |
 
 ## Nhóm báo cáo và bảo vệ
@@ -76,11 +76,11 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 
 | Giai đoạn | TV1 | TV2 | TV3 |
 |---|---|---|---|
-| Dataset | Kiểm tra dữ liệu | Kiểm tra biến phân tích | Kiểm tra map/BI |
+| Dataset | Kiểm tra dữ liệu | Kiểm tra biến phân tích | Kiểm tra map/dashboard |
 | Audit | Làm chính | Hypothesis | Wireframe |
-| Cleaning | Làm chính | Related work | Power BI skeleton |
+| Cleaning | Làm chính | Related work | Khởi tạo Tableau/data source |
 | Feature engineering | Làm chính | Định nghĩa nhóm | Chuẩn bị model |
 | EDA/deep analysis | Hỗ trợ | Làm chính | Dashboard prototype/interaction |
 | Model | Chuẩn bị dữ liệu | Diễn giải | Làm chính |
 | Dashboard | QA số liệu | QA insight | Làm chính |
-| Report/defense | Phần Data / cả nhóm | Phần Analysis / cả nhóm | Phần BI, Model / cả nhóm |
+| Report/defense | Phần Data / cả nhóm | Phần Analysis / cả nhóm | Phần Dashboard, Model / cả nhóm |
