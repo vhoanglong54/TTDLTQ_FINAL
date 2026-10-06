@@ -34,7 +34,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 |---|---|---|---|
 | T05 | TV1 / TV2 | `01_data_audit.ipynb`: shape, type, missing, duplicates, unique keys, outliers, invalid/categories; báo cáo chất lượng | T01–T02 |
 | T06 | TV1 / TV2 | `02_cleaning.ipynb` + script: quy tắc missing/outlier/normalize/datatype; bảng sạch tái tạo được | T05 |
-| T07 | TV1 / TV2 | Join 7 bảng hoặc ít nhất 3 bảng đủ rubric; kiểm cardinality/unmatched; tổng hợp VLE/assessment đúng hạt; calculated fields và `clean_dataset.csv` cục bộ | T06 |
+| T07 | TV1 / TV2 | Join 7 bảng hoặc ít nhất 3 bảng đủ rubric; kiểm cardinality/unmatched; tổng hợp VLE/assessment đúng hạt; calculated fields và `clean_dataset.csv` dùng chung theo D16 | T06 |
 | T08 | TV2 / TV1 | EDA cơ bản và 3–5 biểu đồ tĩnh đầu tiên; điều chỉnh định nghĩa nhóm/giả thuyết theo phân bố thực | T06–T07 |
 | T09 | TV3 / TV1 | Khởi tạo Tableau với bảng sạch; ghi relationship/calculated fields, đối chiếu KPI bằng Python và thử mapping `region`; chưa chốt inventory visual | T07 |
 

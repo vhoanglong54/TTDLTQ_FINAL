@@ -1,6 +1,6 @@
 # Dữ liệu
 
-`raw/` giữ nguyên nguồn cục bộ. `interim/` là bảng tạm; `processed/` là bảng phân tích và đầu ra dự báo có thể tái tạo. CSV ở cả ba thư mục bị `.gitignore`; chỉ commit mã, tài liệu, schema, data dictionary và báo cáo chất lượng.
+`raw/` giữ nguyên nguồn cục bộ và `interim/` là bảng tạm; CSV trong hai thư mục này bị `.gitignore`. `processed/` là đầu ra phân tích có thể tái tạo; riêng `processed/clean_dataset.csv` được theo dõi theo D16 để nhóm dùng chung, còn output processed khác không commit nếu chưa được duyệt.
 
 ## T01 — Xác minh nguồn OULAD
 

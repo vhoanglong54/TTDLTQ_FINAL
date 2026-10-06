@@ -136,14 +136,14 @@ Lệnh tái tạo: `python src/oulad_pipeline.py build data/raw`.
 
 | Điều kiện | Trạng thái | Bằng chứng / giới hạn |
 |---|---|---|
-| Pipeline tái tạo từ 7 CSV | Đạt | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16, có checksum và cách tái tạo. |
+| Pipeline tái tạo từ 7 CSV | Đạt về chạy cục bộ | Script và các lệnh trên; `clean_dataset.csv` được theo dõi theo D16. Leader cần chạy lại trước nghiệm thu. |
 | Missing/outlier/duplicate có quyết định | Đạt về pipeline cục bộ | Báo cáo T05/T06; 787.170 duplicate toàn dòng `studentVle` được loại ở T06, event-key lặp vẫn được giữ và aggregate đúng hạt ở T07. |
 | Join không nhân dòng | Đạt theo test T07 | Output cùng số dòng `studentInfo`, duplicate attempt key 0; event được aggregate trước join. |
-| Dùng được cho EDA/Tableau và làm nền cho model | Đạt có giới hạn | Schema đã kiểm tra. D04/D05 được chốt ở T11/T13; `*_all_time` bị cấm khỏi model dự báo sớm. |
-| PR merge / Issue đóng | Đạt | PR #16–#18 đã merge; leader nghiệm thu T05–T07 và đóng Issue #5. |
+| Dùng được cho EDA/model/Tableau | Chưa nghiệm thu | Chờ leader kiểm tra schema; D04/D05 chưa chốt nên chưa có bảng feature dự báo sớm. |
+| PR merge / Issue đóng | Chưa đạt | Chưa có PR, merge hoặc nghiệm thu leader. |
 
 ## Bàn giao và giới hạn
 
-- TV2 nhận `data/processed/clean_dataset.csv` dùng chung cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.
+- TV2 nhận `clean_dataset.csv` dùng chung cùng Data Quality Report để EDA; các tỷ lệ dùng mẫu số là lượt học, không phải sinh viên unique.
 - TV3 nhận schema/hạt, mapping `At_Risk`, các aggregate mô tả và guard leakage. Chỉ TV3/leader chốt D04, D05, split và danh sách feature mô hình.
 - Không có thao tác dashboard trong T05–T07. Không có insight hay kết quả model được công bố ở đây.
