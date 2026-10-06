@@ -12,7 +12,7 @@
 |---|---|
 | Dữ liệu | OULAD, 7 bảng CSV liên kết, hơn 5.000 dòng, có `region`, nguồn học thuật rõ |
 | Xử lý/EDA | Python, Pandas/NumPy, Matplotlib/Seaborn |
-| Dự báo | scikit-learn Logistic Regression, xác suất rủi ro và phân lớp |
+| Dự báo | scikit-learn Logistic Regression bắt buộc và Random Forest đối chứng; so sánh trên cùng dữ liệu/split trước khi chọn mô hình trình bày chính |
 | Trực quan tương tác | Tableau; bốn phần nội dung dự kiến: Overview, Factor Analysis, Risk Analysis, Prediction. Loại biểu đồ cụ thể chưa chốt. |
 | Trọng tâm phân tích | Tương tác các yếu tố, risk profile, hành vi VLE theo thời gian |
 | Nhóm | TV1 Data, TV2 Analysis, TV3 Dashboard + Model; leader điều phối, kiểm tra và nghiệm thu |

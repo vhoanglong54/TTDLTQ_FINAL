@@ -10,11 +10,11 @@ Rubric yêu cầu báo cáo khoa học **ít nhất 40 trang**, demo chạy tr�
 | Preprocessing | Audit, missing/outlier/duplicate, chuẩn hóa, join, calculated fields, kiểm tra chất lượng | TV1 |
 | EDA & Insights | 3–5 biểu đồ tĩnh tối thiểu, 8–10 hypothesis, 5–7 insight, interaction và storytelling | TV2 |
 | Dashboard | Layout 4 trang, logic chọn ≥8 chart, map, luồng lọc/drill/tooltip/cross-filter, QA | TV3 |
-| Regression & Prediction | Target, mốc thời gian, feature, split, Logistic Regression, metric, ngưỡng, hạn chế và chart dự báo | TV3 |
+| Model Comparison & Prediction | Target, cutoff, feature, group split; baseline, Logistic Regression, Random Forest; metric, threshold, hạn chế và kết quả so sánh | TV3 |
 | Installation & Demo | Cách lấy data/tái tạo bảng/mở workbook Tableau, kịch bản demo, link video backup | TV3 + cả nhóm |
 | Conclusion & References | Kết quả chính, giới hạn, hướng phát triển, tài liệu tham khảo chuẩn IEEE | Cả 3 |
 
-Chèn sơ đồ pipeline **bài toán → nguồn OULAD → audit → cleaning → join/feature → EDA/interaction → insight/risk profile → Logistic Regression → Tableau → báo cáo/demo**. Trình bày mã hoặc pseudocode đủ để giải thích quyết định xử lý, cách tính KPI, relationship/calculated field/cross-filter và logic mô hình; hình/chart có caption, nguồn và lý do chọn.
+Chèn sơ đồ pipeline **bài toán → nguồn OULAD → audit → cleaning → feature theo cutoff → EDA/interaction → Logistic Regression + Random Forest → so sánh/chọn mô hình → Tableau → báo cáo/demo**. Trình bày mã hoặc pseudocode đủ để giải thích quyết định xử lý, cách tính KPI, relationship/calculated field/cross-filter và logic mô hình; hình/chart có caption, nguồn và lý do chọn.
 
 ## Kịch bản demo đề xuất
 
