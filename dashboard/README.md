@@ -5,7 +5,7 @@ Tableau là công cụ dashboard duy nhất của dự án theo quyết định 
 ## Trạng thái hiện tại
 
 - Chưa có workbook Tableau được nghiệm thu.
-- Scaffold Power BI và Streamlit/Plotly đã được loại khỏi source of truth.
+- Mọi scaffold của công cụ cũ đã được loại khỏi source of truth.
 - Chưa chốt danh sách hoặc loại biểu đồ cụ thể.
 - Chỉ giữ các yêu cầu bắt buộc của rubric: đủ số loại biểu đồ, có geographic map, filter nhiều cấp, drill-down, tooltip và cross-filtering.
 - Cấu trúc bốn phần Overview, Factor Analysis, Risk Analysis và Prediction được giữ làm luồng nội dung dự kiến; visual chỉ chốt sau EDA và Insight Log.

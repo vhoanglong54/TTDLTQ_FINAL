@@ -19,7 +19,7 @@ Kế hoạch thực hiện theo vai trò TV1: [workflow, giai đoạn và prompt
 
 Nguồn yêu cầu gốc: [TTDLTQ_script.docx](docs/source/TTDLTQ_script.docx). Khi tài liệu trong repo diễn giải một ví dụ không phù hợp với OULAD, [sổ quyết định](docs/08-decisions-and-open-questions.md) ghi rõ lý do và việc cần xác nhận bằng dữ liệu thực.
 
-`docs/02-rubric-traceability.md` là bản rubric/checklist được leader yêu cầu giữ nguyên tuyệt đối. Vì vậy các chỗ còn ghi Power BI trong file đó không phải công nghệ hiện hành; quyết định dùng Tableau được ghi ở D17 và không thay đổi tiêu chí/điểm số.
+`docs/02-rubric-traceability.md` là bản rubric/checklist được leader yêu cầu giữ nguyên tuyệt đối. Mọi từ ngữ công cụ còn giữ trong file đó chỉ là nguyên văn checklist; quyết định triển khai hiện hành là Tableau theo D17 và không thay đổi tiêu chí/điểm số.
 
 ## Bố cục dự kiến
 
