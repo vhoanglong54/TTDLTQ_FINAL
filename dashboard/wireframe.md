@@ -12,7 +12,7 @@
 - Storyline dự kiến: **điều gì đang xảy ra → yếu tố nào có liên hệ → nhóm nào cần chú ý → mô hình dự báo ra sao**.
 - Không dùng ngôn ngữ nhân quả với dữ liệu quan sát; không gọi VLE click là attendance hoặc study hours.
 - Mọi KPI phải ghi rõ measure, mẫu số, filter context và `N`.
-- Output Logistic Regression do Python sinh; Tableau chỉ trực quan hóa và cho phép khám phá kết quả.
+- Output Logistic Regression và Random Forest do Python sinh trên cùng snapshot/split; Tableau chỉ trực quan hóa và cho phép so sánh kết quả.
 
 ## Cấu trúc nội dung dự kiến
 
@@ -21,7 +21,7 @@
 | Overview | Quy mô dữ liệu và kết quả học tập tổng quan ra sao? | Chưa chốt |
 | Factor Analysis | Những yếu tố và tương tác nào liên hệ với kết quả? | Chờ EDA/Insight Log |
 | Risk Analysis | Những nhóm nào có tỷ lệ At-Risk đáng chú ý? | Chờ EDA/Insight Log và định nghĩa nhóm |
-| Prediction | Logistic Regression nhận diện At-Risk tốt đến đâu và sai ở đâu? | Chờ T13 |
+| Prediction | Hai mô hình nhận diện At-Risk tốt đến đâu, sai ở đâu và trade-off là gì? | Chờ T13 |
 
 Bốn phần trên là kiến trúc thông tin dự kiến, không phải cam kết số dashboard/sheet hoặc loại biểu đồ cuối.
 
@@ -35,4 +35,4 @@ Phương án sau EDA phải:
 - Có bằng chứng filter nhiều cấp, drill-down, tooltip và cross-filtering chạy đúng.
 - Truy được mỗi insight về số liệu, mẫu số và Insight Log.
 
-Quyết định visual/layout chính thức sẽ được ghi ở D18 hoặc quyết định kế tiếp sau khi Issue #6 hoàn thành.
+Quyết định visual/layout chính thức sẽ được ghi ở quyết định kế tiếp sau khi Issue #6 hoàn thành; D18 chỉ chốt phương án hai mô hình.

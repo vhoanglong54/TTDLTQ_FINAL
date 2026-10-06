@@ -13,7 +13,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 | 3 | [#5 — T05–T07: data pipeline](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/5) | Khang | `data/T05-T07-data-pipeline` | #1–#2 đã nghiệm thu |
 | 4 | [#6 — T08, T10–T11: EDA/insight](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/6) | Nadi | `analysis/T08-T11-eda-insights` | #3 và #5 đã nghiệm thu |
 | 4 | [#7 — T09, T12: dashboard v0](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/7) | Leader | `bi-model/T09-T12-dashboard-prototype` | Bắt đầu sau #4–#5; chốt sau #6 |
-| 5 | [#8 — T13: Logistic Regression](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/8) | Leader | `bi-model/T13-logistic-regression` | #5–#6 đã nghiệm thu |
+| 5 | [#8 — T13: so sánh Logistic Regression và Random Forest](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/8) | Leader | `bi-model/T13-model-comparison` | #5–#6 đã nghiệm thu |
 | 6 | [#9 — T14–T16, T21: dashboard QA](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/9) | Cả nhóm; leader chủ trì | `bi-model/T14-T16-T21-dashboard-qa` | #7–#8 đã nghiệm thu |
 | 7 | [#10 — T17–T20, T22: báo cáo/demo](https://github.com/vhoanglong54/TTDLTQ_FINAL/issues/10) | Cả nhóm | `docs/T17-T22-report-demo` | Viết phần riêng khi đầu ra có; ghép/chốt sau #5–#6, #8–#9 |
 
@@ -54,7 +54,7 @@ TV1 là **Khang**, TV2 là **Nadi**, TV3 là **leader**. Các task liên tiếp,
 
 | ID | Owner / phối hợp khi cần | Task và hiện vật nghiệm thu | Phụ thuộc |
 |---|---|---|---|
-| T13 | TV3 / TV1, TV2 | Chốt mốc dự báo, train/test split, encoding; Logistic Regression; metric, leakage check, risk probability; xuất `actual_status`/`predicted_status` theo khóa lượt học | T07, T11 |
+| T13 | TV3 / TV1, TV2 | Chốt cutoff, group split và preprocessing; baseline + Logistic Regression bắt buộc + Random Forest đối chứng trên cùng dữ liệu; metric/leakage/threshold; xuất dự báo theo khóa lượt học và `model_name` | T07, T11 |
 | T14 | TV3 / TV2, TV1 | Hoàn thiện 4 trang, ≥8 loại chart, map, multi-level filters, drill-down, tooltip, cross-filter và trang Prediction | T12–T13 |
 | T15 | TV1 / TV3 | QA số liệu giao diện so với hàm Python: counts, ratios, joins, risk output, region; lưu bảng đối chiếu | T14 |
 | T16 | TV2 / TV3 | QA insight, câu chuyện, tên chart/tooltip/nhóm; tránh nói nhân quả hoặc gọi proxy là đo trực tiếp | T14 |
