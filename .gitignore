@@ -19,6 +19,9 @@ venv/
 *.egg-info/
 .pytest_cache/
 
+# Model artifacts sinh tự động
+models/**
+
 # Tableau — file phục hồi/cục bộ; workbook chính chỉ thêm khi T09 có hiện vật
 *.twbr
 ~$*.twb
