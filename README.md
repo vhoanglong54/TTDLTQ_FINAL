@@ -1,6 +1,6 @@
 # TTDLTQ FINAL — Phân tích kết quả học tập với OULAD
 
-Đồ án cuối kỳ môn **Tương tác dữ liệu trực quan (IDV)** của nhóm 3 thành viên. Câu hỏi trung tâm: những yếu tố nào liên hệ với kết quả học tập và có thể nhận diện sớm lượt học có nguy cơ **Fail/Withdrawn** hay không? Bộ dữ liệu đã chọn trong đề cương là **Open University Learning Analytics Dataset (OULAD)**; công nghệ đã chốt là **Python + Logistic Regression + Random Forest + Tableau**.
+Đồ án cuối kỳ môn **Tương tác dữ liệu trực quan (IDV)** của nhóm 3 thành viên. Câu hỏi trung tâm: những yếu tố nào liên hệ với kết quả học tập và có thể nhận diện sớm lượt học có nguy cơ **Fail/Withdrawn** hay không? Bộ dữ liệu đã chọn trong đề cương là **Open University Learning Analytics Dataset (OULAD)**; công nghệ đã chốt là **Python + Logistic Regression + Tableau**.
 
 Repo đã hoàn thành nền tảng dữ liệu T01–T07; EDA, mô hình, dashboard và báo cáo tiếp tục được phát triển theo task. Chỉ ghi hoàn thành khi có hiện vật và bằng chứng kiểm tra tương ứng.
 
@@ -41,7 +41,7 @@ TTDLTQ_FINAL/
 - Dữ liệu có nguồn và giấy phép rõ, ít nhất **5.000 dòng** và **3 bảng** thực sự liên kết; có data dictionary, audit, cleaning, join và calculated fields.
 - EDA Python có ít nhất **3–5 biểu đồ tĩnh**; phân tích sâu các tương tác; chốt **5–7 insight** có bằng chứng.
 - Dashboard Tableau phải đạt các yêu cầu rubric về số loại biểu đồ, bản đồ, lọc nhiều cấp, drill-down, tooltip và cross-filtering. Loại biểu đồ cụ thể chưa chốt, sẽ quyết định sau EDA/Insight Log.
-- Logistic Regression là mô hình bắt buộc theo rubric; Random Forest là mô hình đối chứng phi tuyến. Hai mô hình dùng cùng snapshot feature và split, được so sánh bằng metric cho lớp `At_Risk`; kết quả chưa được công bố trước khi chạy thực nghiệm.
+- Logistic Regression dự báo `At_Risk`; kết quả và xác suất rủi ro xuất hiện trên dashboard, kèm đánh giá và cách tránh rò rỉ nhãn.
 - Báo cáo **tối thiểu 40 trang**, trích dẫn IEEE, demo trực tiếp, video backup và cả 3 thành viên sẵn sàng vấn đáp.
 
 Nguồn dữ liệu chính: [Open University OULAD](https://research.stem.open.ac.uk/ouanalyse/dataset/); mô tả cấu trúc và phương pháp: [Kuzilek et al., Scientific Data (2017)](https://www.nature.com/articles/sdata2017171); bản phát hành và giấy phép: [UCI OULAD](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset).

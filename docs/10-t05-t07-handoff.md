@@ -64,16 +64,15 @@ python src/oulad_pipeline.py report
 - Lưu workbook/link Tableau theo `dashboard/README.md`, ảnh prototype và bảng KPI/test. Không đưa raw CSV hoặc extract lớn chưa được duyệt vào Git.
 - Mọi chênh lệch KPI, lỗi map hoặc filter phải ghi để TV1 đối chiếu ở T15, không tự chỉnh mẫu số im lặng.
 
-## Chuẩn bị TV3 cho Issue #8 — T13 so sánh hai mô hình
+## Chuẩn bị TV3 cho Issue #8 — T13 Logistic Regression
 
 T13 chỉ bắt đầu/chốt sau #6. Trước khi tạo model, leader/TV3 cần ghi quyết định D04/D05:
 
 1. Mốc dự báo là ngày nào tính từ đầu presentation và event đúng ngày mốc có được tính không.
 2. Danh sách feature được phép, gồm rule availability theo module/presentation.
 3. Split theo `id_student` hay presentation, và baseline/metric/threshold.
-4. Cấu hình so sánh công bằng: Logistic Regression bắt buộc và Random Forest đối chứng dùng cùng snapshot feature, group split và test set; chỉ tune trên train/validation.
 
-Khi D04 được chốt, TV1 sẽ kiểm tra/bổ sung aggregate theo cutoff. Không dùng trực tiếp các cột sau làm feature model: `final_result`, `At_Risk`, `Performance_Level`, `date_unregistration`, mọi `*_all_time` chưa giới hạn cutoff, hoặc assessment/VLE sau cutoff. `At_Risk` chỉ là target. Output dự báo có grain `(code_module, code_presentation, id_student, model_name)` để giữ riêng hai mô hình; khi nối Tableau phải tránh nhân đôi KPI lượt học.
+Khi D04 được chốt, TV1 sẽ kiểm tra/bổ sung aggregate theo cutoff. Không dùng trực tiếp các cột sau làm feature model: `final_result`, `At_Risk`, `Performance_Level`, `date_unregistration`, mọi `*_all_time` chưa giới hạn cutoff, hoặc assessment/VLE sau cutoff. `At_Risk` chỉ là target.
 
 ## Điểm TV3 cần phản hồi cho TV1
 

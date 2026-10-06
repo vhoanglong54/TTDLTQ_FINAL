@@ -9,7 +9,7 @@
 | RQ3 — Previous Performance? | `num_of_prev_attempts`, `highest_education`, và điểm bài đánh giá sớm liên hệ kết quả ra sao? | **Sửa**: Thay vì điểm khóa trước (không có), dùng điểm bài nộp sớm và số lần học lại. |
 | RQ4 — Lifestyle/socioeconomic? | Kiểm tra khác biệt theo `imd_band`, `age_band`, `region`, disability. | **Sửa**: Bỏ "Lifestyle" (không có data về sleep/stress). Giữ lại "socioeconomic" thông qua proxy `imd_band`. |
 | RQ5 — Tổ hợp rủi ro? | Tổ hợp tương tác VLE, bài đánh giá sớm, previous attempts và IMD có tạo At-Risk Rate cao? | **Sửa**: Điều chỉnh các yếu tố tổ hợp cho khớp với biến thực tế của OULAD đã xác định ở trên. |
-| RQ6 — Logistic Regression? | Logistic Regression và Random Forest nhận diện `At_Risk` tốt đến đâu trên cùng dữ liệu dự báo sớm? | **Giữ và mở rộng**: Logistic Regression đáp ứng trực tiếp rubric; Random Forest là đối chứng phi tuyến để kiểm tra hiệu quả và trade-off giải thích. |
+| RQ6 — Logistic Regression? | Mô hình có nhận diện `At_Risk` đủ tốt và ổn định trước mốc dự báo không? | **Giữ**: Phù hợp với yêu cầu dùng classification model để nhận diện rủi ro sớm. |
 
 ## Danh sách 9 giả thuyết kiểm tra trên OULAD
 
@@ -107,19 +107,15 @@ EDA sẽ có tối thiểu 3–5 biểu đồ tĩnh theo rubric. Nêu mẫu số
 4. Biến `imd_band` trong bảng `studentInfo`: Có tới 1.118 giá trị `?` (missing). Cần TV1 xác nhận cơ chế xử lý (giữ nguyên làm category "Unknown" hay điền giá trị) vì nó ảnh hưởng đến giả thuyết H07.
 5. Khóa hạt dữ liệu: Việc tổng hợp từ bảng sự kiện (VLE, Assessment) về khóa `(code_module, code_presentation, id_student)` có làm mất quan sát nào không?
 
-## So sánh Logistic Regression và Random Forest
+## Logistic Regression
 
-**Target:** `At_Risk` từ `final_result`. Logistic Regression là mô hình bắt buộc theo rubric; Random Forest là mô hình đối chứng phi tuyến. `DummyClassifier` theo lớp phổ biến chỉ là baseline kiểm tra, không được gọi là mô hình chính thứ ba.
+**Target:** `At_Risk` từ `final_result`; **đầu ra:** khóa lượt học, `actual_status`, `predicted_status`, `risk_probability`, thời điểm/cửa sổ feature và phiên bản model. Có thể xuất `id_student` riêng để đối chiếu, nhưng **không** dùng một `student_id` đơn lẻ làm khóa bản ghi vì một người có thể có nhiều lượt học.
 
-Hai mô hình phải dùng cùng một snapshot feature theo cutoff, cùng khóa lượt học và cùng train/validation/test split theo nhóm `id_student`. Mọi imputation, encoding, scaling, resampling hoặc chọn feature chỉ được fit trên train. Logistic Regression dùng pipeline tiền xử lý phù hợp cho biến số/phân loại; Random Forest nhận cùng thông tin đã impute/encode nhưng không được tiếp cận thêm cột hoặc thời điểm khác.
+Pipeline dự kiến: clean data → chốt mốc dự báo tính từ ngày bắt đầu học phần (ví dụ ngày thứ 28, chỉ là ứng viên) → tạo feature đến mốc đó → chia train/test theo nhóm `id_student` hoặc presentation phù hợp → fit imputation/encoding/scaling trên train → Logistic Regression → đánh giá → chọn ngưỡng → xuất xác suất và phân lớp. Không đưa `final_result`, `At_Risk`, `date_unregistration` tương lai, điểm/nhấp chuột sau mốc vào feature. Cân nhắc `is_banked` và availability của bài đánh giá khi tính feature.
 
-Pipeline dự kiến: clean raw → audit cutoff ứng viên 14/28/42 ngày → chốt cutoff và quy tắc biên → tạo feature đến cutoff → group split train/validation/test → fit baseline + Logistic Regression + Random Forest → chọn hyperparameter/threshold trên train-validation → khóa cấu hình → đánh giá một lần trên test → xuất xác suất và phân lớp của cả hai mô hình. Không đưa `final_result`, `At_Risk`, `Performance_Level`, `date_unregistration`, aggregate `*_all_time` hoặc điểm/nhấp chuột sau cutoff vào feature. Cân nhắc `is_banked` và availability khác nhau của assessment theo module/presentation.
+Đánh giá ít nhất confusion matrix, precision, recall, F1 cho lớp At-Risk, ROC-AUC hoặc PR-AUC và calibration/xác suất; so sánh với baseline đa số. Báo cáo tỷ lệ lớp, split, mốc dự báo, số dòng mỗi tập, ngưỡng phân lớp, sai số False Negative và khác biệt theo module/region nếu cỡ mẫu cho phép. Hệ số Logistic Regression được giải thích trong điều kiện mã hóa và chuẩn hóa; không gọi là hệ số tác động nhân quả.
 
-So sánh trên cùng test set bằng confusion matrix, precision, recall và F1 cho lớp At-Risk, ROC-AUC, PR-AUC và calibration/Brier score khi phù hợp. **Không chọn mô hình chỉ theo accuracy.** Ưu tiên PR-AUC, recall/F1 lớp At-Risk và chi phí False Negative; đồng thời ghi trade-off về calibration, khả năng giải thích và độ ổn định. Hệ số Logistic Regression và feature importance/permutation importance của Random Forest chỉ mô tả liên hệ trong mô hình, không phải tác động nhân quả.
-
-Đầu ra dự báo dùng dạng long, một dòng cho mỗi `(code_module, code_presentation, id_student, model_name)`, gồm `actual_status`, `predicted_status`, `risk_probability`, `risk_band`, `dataset_split`, `cutoff_day`, `threshold` và `model_version`. Bảng metric riêng có một dòng cho mỗi mô hình/tập/ngưỡng. Tableau phải lọc hoặc tách theo `model_name` để không nhân đôi KPI của bảng lượt học.
-
-Nếu dùng `final_result` để định nghĩa `At_Risk`, đây là **dự báo kết quả cuối khóa từ dữ liệu sớm**, không phải nhận diện người đã biết kết quả. Kết quả thử nghiệm và tên mô hình tốt hơn chỉ được công bố sau khi pipeline thực sự chạy; Logistic Regression vẫn phải được trình bày đầy đủ ngay cả khi Random Forest có metric tốt hơn.
+Nếu dùng `final_result` để định nghĩa `At_Risk`, đây là **dự báo kết quả cuối khóa từ dữ liệu sớm**, không phải nhận diện người đã biết kết quả. Chọn mốc trước khi tạo feature để tránh rò rỉ. Kết quả thử nghiệm chỉ được công bố sau khi dữ liệu và mô hình thực sự chạy.
 
 ## Related Work (Trích dẫn ban đầu)
 

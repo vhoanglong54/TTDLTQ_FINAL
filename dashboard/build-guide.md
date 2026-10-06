@@ -14,10 +14,10 @@ Không nhập bảy bảng raw vào workbook và không join bảng event nhiề
 
 1. Kết nối `clean_dataset.csv` ở hạt một lượt học.
 2. Kiểm tra kiểu dữ liệu, 32.593 dòng và khóa `(code_module, code_presentation, id_student)`.
-3. Khi có kết quả T13, dùng relationship theo đủ ba khóa ở logical layer; giữ `model_name` làm dimension/filter và kiểm tra không nhân đôi KPI do mỗi lượt học có hai dự báo.
+3. Khi có kết quả T13, dùng relationship theo đủ ba khóa hoặc dùng một bảng dashboard đã được Python nối và kiểm tra trước.
 4. Đối chiếu KPI với baseline Python trước khi tạo storyline.
 
-Không đưa file mô hình `.joblib`/`.pkl` vào Tableau. Python dùng Logistic Regression và Random Forest để sinh `model_name`, `risk_probability`, `predicted_status`, `actual_status`, `risk_band`, `threshold` và `model_version`; Tableau hiển thị các trường đó.
+Không đưa file mô hình `.joblib`/`.pkl` vào Tableau. Python dùng mô hình để sinh `risk_probability`, `predicted_status`, `actual_status`, `risk_band`, `threshold` và `model_version`; Tableau hiển thị các trường đó.
 
 ## 3. Ranh giới quyết định hiện tại
 

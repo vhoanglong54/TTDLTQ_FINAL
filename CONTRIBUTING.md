@@ -6,7 +6,7 @@
 |---|---|
 | TV1 — Data | Chọn nguồn, audit, cleaning, join, feature engineering, data dictionary |
 | TV2 — Analysis | RQ, hypothesis, EDA, interaction, insight, storytelling, related work |
-| TV3 — Dashboard + Model | Logistic Regression bắt buộc, Random Forest đối chứng, Tableau, dự báo và demo |
+| TV3 — Dashboard + Model | Logistic Regression, Tableau, tương tác, dự báo, demo |
 
 Tên thật được gán vào TV1–TV3 tại Issue đầu tiên. Thành viên phối hợp trực tiếp khi cần làm rõ đầu vào; leader là người duy nhất quyết định merge.
 

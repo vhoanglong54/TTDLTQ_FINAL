@@ -6,7 +6,7 @@ T01–T07 đã nghiệm thu. **Issue tiếp theo của TV1:** [#9 — T15 QA das
 
 ## Mục tiêu và quy tắc xuyên suốt
 
-TV1 chịu trách nhiệm nguồn OULAD, data dictionary, audit, cleaning, join, feature engineering, đối chiếu số liệu dashboard và phần Data của báo cáo. TV1 hỗ trợ EDA, feature cho mô hình và demo; TV2 sở hữu insight/EDA, TV3 sở hữu Logistic Regression + Random Forest/Tableau. Áp dụng một Issue → một nhánh → một PR có bằng chứng → leader merge → Issue đóng ngay.
+TV1 chịu trách nhiệm nguồn OULAD, data dictionary, audit, cleaning, join, feature engineering, đối chiếu số liệu dashboard và phần Data của báo cáo. TV1 hỗ trợ EDA, feature cho mô hình và demo; TV2 sở hữu insight/EDA, TV3 sở hữu Logistic Regression/Tableau. Áp dụng một Issue → một nhánh → một PR có bằng chứng → leader merge → Issue đóng ngay.
 
 - Dữ liệu gốc gồm **7 CSV OULAD**. Hạt bảng phân tích chính là **một lượt học** theo `(code_module, code_presentation, id_student)`; không đồng nhất lượt học với số sinh viên duy nhất.
 - `At_Risk = 1` cho `Fail/Withdrawn`, `0` cho `Pass/Distinction`. `final_result` và `At_Risk` chỉ là nhãn/kết quả; không đưa dữ liệu sau mốc dự báo vào feature.

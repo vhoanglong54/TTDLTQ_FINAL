@@ -43,7 +43,7 @@ File input có SHA-256 `4b3250f59456d9eb546291c52bd7e3ff5b4afe0a942b54df961cd193
 - [ ] Có workbook Tableau thật và ghi rõ version/cách mở.
 - [ ] Data source đọc đúng bảng sạch, hạt và ba cột khóa.
 - [ ] KPI không filter khớp toàn bộ baseline trên.
-- [ ] Relationship với output model theo đủ ba khóa; `model_name` tách hai mô hình và không làm nhân đôi KPI lượt học.
+- [ ] Relationship với output model theo đủ khóa và không nhân dòng, khi T13 có output.
 - [ ] Map thử nghiệm có geometry/mapping nguồn rõ và coverage đủ 13 region.
 - [ ] Filter, drill-down, tooltip và cross-filtering được kiểm bằng ảnh/bằng chứng.
 - [ ] Ghi checksum input, version Tableau và hạn chế kỹ thuật trong `evidence/README.md`.
